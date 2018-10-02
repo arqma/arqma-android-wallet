@@ -71,4 +71,4 @@ RUN cd /opt/android \
     && git clone -b release-v0.1.3.0 https://github.com/arqma/arqma.git --recursive --depth=5 \
     && cd arqma \
     && mkdir -p build/release \
-    && ./build-all-arch.sh
+    && bash build-all-arch.sh
