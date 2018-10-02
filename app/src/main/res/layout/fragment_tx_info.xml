@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTxAmount"
+                    style="@style/MoneroText.PosAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true"
+                    tools:text="+ 1,092.00229" />
+
+                <TextView
+                    android:id="@+id/tvTxFee"
+                    style="@style/MoneroText.PosFee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true"
+                    tools:text="Fee 0.0003688271" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvTxTimestamp"
+                style="@style/MoneroText.PosDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="24dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:selectAllOnFocus="true"
+                android:textIsSelectable="true"
+                tools:text="2017-10-09 12:44:13 +0200" />
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:shrinkColumns="1">
+
+            <TableRow>
+
+                <TextView
+                    style="@style/MoneroLabel.Small"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:padding="8dp"
+                    android:text="@string/tx_account" />
+
+                <TextView
+                    android:id="@+id/tvAccount"
+                    style="@style/MoneroText"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/MoneroLabel.Small"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:padding="8sp"
+                    android:text="@string/tx_notes" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etTxNotes"
+                        style="@style/MoneroEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/bTxNotes"
+                        android:backgroundTint="@color/moneroGray"
+                        android:hint="@string/tx_notes_hint"
+                        android:inputType="textMultiLine" />
+
+                    <Button
+                        android:id="@+id/bTxNotes"
+                        style="@style/MoneroButton.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:enabled="true"
+                        android:paddingEnd="8dp"
+                        android:paddingStart="8dp"
+                        android:text="@string/tx_button_notes" />
+                </RelativeLayout>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/MoneroLabel.Small"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:padding="8dp"
+                    android:text="@string/tx_destination" />
+
+                <TextView
+                    android:id="@+id/tvDestination"
+                    style="@style/MoneroText"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/MoneroLabel.Small"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:padding="8dp"
+                    android:text="@string/tx_paymentId" />
+
+                <TextView
+                    android:id="@+id/tvTxPaymentId"
+                    style="@style/MoneroText"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/MoneroLabel.Small"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:padding="8dp"
+                    android:text="@string/tx_id" />
+
+                <TextView
+                    android:id="@+id/tvTxId"
+                    style="@style/MoneroText"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/MoneroLabel.Small"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:padding="8dp"
+                    android:text="@string/tx_key" />
+
+                <TextView
+                    android:id="@+id/tvTxKey"
+                    style="@style/MoneroText"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/MoneroLabel.Small"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:padding="8dp"
+                    android:text="@string/tx_blockheight" />
+
+                <TextView
+                    android:id="@+id/tvTxBlockheight"
+                    style="@style/MoneroText"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/MoneroLabel.Small"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:padding="8dp"
+                    android:text="@string/tx_transfers" />
+
+                <TextView
+                    android:id="@+id/tvTxTransfers"
+                    style="@style/MoneroText"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:selectAllOnFocus="true"
+                    android:textIsSelectable="true" />
+
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+</ScrollView>
