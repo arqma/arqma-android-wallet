@@ -15,10 +15,6 @@ RUN curl -s -O https://dl.google.com/android/repository/android-ndk-r${ANDROID_N
     && rm -f android-ndk-r${ANDROID_NDK_REVISION}-linux-x86_64.zip \
     && ln -s android-ndk-r${ANDROID_NDK_REVISION} ndk
     
-ENV WORKDIR /opt/android
-ENV ANDROID_SDK_ROOT ${WORKDIR}/tools
-ENV ANDROID_NDK_ROOT ${WORKDIR}/android-ndk-r${ANDROID_NDK_REVISION}
-ENV PREFIX /opt/android/prefix
 
 ## Installing toolchains
 RUN ndk/build/tools/make_standalone_toolchain.py --api 21 --stl=libc++ --arch arm --install-dir /opt/android/tool/arm \
