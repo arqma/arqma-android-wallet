@@ -1,6 +1,6 @@
 FROM debian:jessie
 
-RUN apt-get update && apt-get install -y unzip automake build-essential curl cmake file pkg-config git python libtool
+RUN apt-get update && apt-get install -y unzip automake build-essential curl file pkg-config git python libtool
 WORKDIR /opt/android
 
 ENV CMAKE_VERSION 3.12.1
@@ -38,6 +38,14 @@ RUN curl -s -O https://dl.google.com/android/repository/android-ndk-r${ANDROID_N
     && unzip android-ndk-r${ANDROID_NDK_REVISION}-linux-x86_64.zip \
     && rm -f android-ndk-r${ANDROID_NDK_REVISION}-linux-x86_64.zip \
     && ln -s android-ndk-r${ANDROID_NDK_REVISION} ndk
+    
+ENV WORKDIR /opt/android
+ENV ANDROID_SDK_ROOT ${WORKDIR}/tools
+ENV ANDROID_NDK_ROOT ${WORKDIR}/android-ndk-r${ANDROID_NDK_REVISION}
+ENV PREFIX /opt/android/prefix
+
+ENV HOST_PATH $PATH
+ENV PATH $TOOLCHAIN_DIR/arm-linux-androideabi/bin:$TOOLCHAIN_DIR/bin:$PATH
 
 # Build iconv for lib boost locale
 RUN curl -s -O http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${ICONV_VERSION}.tar.gz \
