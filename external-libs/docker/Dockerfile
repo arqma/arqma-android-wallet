@@ -7,6 +7,24 @@ ENV CMAKE_VERSION 3.12.1
 ENV ANDROID_NDK_REVISION 17b
 ENV BOOST_VERSION 1_67_0
 ENV BOOST_VERSION_DOT 1.67.0
+ENV ANDROID_SDK_REVISION 4333796
+ENV ANDROID_SDK_HASH 92ffee5a1d98d856634e8b71132e8a95d96c83a63fde1099be3d86df3106def9
+ENV ICONV_VERSION 1.15
+ENV ICONV_HASH  ccf536620a45458d26ba83887a983b96827001e92a13847b45e4925cc8913178
+ENV ZLIB_VERSION 1.2.11
+ENV ZLIB_HASH c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
+ARG ZMQ_VERSION=v4.2.5
+ARG ZMQ_HASH=d062edd8c142384792955796329baf1e5a3377cd
+ARG CPPZMQ_VERSION=v4.2.3
+ARG CPPZMQ_HASH=6aa3ab686e916cb0e62df7fa7d12e0b13ae9fae6
+ARG SODIUM_VERSION=1.0.16
+ARG SODIUM_HASH=675149b9b8b66ff44152553fb3ebf9858128363d
+
+## INSTALL ANDROID SDK
+RUN curl -s -O https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_REVISION}.zip \
+    && echo "${ANDROID_SDK_HASH}  sdk-tools-linux-${ANDROID_SDK_REVISION}.zip" | sha256sum -c \
+    && unzip sdk-tools-linux-${ANDROID_SDK_REVISION}.zip \
+    && rm -f sdk-tools-linux-${ANDROID_SDK_REVISION}.zip
 
 #Install cmake
 RUN cd /usr \
@@ -20,6 +38,48 @@ RUN curl -s -O https://dl.google.com/android/repository/android-ndk-r${ANDROID_N
     && unzip android-ndk-r${ANDROID_NDK_REVISION}-linux-x86_64.zip \
     && rm -f android-ndk-r${ANDROID_NDK_REVISION}-linux-x86_64.zip \
     && ln -s android-ndk-r${ANDROID_NDK_REVISION} ndk
+
+# Build iconv for lib boost locale
+RUN curl -s -O http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${ICONV_VERSION}.tar.gz \
+    && echo "${ICONV_HASH}  libiconv-${ICONV_VERSION}.tar.gz" | sha256sum -c \
+    && tar -xzf libiconv-${ICONV_VERSION}.tar.gz \
+    && rm -f libiconv-${ICONV_VERSION}.tar.gz \
+    && cd libiconv-${ICONV_VERSION} \
+    && CC=arm-linux-androideabi-clang CXX=arm-linux-androideabi-clang++ ./configure --build=x86_64-linux-gnu --host=arm-eabi --prefix=${PREFIX} --disable-rpath \
+    && make -j${NPROC} && make install
+
+# download, configure and make Zlib
+RUN curl -s -O https://zlib.net/zlib-${ZLIB_VERSION}.tar.gz \
+    && echo "${ZLIB_HASH}  zlib-${ZLIB_VERSION}.tar.gz" | sha256sum -c \
+    && tar -xzf zlib-${ZLIB_VERSION}.tar.gz \
+    && rm zlib-${ZLIB_VERSION}.tar.gz \
+    && mv zlib-${ZLIB_VERSION} zlib \
+    && cd zlib && CC=clang CXX=clang++ ./configure --static \
+    && make -j${NPROC}
+
+# ZMQ
+RUN git clone https://github.com/zeromq/libzmq.git -b ${ZMQ_VERSION} \
+    && cd libzmq \
+    && test `git rev-parse HEAD` = ${ZMQ_HASH} || exit 1 \
+    && ./autogen.sh \
+    && CC=clang CXX=clang++ ./configure --prefix=${PREFIX} --host=arm-linux-androideabi --enable-static --disable-shared \
+    && make -j${NPROC} \
+    && make install
+
+# zmq.hpp
+RUN git clone https://github.com/zeromq/cppzmq.git -b ${CPPZMQ_VERSION} \
+    && cd cppzmq \
+    && test `git rev-parse HEAD` = ${CPPZMQ_HASH} || exit 1 \
+    && cp *.hpp ${PREFIX}/include
+
+# Sodium
+RUN git clone https://github.com/jedisct1/libsodium.git -b ${SODIUM_VERSION} \
+    && cd libsodium \
+    && test `git rev-parse HEAD` = ${SODIUM_HASH} || exit 1 \
+    && ./autogen.sh \
+    && CC=clang CXX=clang++ ./configure --prefix=${PREFIX} --host=arm-linux-androideabi --enable-static --disable-shared \
+    && make  -j${NPROC} \
+    && make install
 
 ## Installing toolchains
 RUN ndk/build/tools/make_standalone_toolchain.py --api 21 --stl=libc++ --arch arm --install-dir /opt/android/tool/arm \
