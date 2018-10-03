@@ -75,7 +75,7 @@ RUN cd boost_${BOOST_VERSION} \
 # Building Arqma from the latest commit on Android branch, this should be kept up to date with master
 # with the necessary fixes by malbit and m2049r to build for mobile.
 RUN cd /opt/android \
-    && git clone -b android https://github.com/arqma/arqma.git --recursive --depth=1 \
+    && git clone -b android https://github.com/malbit/arqma.git --recursive --depth=1 \
     && cd arqma \
     && mkdir -p build/release \
     && ./build-all-arch.sh
