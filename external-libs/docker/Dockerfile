@@ -3,9 +3,17 @@ FROM debian:jessie
 RUN apt-get update && apt-get install -y unzip automake build-essential curl cmake file pkg-config git python libtool
 WORKDIR /opt/android
 
+ENV CMAKE_VERSION 3.12.1
 ENV ANDROID_NDK_REVISION 17b
 ENV BOOST_VERSION 1_67_0
 ENV BOOST_VERSION_DOT 1.67.0
+
+#Install cmake
+RUN cd /usr \
+    && curl -s -O https://cmake.org/files/v3.12/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz \
+    && tar -xzf /usr/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz \
+    && rm -f /usr/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz
+ENV PATH /usr/cmake-${CMAKE_VERSION}-Linux-x86_64/bin:$PATH
 
 ## Getting Android NDK
 RUN curl -s -O https://dl.google.com/android/repository/android-ndk-r${ANDROID_NDK_REVISION}-linux-x86_64.zip \
