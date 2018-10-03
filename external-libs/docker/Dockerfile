@@ -9,8 +9,6 @@ ENV BOOST_VERSION 1_67_0
 ENV BOOST_VERSION_DOT 1.67.0
 ENV ANDROID_SDK_REVISION 4333796
 ENV ANDROID_SDK_HASH 92ffee5a1d98d856634e8b71132e8a95d96c83a63fde1099be3d86df3106def9
-ENV ZLIB_VERSION 1.2.11
-ENV ZLIB_HASH c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
 ARG ZMQ_VERSION=v4.2.5
 ARG ZMQ_HASH=d062edd8c142384792955796329baf1e5a3377cd
 ARG CPPZMQ_VERSION=v4.2.3
@@ -44,15 +42,6 @@ ENV PREFIX /opt/android/prefix
 
 ENV HOST_PATH $PATH
 ENV PATH $TOOLCHAIN_DIR/arm-linux-androideabi/bin:$TOOLCHAIN_DIR/bin:$PATH
-
-# download, configure and make Zlib
-RUN curl -s -O https://zlib.net/zlib-${ZLIB_VERSION}.tar.gz \
-    && echo "${ZLIB_HASH}  zlib-${ZLIB_VERSION}.tar.gz" | sha256sum -c \
-    && tar -xzf zlib-${ZLIB_VERSION}.tar.gz \
-    && rm zlib-${ZLIB_VERSION}.tar.gz \
-    && mv zlib-${ZLIB_VERSION} zlib \
-    && cd zlib && CC=clang CXX=clang++ ./configure --static \
-    && make -j${NPROC}
 
 # ZMQ
 RUN git clone https://github.com/zeromq/libzmq.git -b ${ZMQ_VERSION} \
