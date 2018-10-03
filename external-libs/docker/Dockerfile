@@ -9,8 +9,6 @@ ENV BOOST_VERSION 1_67_0
 ENV BOOST_VERSION_DOT 1.67.0
 ENV ANDROID_SDK_REVISION 4333796
 ENV ANDROID_SDK_HASH 92ffee5a1d98d856634e8b71132e8a95d96c83a63fde1099be3d86df3106def9
-ENV ICONV_VERSION 1.15
-ENV ICONV_HASH  ccf536620a45458d26ba83887a983b96827001e92a13847b45e4925cc8913178
 ENV ZLIB_VERSION 1.2.11
 ENV ZLIB_HASH c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
 ARG ZMQ_VERSION=v4.2.5
@@ -46,15 +44,6 @@ ENV PREFIX /opt/android/prefix
 
 ENV HOST_PATH $PATH
 ENV PATH $TOOLCHAIN_DIR/arm-linux-androideabi/bin:$TOOLCHAIN_DIR/bin:$PATH
-
-# Build iconv for lib boost locale
-RUN curl -s -O http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${ICONV_VERSION}.tar.gz \
-    && echo "${ICONV_HASH}  libiconv-${ICONV_VERSION}.tar.gz" | sha256sum -c \
-    && tar -xzf libiconv-${ICONV_VERSION}.tar.gz \
-    && rm -f libiconv-${ICONV_VERSION}.tar.gz \
-    && cd libiconv-${ICONV_VERSION} \
-    && CC=arm-linux-androideabi-clang CXX=arm-linux-androideabi-clang++ ./configure --build=x86_64-linux-gnu --host=arm-eabi --prefix=${PREFIX} --disable-rpath \
-    && make -j${NPROC} && make install
 
 # download, configure and make Zlib
 RUN curl -s -O https://zlib.net/zlib-${ZLIB_VERSION}.tar.gz \
