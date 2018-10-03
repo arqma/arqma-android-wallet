@@ -2,7 +2,7 @@ FROM debian:stable
 
 RUN apt-get update && apt-get install -y unzip automake build-essential curl cmake file pkg-config git python libtool libssl-dev \
                                          libzmq3-dev libunbound-dev libsodium-dev libminiupnpc-dev libunwind8-dev liblzma-dev \
-                                         libreadline6-dev libldns-dev libexpat1-dev doxygen graphviz libpcsclite-dev
+                                         libreadline6-dev libldns-dev libexpat1-dev doxygen graphviz libpcsclite-dev pcsc-tools
 WORKDIR /opt/android
 
 ENV ANDROID_NDK_REVISION 17b
