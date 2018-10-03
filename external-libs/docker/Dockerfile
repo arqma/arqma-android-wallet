@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stable
 
 RUN apt-get update && apt-get install -y unzip automake build-essential curl file pkg-config git python libtool
 WORKDIR /opt/android
