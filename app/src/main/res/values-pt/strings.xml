@@ -61,7 +61,7 @@
     <string name="changepw_success">Palavra passe alterada</string>
 
     <string name="label_daemon">Nó</string>
-    <string name="prompt_daemon">([&lt;utilizador&gt;:&lt;passe&gt;@]&lt;serviço&gt;[:&lt;porta&gt;])</string>
+    <string name="prompt_daemon">user:password@daemon-address:port</string>
     <string name="status_wallet_loading">A carregar a carteira &#8230;</string>
     <string name="status_wallet_unloaded">Carteira guardada</string>
     <string name="status_wallet_unload_failed">Erro ao gravar a carteira!</string>

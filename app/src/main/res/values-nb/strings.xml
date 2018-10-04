@@ -59,7 +59,7 @@
 	<string name="changepw_success">[Passord forandra]</string>
 
     <string name="label_daemon">Node</string>
-    <string name="prompt_daemon">([&lt;bruker&gt;:&lt;pass&gt;@]&lt;daemon&gt;[:&lt;port&gt;])</string>
+    <string name="prompt_daemon">user:password@daemon-address:port</string>
     <string name="status_wallet_loading">Laster lommebok &#8230;</string>
     <string name="status_wallet_unloaded">Lommebok lagra</string>
     <string name="status_wallet_unload_failed">Lommeboklagring feila!</string>

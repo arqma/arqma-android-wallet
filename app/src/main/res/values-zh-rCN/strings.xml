@@ -59,7 +59,7 @@
     <string name="changepw_success">密码更改成功</string>
 
     <string name="label_daemon">节点</string>
-    <string name="prompt_daemon">([&lt;名称&gt;:&lt;密码&gt;@]&lt;节点&gt;[:&lt;port&gt;])</string>
+    <string name="prompt_daemon">user:password@daemon-address:port</string>
     <string name="status_wallet_loading">载入钱包 &#8230;</string>
     <string name="status_wallet_unloaded">钱包已储存</string>
     <string name="status_wallet_unload_failed">储存钱包失败!</string>
