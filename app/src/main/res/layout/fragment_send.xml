@@ -48,7 +48,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@color/gradientDark"
+            android:background="#0e0653"
             app:activeColor="@color/white"
             app:activeDot="0"
             app:dotSize="12dp"
