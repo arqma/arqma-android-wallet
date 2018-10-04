@@ -60,7 +60,7 @@
     <string name="changepw_success">Password cambiata</string>
 
     <string name="label_daemon">Nodo</string>
-    <string name="prompt_daemon">([&lt;utente&gt;:&lt;password&gt;@]&lt;daemon&gt;[:&lt;porta&gt;])</string>
+    <string name="prompt_daemon">user:password@daemon-address:port</string>
     <string name="status_wallet_loading">Caricando portafoglio &#8230;</string>
     <string name="status_wallet_unloaded">Portafoglio salvato</string>
     <string name="status_wallet_unload_failed">Salvataggio portafoglio fallito!</string>

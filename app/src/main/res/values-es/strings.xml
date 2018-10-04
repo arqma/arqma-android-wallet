@@ -57,7 +57,7 @@
     <string name="changepw_success">Contraseña cambiada</string>
 
     <string name="label_daemon">Nodo</string>
-    <string name="prompt_daemon">([&lt;usuario&gt;:&lt;contraseña&gt;@]&lt;daemon&gt;[:&lt;puerto&gt;])</string>
+    <string name="prompt_daemon">user:password@daemon-address:port</string>
     <string name="status_wallet_loading">Cargando monedero&#8230;</string>
     <string name="status_wallet_unloaded">Monedero guardada</string>
     <string name="status_wallet_unload_failed">¡Guardado de monedero fallido!</string>

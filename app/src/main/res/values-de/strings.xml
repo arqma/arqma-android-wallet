@@ -60,7 +60,7 @@
     <string name="changepw_success">Passwort geändert</string>
 
     <string name="label_daemon">Node</string>
-    <string name="prompt_daemon">([&lt;user&gt;:&lt;pass&gt;@]&lt;daemon&gt;[:&lt;port&gt;])</string>
+    <string name="prompt_daemon">user:password@daemon-address:port</string>
     <string name="status_wallet_loading">Lade Wallet &#8230;</string>
     <string name="status_wallet_unloaded">Wallet gespeichert</string>
     <string name="status_wallet_unload_failed">Wallet Speicherung fehlgeschlagen!</string>

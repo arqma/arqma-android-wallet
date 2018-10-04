@@ -60,7 +60,7 @@
     <string name="changepw_success">Modification du mot de passe réussie</string>
 
     <string name="label_daemon">Nœud</string>
-    <string name="prompt_daemon">([&lt;utilisateur&gt;:&lt;mdp&gt;@]&lt;démon&gt;[:&lt;port&gt;])</string>
+<string name="prompt_daemon">user:password@daemon-address:port</string>
     <string name="status_wallet_loading">Chargement du Portefeuille &#8230;</string>
     <string name="status_wallet_unloaded">Portefeuille Sauvegardé</string>
     <string name="status_wallet_unload_failed">Sauvegarde du Portefeuille Échouée !</string>
