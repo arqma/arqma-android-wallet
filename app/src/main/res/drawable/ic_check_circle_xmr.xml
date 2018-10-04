@@ -14,7 +14,7 @@
         android:strokeColor="#00000000"
         android:strokeWidth="1" />
     <path
-        android:fillColor="@color/gradientDark"
+        android:fillColor="#0e0653"
         android:pathData="M10,3.01C4.48,3.01 -0.01,7.49 0,13C0,14.11 0.18,15.17 0.51,16.16L3.5,16.16L3.5,7.75L10,14.25L16.49,7.75L16.49,16.16L19.49,16.16C19.82,15.17 19.99,14.11 19.99,13C20,7.48 15.52,3.01 10,3.01L10,3.01Z"
         android:strokeColor="#00000000"
         android:strokeWidth="1" />
