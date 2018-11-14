@@ -2,7 +2,7 @@ FROM debian:stable
 
 RUN apt-get update && apt-get install -y unzip automake build-essential curl cmake file pkg-config git python libtool libssl-dev \
                                          libzmq3-dev libunbound-dev libsodium-dev libminiupnpc-dev libunwind8-dev liblzma-dev \
-                                         libreadline6-dev libldns-dev libexpat1-dev doxygen graphviz libpcsclite-dev pcsc-tools
+                                         libreadline6-dev libldns-dev libexpat1-dev doxygen graphviz libpgm-dev libhidapi-dev libusb-1.0-0-dev
 WORKDIR /opt/android
 
 ENV ANDROID_NDK_REVISION 17b
@@ -71,7 +71,7 @@ RUN cd boost_${BOOST_VERSION} \
 # Building Arqma from the latest commit on Android branch, this should be kept up to date with master
 # with the necessary fixes by malbit and m2049r to build for mobile.
 RUN cd /opt/android \
-    && git clone -b android https://github.com/malbit/arqma.git --recursive --depth=1 \
+    && git clone -b dev1 https://gitlab.arqma.com/malbit/arqma.git --recursive --depth=1 \
     && cd arqma \
     && mkdir -p build/release \
     && ./build-all-arch.sh
