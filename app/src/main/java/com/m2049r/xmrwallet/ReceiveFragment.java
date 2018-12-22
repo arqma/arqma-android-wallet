@@ -112,8 +112,8 @@ public class ReceiveFragment extends Fragment {
         bCopyAddress.setOnClickListener(v -> copyAddress());
         enableCopyAddress(false);
 
-        evAmount.setOnNewAmountListener(xmr -> {
-            Timber.d("new amount = %s", xmr);
+        evAmount.setOnNewAmountListener(arq -> {
+            Timber.d("new amount = %s", arq);
             generateQr();
         });
 

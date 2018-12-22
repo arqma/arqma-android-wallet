@@ -169,7 +169,7 @@ public class WalletFragment extends Fragment implements TransactionInfoAdapter.O
 
     void refreshBalance() {
         if (balanceHidden) {
-            tvBalance.setText("X.XXX");
+            tvBalance.setText("Hidden");
             return;
         }
 
@@ -318,7 +318,7 @@ public class WalletFragment extends Fragment implements TransactionInfoAdapter.O
         Timber.d("wallet title is %s", walletTitle);
     }
 
-    private long firstBlock = 0;
+    private long firstBlock = 1;
     private String walletTitle = null;
     private String walletSubtitle = null;
     private long unlockedBalance = 0;
