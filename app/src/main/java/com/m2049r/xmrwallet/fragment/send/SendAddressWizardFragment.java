@@ -17,11 +17,11 @@
 package com.m2049r.xmrwallet.fragment.send;
 
 import android.content.Context;
+import android.nfc.NfcManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
-import android.text.Html;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
@@ -37,11 +37,11 @@ import android.widget.TextView;
 import com.m2049r.xmrwallet.R;
 import com.m2049r.xmrwallet.data.BarcodeData;
 import com.m2049r.xmrwallet.data.TxData;
+import com.m2049r.xmrwallet.model.PendingTransaction;
 import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.util.Helper;
 import com.m2049r.xmrwallet.util.OpenAliasHelper;
-
-import java.util.Map;
+import com.m2049r.xmrwallet.util.UserNotes;
 
 import timber.log.Timber;
 
@@ -65,25 +65,26 @@ public class SendAddressWizardFragment extends SendWizardFragment {
     public interface Listener {
         void setBarcodeData(BarcodeData data);
 
+        BarcodeData getBarcodeData();
+
         TxData getTxData();
     }
 
     private EditText etDummy;
     private TextInputLayout etAddress;
     private TextInputLayout etPaymentId;
+    private TextInputLayout etNotes;
     private Button bPaymentId;
     private CardView cvScan;
     private View tvPaymentIdIntegrated;
     private View llPaymentId;
-	
-	private boolean resolvingOA = false;
+
+    private boolean resolvingOA = false;
 
     OnScanListener onScanListener;
 
     public interface OnScanListener {
         void onScan();
-
-        BarcodeData popScannedData();
     }
 
     @Override
@@ -98,23 +99,26 @@ public class SendAddressWizardFragment extends SendWizardFragment {
 
         etAddress = (TextInputLayout) view.findViewById(R.id.etAddress);
         etAddress.getEditText().setRawInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        etAddress.getEditText().setOnEditorActionListener((v, actionId, event) -> {
-            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_NEXT)) {
-                String dnsOA = dnsFromOpenAlias(etAddress.getEditText().getText().toString());
+        etAddress.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
+                        || (actionId == EditorInfo.IME_ACTION_NEXT)) {
+                    String dnsOA = dnsFromOpenAlias(etAddress.getEditText().getText().toString());
                     Timber.d("OpenAlias is %s", dnsOA);
                     if (dnsOA != null) {
                         processOpenAlias(dnsOA);
                     } else if (checkAddress()) {
-                    if (llPaymentId.getVisibility() == View.VISIBLE) {
-                        etPaymentId.requestFocus();
-                    } else {
-                        etDummy.requestFocus();
-                        Helper.hideKeyboard(getActivity());
+                        if (llPaymentId.getVisibility() == View.VISIBLE) {
+                            etPaymentId.requestFocus();
+                        } else {
+                            etDummy.requestFocus();
+                            Helper.hideKeyboard(getActivity());
+                        }
                     }
+                    return true;
                 }
-                return true;
+                return false;
             }
-            return false;
         });
         etAddress.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
@@ -141,18 +145,19 @@ public class SendAddressWizardFragment extends SendWizardFragment {
             }
         });
 
-
         etPaymentId = (TextInputLayout) view.findViewById(R.id.etPaymentId);
         etPaymentId.getEditText().setRawInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        etPaymentId.getEditText().setOnEditorActionListener((v, actionId, event) -> {
-            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                if (checkPaymentId()) {
-                    etDummy.requestFocus();
-                    Helper.hideKeyboard(getActivity());
+        etPaymentId.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
+                        || (actionId == EditorInfo.IME_ACTION_NEXT)) {
+                    if (checkPaymentId()) {
+                        etNotes.requestFocus();
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
-            return false;
         });
         etPaymentId.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
@@ -170,40 +175,70 @@ public class SendAddressWizardFragment extends SendWizardFragment {
         });
 
         bPaymentId = (Button) view.findViewById(R.id.bPaymentId);
-        bPaymentId.setOnClickListener(v -> etPaymentId.getEditText().setText((Wallet.generatePaymentId())));
+        bPaymentId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etPaymentId.getEditText().setText((Wallet.generatePaymentId()));
+            }
+        });
+
+        etNotes = (TextInputLayout) view.findViewById(R.id.etNotes);
+        etNotes.getEditText().setRawInputType(InputType.TYPE_CLASS_TEXT);
+        etNotes.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
+                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    etDummy.requestFocus();
+                    Helper.hideKeyboard(getActivity());
+                    return true;
+                }
+                return false;
+            }
+        });
 
         cvScan = (CardView) view.findViewById(R.id.bScan);
-        cvScan.setOnClickListener(v -> onScanListener.onScan());
+        cvScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onScanListener.onScan();
+            }
+        });
+
 
         etDummy = (EditText) view.findViewById(R.id.etDummy);
         etDummy.setRawInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         etDummy.requestFocus();
         Helper.hideKeyboard(getActivity());
 
+        View tvNfc = view.findViewById(R.id.tvNfc);
+        NfcManager manager = (NfcManager) getContext().getSystemService(Context.NFC_SERVICE);
+        if ((manager != null) && (manager.getDefaultAdapter() != null))
+            tvNfc.setVisibility(View.VISIBLE);
+
         return view;
     }
-	
-	private void processOpenAlias(String dnsOA) {
+
+    private void processOpenAlias(String dnsOA) {
         if (resolvingOA) return; // already resolving - just wait
         if (dnsOA != null) {
             resolvingOA = true;
             etAddress.setError(getString(R.string.send_address_resolve_openalias));
             OpenAliasHelper.resolve(dnsOA, new OpenAliasHelper.OnResolvedListener() {
                 @Override
-                public void onResolved(Map<BarcodeData.Asset, BarcodeData> dataMap) {
+                public void onResolved(BarcodeData barcode) {
                     resolvingOA = false;
-                    BarcodeData barcodeData = dataMap.get(BarcodeData.Asset.ARQ);
-                    if (barcodeData != null) {
-                        Timber.d("DNSSEC=%b, %s", barcodeData.isSecure, barcodeData.address);
-                        processScannedData(barcodeData);
+                    if (barcode != null) {
+                        Timber.d("Security=%s, %s", barcode.security.toString(), barcode.address);
+                        processScannedData(barcode);
                         etDummy.requestFocus();
                         Helper.hideKeyboard(getActivity());
                     } else {
                         etAddress.setError(getString(R.string.send_address_not_openalias));
-                        Timber.d("NO Arqma OpenAlias Found!!");
+                        Timber.d("NO ARQ OPENALIAS TXT FOUND");
                     }
                 }
-                 @Override
+
+                @Override
                 public void onFailure() {
                     resolvingOA = false;
                     etAddress.setError(getString(R.string.send_address_not_openalias));
@@ -249,8 +284,8 @@ public class SendAddressWizardFragment extends SendWizardFragment {
         }
         return ok;
     }
-	
-	private void shakeAddress() {
+
+    private void shakeAddress() {
         etAddress.startAnimation(Helper.getShakeAnimation(getContext()));
     }
 
@@ -260,7 +295,7 @@ public class SendAddressWizardFragment extends SendWizardFragment {
         if (!checkAddressNoError()) {
             shakeAddress();
             ok = false;
-			String dnsOA = dnsFromOpenAlias(etAddress.getEditText().getText().toString());
+            String dnsOA = dnsFromOpenAlias(etAddress.getEditText().getText().toString());
             Timber.d("OpenAlias is %s", dnsOA);
             if (dnsOA != null) {
                 processOpenAlias(dnsOA);
@@ -275,6 +310,9 @@ public class SendAddressWizardFragment extends SendWizardFragment {
             TxData txData = sendListener.getTxData();
             txData.setDestinationAddress(etAddress.getEditText().getText().toString());
             txData.setPaymentId(etPaymentId.getEditText().getText().toString());
+            txData.setUserNotes(new UserNotes(etNotes.getEditText().getText().toString()));
+            txData.setPriority(PendingTransaction.Priority.Priority_Default);
+            txData.setMixin(SendFragment.MIXIN);
         }
         return true;
     }
@@ -285,7 +323,8 @@ public class SendAddressWizardFragment extends SendWizardFragment {
         if (context instanceof OnScanListener) {
             onScanListener = (OnScanListener) context;
         } else {
-            throw new ClassCastException(context.toString() + " must implement ScanListener");
+            throw new ClassCastException(context.toString()
+                    + " must implement ScanListener");
         }
     }
 
@@ -295,24 +334,33 @@ public class SendAddressWizardFragment extends SendWizardFragment {
     public void onResume() {
         super.onResume();
         Timber.d("onResume");
-        BarcodeData data = onScanListener.popScannedData();
-        sendListener.setBarcodeData(data);
-        if (data != null) {
+        processScannedData();
+    }
+
+    public void processScannedData(BarcodeData barcodeData) {
+        sendListener.setBarcodeData(barcodeData);
+        if (isResumed())
+            processScannedData();
+    }
+
+    public void processScannedData() {
+        BarcodeData barcodeData = sendListener.getBarcodeData();
+        if (barcodeData != null) {
             Timber.d("GOT DATA");
-            String scannedAddress = data.address;
+            String scannedAddress = barcodeData.address;
             if (scannedAddress != null) {
                 etAddress.getEditText().setText(scannedAddress);
                 if (checkAddress()) {
-                    if (!barcodeData.isSecure)
+                    if (barcodeData.security == BarcodeData.Security.OA_NO_DNSSEC)
                         etAddress.setError(getString(R.string.send_address_no_dnssec));
-                    else
+                    else if (barcodeData.security == BarcodeData.Security.OA_DNSSEC)
                         etAddress.setError(getString(R.string.send_address_openalias));
                 }
             } else {
                 etAddress.getEditText().getText().clear();
                 etAddress.setError(null);
             }
-            String scannedPaymentId = data.paymentId;
+            String scannedPaymentId = barcodeData.paymentId;
             if (scannedPaymentId != null) {
                 etPaymentId.getEditText().setText(scannedPaymentId);
                 checkPaymentId();
@@ -320,7 +368,15 @@ public class SendAddressWizardFragment extends SendWizardFragment {
                 etPaymentId.getEditText().getText().clear();
                 etPaymentId.setError(null);
             }
-        }
+            String scannedNotes = barcodeData.description;
+            if (scannedNotes != null) {
+                etNotes.getEditText().setText(scannedNotes);
+            } else {
+                etNotes.getEditText().getText().clear();
+                etNotes.setError(null);
+            }
+        } else
+            Timber.d("barcodeData=null");
     }
 
     @Override
@@ -330,8 +386,8 @@ public class SendAddressWizardFragment extends SendWizardFragment {
         Helper.hideKeyboard(getActivity());
         etDummy.requestFocus();
     }
-	
-	String dnsFromOpenAlias(String openalias) {
+
+    String dnsFromOpenAlias(String openalias) {
         Timber.d("checking openalias candidate %s", openalias);
         if (Patterns.DOMAIN_NAME.matcher(openalias).matches()) return openalias;
         if (Patterns.EMAIL_ADDRESS.matcher(openalias).matches()) {

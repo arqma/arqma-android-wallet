@@ -30,18 +30,18 @@ public class RestoreHeightTest {
 
     @Test
     public void pre2014() {
-        assertTrue(getHeight("2013-12-01") == 1);
-        assertTrue(getHeight("1958-12-01") == 1);
+        assertTrue(getHeight("2013-12-01") == 0);
+        assertTrue(getHeight("1958-12-01") == 0);
     }
 
     @Test
     public void zero() {
-        assertTrue(getHeight("2014-04-27") == 1);
+        assertTrue(getHeight("2014-04-27") == 0);
     }
 
     @Test
     public void notZero() {
-        assertTrue(getHeight("2018-06-05") > 1);
+        assertTrue(getHeight("2014-05-07") > 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -65,15 +65,60 @@ public class RestoreHeightTest {
     }
 
     @Test
+    public void test201709() {
+        // getHeight() returns blockheight of < two days ago
+        assertTrue(isInRange(getHeight("2017-09-01"), 1383957, 1387716));
+        assertTrue(isInRange(getHeight("2017-09-05"), 1386967, 1390583));
+        assertTrue(isInRange(getHeight("2017-09-21"), 1398492, 1402068));
+    }
+
+    @Test
+    public void test20160324() { // blocktime changed from 1 minute to 2 minutes on this day
+        assertTrue(isInRange(getHeight("2016-03-23"), 998955, 1006105));
+        assertTrue(isInRange(getHeight("2016-03-24"), 1000414, 1007486));
+        assertTrue(isInRange(getHeight("2016-03-25"), 1001800, 1008900));
+        assertTrue(isInRange(getHeight("2016-03-26"), 1003243, 1009985));
+        assertTrue(isInRange(getHeight("2016-03-27"), 1004694, 1010746));
+    }
+
+    @Test
+    public void test2014() {
+        assertTrue(isInRange(getHeight("2014-04-26"), 0, 8501));
+        assertTrue(isInRange(getHeight("2014-05-09"), 20289, 28311));
+        assertTrue(isInRange(getHeight("2014-05-17"), 32608, 40075));
+        assertTrue(isInRange(getHeight("2014-05-30"), 52139, 59548));
+    }
+
+    @Test
+    public void test2015() {
+        assertTrue(isInRange(getHeight("2015-01-26"), 397914, 405055));
+        assertTrue(isInRange(getHeight("2015-08-13"), 682595, 689748));
+    }
+
+    @Test
+    public void test2016() {
+        assertTrue(isInRange(getHeight("2016-01-26"), 918313, 925424));
+        assertTrue(isInRange(getHeight("2016-08-13"), 1107244, 1110793));
+    }
+
+    @Test
+    public void test2017() {
+        assertTrue(isInRange(getHeight("2017-01-26"), 1226806, 1230402));
+        assertTrue(isInRange(getHeight("2017-08-13"), 1370264, 1373854));
+        assertTrue(isInRange(getHeight("2017-08-31"), 1383254, 1386967));
+        assertTrue(isInRange(getHeight("2017-06-09"), 1323288, 1326884));
+    }
+
+    @Test
     public void post201802() {
-        assertTrue(isInRange(getHeight("2018-02-19"), 1, 21165));
+        assertTrue(isInRange(getHeight("2018-02-19"), 1507579, 1511127));
     }
 
     @Test
     public void postFuture() {
-        long b_20180605 = 21165;
-        long b_20180905 = b_20180605 + 720 * (30 + 31 + 31);
-        assertTrue(isInRange(getHeight("2018-09-05"), b_20180905 - 720 * 5, b_20180905));
+        long b_20180701 = 1606715L;
+        long b_20190108 = b_20180701 + 720 * (31 + 31 + 30 + 31 + 30 + 31 + 7);
+        assertTrue(isInRange(getHeight("2019-01-08"), b_20190108 - 720 * 5, b_20190108));
     }
 
 

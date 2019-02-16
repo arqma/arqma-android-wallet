@@ -54,7 +54,7 @@ public class NodeList {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         for (String node : this.nodes) {
             sb.append(node).append(";");
         }

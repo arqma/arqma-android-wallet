@@ -21,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/logo_margin_top"
-            android:src="@drawable/logo_horizontal_arqma"
+            android:layout_marginTop="-8dp"
+            android:src="@drawable/ic_logo_horizontal_arqma"
             android:visibility="visible" />
 
         <LinearLayout
@@ -39,7 +39,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:visibility="invisible"
-                tools:text="Arqma Wallet" />
+                tools:text="arqmaDroid" />
 
             <TextView
                 android:id="@+id/toolbarSubtitle"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:visibility="invisible"
-                tools:text="Arqma Wallet" />
+                tools:text="arqmaDroid" />
         </LinearLayout>
     </FrameLayout>
 </merge>

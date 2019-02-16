@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 m2049r et al.
+ * Copyright (c) 2017-2018 m2049r et al.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ package com.m2049r.xmrwallet.service.exchange.coinmarketcap;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeApi;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeCallback;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeException;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeRate;
+import com.m2049r.xmrwallet.util.Helper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,14 +38,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class ExchangeApiImpl implements ExchangeApi {
-
-    private static final String ENDPOINT_BASE_PART = "https://api.coinmarketcap.com/v2/ticker/";
-    private static final String RESPONSE_DATA_KEY = "data";
-    private static final String REQUEST_CONVERT_PARAM = "convert";
-    private static final String REQUEST_METADATA_PARAM = "metadata";
-    private static final String REQUEST_METADATA_ERROR_PARAM = "error";
-
-    private static final int COINMARKET_ARQ_ID = 0;
+    static final String CRYPTO_ID = "328";
 
     @NonNull
     private final OkHttpClient okHttpClient;
@@ -61,7 +54,7 @@ public class ExchangeApiImpl implements ExchangeApi {
     }
 
     public ExchangeApiImpl(@NonNull final OkHttpClient okHttpClient) {
-        this(okHttpClient, HttpUrl.parse(ENDPOINT_BASE_PART + COINMARKET_ARQ_ID));
+        this(okHttpClient, HttpUrl.parse("https://api.coinmarketcap.com/v2/ticker/"));
     }
 
     @Override
@@ -76,12 +69,12 @@ public class ExchangeApiImpl implements ExchangeApi {
         boolean inverse = false;
         String fiat = null;
 
-        if (baseCurrency.equals(Wallet.ARQ_SYMBOL)) {
+        if (baseCurrency.equals(Helper.CRYPTO)) {
             fiat = quoteCurrency;
             inverse = false;
         }
 
-        if (quoteCurrency.equals(Wallet.ARQ_SYMBOL)) {
+        if (quoteCurrency.equals(Helper.CRYPTO)) {
             fiat = baseCurrency;
             inverse = true;
         }
@@ -94,7 +87,8 @@ public class ExchangeApiImpl implements ExchangeApi {
         final boolean swapAssets = inverse;
 
         final HttpUrl url = baseUrl.newBuilder()
-                .addQueryParameter(REQUEST_CONVERT_PARAM, fiat)
+                .addEncodedPathSegments(CRYPTO_ID + "/")
+                .addQueryParameter("convert", fiat)
                 .build();
 
         final Request httpRequest = createHttpRequest(url);
@@ -107,27 +101,36 @@ public class ExchangeApiImpl implements ExchangeApi {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    callback.onError(new ExchangeException(response.code(), response.message()));
-                    return;
-                }
-
-                try {
-                    JSONObject json = new JSONObject(response.body().string());
-                    final JSONObject metadata = json.getJSONObject(REQUEST_METADATA_PARAM);
-                    if (!metadata.isNull(REQUEST_METADATA_ERROR_PARAM)) {
-                        callback.onError(new ExchangeException(response.code(),
-                                metadata.getString(REQUEST_METADATA_ERROR_PARAM)));
-                    } else {
-                        callback.onSuccess(new ExchangeRateImpl(json.getJSONObject(RESPONSE_DATA_KEY), swapAssets));
+                if (response.isSuccessful()) {
+                    try {
+                        final JSONObject json = new JSONObject(response.body().string());
+                        final JSONObject metadata = json.getJSONObject("metadata");
+                        if (!metadata.isNull("error")) {
+                            final String errorMsg = metadata.getString("error");
+                            callback.onError(new ExchangeException(response.code(), (String) errorMsg));
+                        } else {
+                            final JSONObject jsonResult = json.getJSONObject("data");
+                            reportSuccess(jsonResult, swapAssets, callback);
+                        }
+                    } catch (JSONException ex) {
+                        callback.onError(new ExchangeException(ex.getLocalizedMessage()));
                     }
-                } catch (JSONException ex) {
-                    callback.onError(new ExchangeException(ex.getLocalizedMessage()));
-                } catch (ExchangeException ex) {
-                    callback.onError(ex);
+                } else {
+                    callback.onError(new ExchangeException(response.code(), response.message()));
                 }
             }
         });
+    }
+
+    void reportSuccess(JSONObject jsonObject, boolean swapAssets, ExchangeCallback callback) {
+        try {
+            final ExchangeRate exchangeRate = new ExchangeRateImpl(jsonObject, swapAssets);
+            callback.onSuccess(exchangeRate);
+        } catch (JSONException ex) {
+            callback.onError(new ExchangeException(ex.getLocalizedMessage()));
+        } catch (ExchangeException ex) {
+            callback.onError(ex);
+        }
     }
 
     private Request createHttpRequest(final HttpUrl url) {

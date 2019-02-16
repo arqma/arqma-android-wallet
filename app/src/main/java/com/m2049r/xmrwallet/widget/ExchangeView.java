@@ -182,7 +182,7 @@ public class ExchangeView extends LinearLayout
         sCurrencyA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if (position != 0) { // if not ARQ, select ARQ on other
+                if (position != 0) { // if not XMR, select XMR on other
                     sCurrencyB.setSelection(0, true);
                 }
                 doExchange();
@@ -197,11 +197,15 @@ public class ExchangeView extends LinearLayout
         sCurrencyB.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(final AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if (position != 0) { // if not ARQ, select ARQ on other
+                if (position != 0) { // if not XMR, select XMR on other
                     sCurrencyA.setSelection(0, true);
                 }
-                parentView.post(() -> ((TextView) parentView.getChildAt(0))
-                        .setTextColor(getResources().getColor(R.color.moneroGray)));
+                parentView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((TextView) parentView.getChildAt(0)).setTextColor(getResources().getColor(R.color.moneroGray));
+                    }
+                });
                 doExchange();
             }
 
@@ -211,18 +215,24 @@ public class ExchangeView extends LinearLayout
             }
         });
 
-        etAmount.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                doExchange();
+        etAmount.getEditText().setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    doExchange();
+                }
             }
         });
 
-        etAmount.getEditText().setOnEditorActionListener((v, actionId, event) -> {
-            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                doExchange();
-                return true;
+        etAmount.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
+                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    doExchange();
+                    return true;
+                }
+                return false;
             }
-            return false;
         });
 
 
@@ -230,7 +240,7 @@ public class ExchangeView extends LinearLayout
             @Override
             public void afterTextChanged(Editable editable) {
                 etAmount.setError(null);
-                //doExchange();
+                clearAmounts();
             }
 
             @Override
@@ -316,13 +326,23 @@ public class ExchangeView extends LinearLayout
                     @Override
                     public void onSuccess(final ExchangeRate exchangeRate) {
                         if (isAttachedToWindow())
-                            new Handler(Looper.getMainLooper()).post(() -> exchange(exchangeRate));
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    exchange(exchangeRate);
+                                }
+                            });
                     }
 
                     @Override
                     public void onError(final Exception e) {
                         Timber.e(e.getLocalizedMessage());
-                        new Handler(Looper.getMainLooper()).post(() -> exchangeFailed());
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                exchangeFailed();
+                            }
+                        });
                     }
                 });
     }
@@ -346,7 +366,7 @@ public class ExchangeView extends LinearLayout
                 setXmr("");
             }
             tvAmountB.setText(xmrAmount);
-        } else { // no ARQ currency - cannot happen!
+        } else { // no XMR currency - cannot happen!
             Timber.e("No ARQ currency!");
             setXmr(null);
             notXmrAmount = null;
@@ -372,7 +392,7 @@ public class ExchangeView extends LinearLayout
                     cleanAmount = String.format(Locale.US, "%.2f", amountA);
                     setXmr(null);
                     notXmrAmount = cleanAmount;
-                } else { // no ARQ currency - cannot happen!
+                } else { // no XMR currency - cannot happen!
                     Timber.e("No ARQ currency!");
                     setXmr(null);
                     notXmrAmount = null;

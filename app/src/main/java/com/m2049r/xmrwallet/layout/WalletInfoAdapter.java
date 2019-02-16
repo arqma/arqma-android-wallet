@@ -110,23 +110,35 @@ public class WalletInfoAdapter extends RecyclerView.Adapter<WalletInfoAdapter.Vi
             tvName = (TextView) itemView.findViewById(R.id.tvName);
             tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
             ibOptions = (ImageButton) itemView.findViewById(R.id.ibOptions);
-            ibOptions.setOnClickListener(view -> {
-                if (popupOpen) return;
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(context, ibOptions);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.list_context_menu);
-                popupOpen = true;
-                //adding click listener
-                popup.setOnMenuItemClickListener(item -> {
-                    if (listener != null) {
-                        return listener.onContextInteraction(item, infoItem);
-                    }
-                    return false;
-                });
-                //displaying the popup
-                popup.show();
-                popup.setOnDismissListener(menu -> popupOpen = false);
+            ibOptions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (popupOpen) return;
+                    //creating a popup menu
+                    PopupMenu popup = new PopupMenu(context, ibOptions);
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.list_context_menu);
+                    popupOpen = true;
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (listener != null) {
+                                return listener.onContextInteraction(item, infoItem);
+                            }
+                            return false;
+                        }
+                    });
+                    //displaying the popup
+                    popup.show();
+                    popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                        @Override
+                        public void onDismiss(PopupMenu menu) {
+                            popupOpen = false;
+                        }
+                    });
+
+                }
             });
             itemView.setOnClickListener(this);
         }

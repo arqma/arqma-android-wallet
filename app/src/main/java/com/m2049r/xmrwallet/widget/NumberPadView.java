@@ -60,11 +60,13 @@ public class NumberPadView extends LinearLayout
         this(context, null);
     }
 
-    public NumberPadView(final Context context, @Nullable final AttributeSet attrs) {
+    public NumberPadView(final Context context,
+                         @Nullable final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public NumberPadView(final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
+    public NumberPadView(final Context context, @Nullable final AttributeSet attrs,
+                         final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         final View view = View.inflate(context, R.layout.view_number_pad, this);
         setOrientation(VERTICAL);

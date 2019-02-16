@@ -98,10 +98,13 @@ public class SendConfirmWizardFragment extends SendWizardFragment implements Sen
 
         bSend = view.findViewById(R.id.bSend);
         bSend.setEnabled(false);
-        bSend.setOnClickListener(v -> {
-            Timber.d("bSend.setOnClickListener");
-            bSend.setEnabled(false);
-            preSend();
+        bSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Timber.d("bSend.setOnClickListener");
+                bSend.setEnabled(false);
+                preSend();
+            }
         });
         return view;
     }
@@ -140,17 +143,22 @@ public class SendConfirmWizardFragment extends SendWizardFragment implements Sen
     }
 
     @Override
-    public void sendFailed() {
+    public void sendFailed(String errorText) {
         pbProgressSend.setVisibility(View.INVISIBLE);
+        showAlert(getString(R.string.send_create_tx_error_title), errorText);
     }
 
     @Override
     public void createTransactionFailed(String errorText) {
         hideProgress();
+        showAlert(getString(R.string.send_create_tx_error_title), errorText);
+    }
+
+    private void showAlert(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true).
-                setTitle(getString(R.string.send_create_tx_error_title)).
-                setMessage(errorText).
+                setTitle(title).
+                setMessage(message).
                 create().
                 show();
     }
@@ -233,63 +241,79 @@ public class SendConfirmWizardFragment extends SendWizardFragment implements Sen
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
             }
         });
 
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton(getString(R.string.label_ok), (dialog, id) -> {
-                    String pass = etPassword.getEditText().getText().toString();
-                    if (getActivityCallback().verifyWalletPassword(pass)) {
-                        dialog.dismiss();
-                        Helper.hideKeyboardAlways(activity);
-                        send();
-                    } else {
-                        etPassword.setError(getString(R.string.bad_password));
+                .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String pass = etPassword.getEditText().getText().toString();
+                        if (getActivityCallback().verifyWalletPassword(pass)) {
+                            dialog.dismiss();
+                            Helper.hideKeyboardAlways(activity);
+                            send();
+                        } else {
+                            etPassword.setError(getString(R.string.bad_password));
+                        }
                     }
                 })
-                .setNegativeButton(getString(R.string.label_cancel), (dialog, id) -> {
-                    Helper.hideKeyboardAlways(activity);
-                    dialog.cancel();
-                    bSend.setEnabled(true); // allow to try again
-                });
+                .setNegativeButton(getString(R.string.label_cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Helper.hideKeyboardAlways(activity);
+                                dialog.cancel();
+                                bSend.setEnabled(true); // allow to try again
+                            }
+                        });
 
         final android.app.AlertDialog passwordDialog = alertDialogBuilder.create();
-        passwordDialog.setOnShowListener(dialog -> {
-            Button button = ((android.app.AlertDialog) dialog).getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(view -> {
-                String pass = etPassword.getEditText().getText().toString();
-                if (getActivityCallback().verifyWalletPassword(pass)) {
-                    Helper.hideKeyboardAlways(activity);
-                    passwordDialog.dismiss();
-                    send();
-                } else {
-                    etPassword.setError(getString(R.string.bad_password));
-                }
-            });
+        passwordDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button button = ((android.app.AlertDialog) dialog).getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String pass = etPassword.getEditText().getText().toString();
+                        if (getActivityCallback().verifyWalletPassword(pass)) {
+                            Helper.hideKeyboardAlways(activity);
+                            passwordDialog.dismiss();
+                            send();
+                        } else {
+                            etPassword.setError(getString(R.string.bad_password));
+                        }
+                    }
+                });
+            }
         });
 
         Helper.showKeyboard(passwordDialog);
 
         // accept keyboard "ok"
-        etPassword.getEditText().setOnEditorActionListener((v, actionId, event) -> {
-            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                String pass = etPassword.getEditText().getText().toString();
-                if (getActivityCallback().verifyWalletPassword(pass)) {
-                    Helper.hideKeyboardAlways(activity);
-                    passwordDialog.dismiss();
-                    send();
-                } else {
-                    etPassword.setError(getString(R.string.bad_password));
+        etPassword.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
+                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    String pass = etPassword.getEditText().getText().toString();
+                    if (getActivityCallback().verifyWalletPassword(pass)) {
+                        Helper.hideKeyboardAlways(activity);
+                        passwordDialog.dismiss();
+                        send();
+                    } else {
+                        etPassword.setError(getString(R.string.bad_password));
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
-            return false;
         });
         passwordDialog.show();
     }

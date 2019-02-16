@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:selectAllOnFocus="true"
                     android:textIsSelectable="true"
-                    tools:text="Fee 0.0003688271" />
+                    tools:text="Fee 0.0003688" />
             </LinearLayout>
 
             <TextView
@@ -55,7 +55,7 @@
                 android:gravity="center"
                 android:selectAllOnFocus="true"
                 android:textIsSelectable="true"
-                tools:text="2017-10-09 12:44:13 +0200" />
+                tools:text="2018-10-09 12:44:13 +0200" />
         </LinearLayout>
 
         <TableLayout

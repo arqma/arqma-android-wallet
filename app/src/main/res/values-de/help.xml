@@ -2,7 +2,7 @@
 <resources>
     <string name="help_create_new"><![CDATA[
         <h1>Wallet erstellen - Neu</h1>
-        <p>Falls du eine neue ArQmA Adresse benötigst!</p>
+        <p>Falls du eine neue Arqma Adresse benötigst!</p>
         <p>Gib einen eindeutigen Wallet Namen und Passwort ein.
         Das Passwort schützt deine Wallet Daten auf dem Gerät. Benutze ein starkes Passwort -
         eine Passwortphrase ist sogar noch besser.</p>
@@ -23,13 +23,13 @@
 
     <string name="help_create_seed"><![CDATA[
         <h1>Wallet erstellen - Seed</h1>
-        <p>Falls du schon eine ArQmA Adresse besitzt und wieder Zugriff auf die Transaktionen auf der Blockchain haben willst!</p>
+        <p>Falls du schon eine Arqma Adresse besitzt und wieder Zugriff auf die Transaktionen auf der Blockchain haben willst!</p>
         <p>Gib einen eindeutigen Walletnamen und Passwort ein. Das Passwort schützt deine Walletdaten auf dem Gerät.
         Benutze ein starkes Passwort - noch besser ist eine Passwortphrase.</p>
         <p>Trage deinen Seed in das Feld \"Mnemonischer Seed\" ein.<p>
-        <p>Falls du die Blocknummer der ersten Transaktion dieser Adresse kennst gib sie in das Feld
-	\"Restore Height\" ein - dieses Feld leer zu lassen bedeutet die <em>gesamte</em> Blockchain
-        nach Transaktionen zu und von dieser Adresse zu durchsuchen. Das dauert <em>sehr lang</em>.</p>
+        <p>Gib die Blocknummer der ersten Transaktion dieser Adresse in das Feld \"Restore Height\" ein.
+        Du kannst auch ein Datum im Format JJJJ-MM eingeben. Falls du nicht sicher bist, gib ein
+        ungefähres Datum oder Blockhöhe <em>bevor</em> du diese Adresse zum ersten mal benutzt hast ein.<p>
     ]]></string>
 
     <string name="help_create_keys"><![CDATA[
@@ -37,10 +37,10 @@
         <p>Falls du dein Wallet mit Schlüsseln wiederherstellen willst!</p>
         <p>Gib einen eindeutigen Walletnamen und Passwort ein. Das Passwort schützt deine Walletdaten auf dem Gerät.
         Benutze ein starkes Passwort - noch besser ist eine Passwortphrase.<p>
-        <p>Gib deine ArQmA Adresse im Feld \"Öffentliche Adresse\" ein und fülle die Felder \"View Key\" und \"Spend Key\" aus.</p>
-        <p>Falls du die Blocknummer der ersten Transaktion dieser Adresse kennst gib sie in das Feld
-	\"Restore Height\" ein - dieses Feld leer zu lassen bedeutet die <em>gesamte</em> Blockchain
-        nach Transaktionen zu und von dieser Adresse zu durchsuchen. Das dauert <em>sehr lang</em>.</p>
+        <p>Gib deine Arqma Adresse im Feld \"Öffentliche Adresse\" ein und fülle die Felder \"View Key\" und \"Spend Key\" aus.</p>
+        <p>Gib die Blocknummer der ersten Transaktion dieser Adresse in das Feld \"Restore Height\" ein.
+        Du kannst auch ein Datum im Format JJJJ-MM eingeben. Falls du nicht sicher bist, gib ein
+        ungefähres Datum oder Blockhöhe <em>bevor</em> du diese Adresse zum ersten mal benutzt hast ein.<p>
     ]]></string>
 
     <string name="help_create_view"><![CDATA[
@@ -48,17 +48,17 @@
         <p>Falls du nur eingehende Transaktionen auf diese Wallet überwachen willst!</p>
         <p>Gib einen eindeutigen Walletnamen und Passwort ein. Das Passwort schützt deine Walletdaten auf dem Gerät.
         Benutze ein starkes Passwort - noch besser ist eine Passwortphrase.<p>
-        <p>Gib deine ArQmA Adresse im Feld \"Öffentliche Adresse\" ein und fülle das Feld \"View Key\" aus.</p>
-        <p>Falls du die Blocknummer der ersten Transaktion dieser Adresse kennst gib sie in das Feld
-	\"Restore Height\" ein - dieses Feld leer zu lassen bedeutet die <em>gesamte</em> Blockchain
-        nach Transaktionen zu und von dieser Adresse zu durchsuchen. Das dauert <em>sehr lang</em>.</p>
+        <p>Gib deine Arqma Adresse im Feld \"Öffentliche Adresse\" ein und fülle das Feld \"View Key\" aus.</p>
+        <p>Gib die Blocknummer der ersten Transaktion dieser Adresse in das Feld \"Restore Height\" ein.
+        Du kannst auch ein Datum im Format JJJJ-MM eingeben. Falls du nicht sicher bist, gib ein
+        ungefähres Datum oder Blockhöhe <em>bevor</em> du diese Adresse zum ersten mal benutzt hast ein.<p>
     ]]></string>
 
     <string name="help_details"><![CDATA[
         <h1>Wallet Details</h1>
         <h2>Öffentliche Adresse</h2>
         Die öffentliche Adresse ist wie deine Kontonummer die du anderen Personen mitteilen kannst, ohne Angst zu haben dein Geld zu verlieren.
-	Andere Personen werden dir ArQmA an diese Adresse schicken.
+	Andere Personen werden dir Arqma an diese Adresse schicken.
         <h2>Mnemonischer Seed</h2>
         Dies sind die einzigen Daten die du benötigst um dein Wallet zu einem späteren
 	Zeitpunkt wiederherzustellen und vollen Zugriff auf deine Gelder zu erhalten.
@@ -79,7 +79,7 @@
 	Nachdem du eine neue Passwortphrase eingegeben hast (auch bei der gleichen wie zuvor) wird die App
 	ein neues CrAzYpass für dich erstellen und deine Walletdateien sichern. Schreibe es auf!
         <h3>CrAzYpass-Wallets</h3>
-        Falls du ArQmA Wallet jemals neu installieren musst (zum Beispiel nachdem du dein Gerät auf Werkseinstellungen zurückgesetzt hast
+        Falls du arqmaDroid jemals neu installieren musst (zum Beispiel nachdem du dein Gerät auf Werkseinstellungen zurückgesetzt hast
  	oder du ein neues Gerät besitzt) oder die Walletdateien auf einem anderen Gerät oder PC nutzen willst, dann
  	musst du dieses Wiederherstellungspasswort nutzen um Zugriff auf dein Wallet zu erhalten.<br/>
         Durch die Auswahl \"Passwortphrase ändern\" aus dem Menü kannst du eine andere Passwortphrase wählen. Beachte
@@ -88,19 +88,19 @@
         Dein View Key kann benutzt werden um eingehende Transaktionen zu diesem Wallet zu überwachen ohne anderen
         die Möglichkeit zu geben Gelder aus diesem Wallet auszugeben.
         <h2>Spend Key</h2>
-        Der Spend Key ermöglicht jedem ArQmA aus diesem Wallet auszugeben, also bewahre diesen Spend Key genauso sicher
+        Der Spend Key ermöglicht jedem Arqma aus diesem Wallet auszugeben, also bewahre diesen Spend Key genauso sicher
 	wie den Mnemomischen Seed auf.
     ]]></string>
 
     <string name="help_list"><![CDATA[
         <h1>Walletliste</h1>
         <h2>Node</h2>
-        <p>ArQmA Wallet benutzt eine Remote Node um mit dem ArQmA Netzwerk zu kommunizieren ohne
+        <p>arqmaDroid benutzt eine Remote Node um mit dem Arqma Netzwerk zu kommunizieren ohne
         die gesamte Blockchain herunterladen zu müssen. Eine Liste bekannter Remote Nodes
-	oder eine Anleitung zum Betreiben einer eigenen Remote Node findest du unter https://github.com/arqma/<p>
-        <p>ArQmA Wallet besitzt einige voreingestellte Remote Nodes. Es erinnert sich an die letzten 5 benutzten Nodes.</p>
+	oder eine Anleitung zum Betreiben einer eigenen Remote Node findest du unter https://arqma.com/<p>
+        <p>arqmaDroid besitzt einige voreingestellte Remote Nodes. Es erinnert sich an die letzten 5 benutzten Nodes.</p>
         <h2>Wallets</h2>
-        <p>Hier siehst du deine Wallets. Sie befinden sich im <tt>ArQmA-wallet</tt> Ordner
+        <p>Hier siehst du deine Wallets. Sie befinden sich im <tt>monerujo</tt> Ordner
         im internen Speicher deines Geräts. Du kannst einen Datei-Explorer nutzen um sie zu finden.
         Du solltest regelmäßig Backups von diesem Ordner machen und diese sicher aufbewahren für den Fall,
         dass dein Gerät EXPLODIERT oder gestohlen wird.</p>
@@ -109,11 +109,11 @@
         <h3>Details</h3>
         <p>Zeige die Walletdetails, Seed &amp; Keys.</p>
         <h3>Empfangen</h3>
-        <p>Generiere einen QR-Code um ArQmA zu empfangen.</p>
+        <p>Generiere einen QR-Code um Arqma zu empfangen.</p>
         <h3>Umbenennen</h3>
         <p>Benenne die Wallet um. Backups werden nicht umbenannt.</p>
         <h3>Backup</h3>
-        <p>Erstelle eine Kopie des Wallets im <tt>backups</tt> Ordner innerhalb des <tt>ArQmA-wallet</tt> Ordners.
+        <p>Erstelle eine Kopie des Wallets im <tt>backups</tt> Ordner innerhalb des <tt>arqmaDroid</tt> Ordners.
         Eine bereits vorhandene Kopie wird überschrieben.</p>
         <h3>Archivieren</h3>
         <p>Erstellt ein Backup und löscht danach das Wallet. Die Kopie verbleibt im <tt>backups</tt>
@@ -121,31 +121,15 @@
 	die App sauber und ordentlich deinstallieren</p>
     ]]></string>
 
-    <string name="help_wallet"><![CDATA[
-        <h1>Das Wallet</h1>
-        <h2>Scannen</h2>
-        Weil ArQmA gerne Dinge geheim hält, wird nach jedem Öffnen einer ArQmA Wallet die Blockchain gescannt
-	um zu überprüfen ob neue ArQmA zu dieser Wallet gesendet wurden. Dies speichert ausschließlich Informationen
-	die zur Wallet auf diesem Gerät gehören. Manchmal kann dies etwas länger dauern, falls die letzte Synchronisierung
-        eine Weile her ist.
-        <h2>Das Saldo</h2>
-        <p><b>Hilfe! Mein Wallet Saldo ist verschwunden oder ist unbestätigt!</b><br/>
-        Keine Panik! Wenn du Gelder von deiner Wallet sendest wird ein Teil deines Saldos kurzzeitig als unbestätigt angezeigt.
-        Dies geschieht aufgrund der zugrunde liegenden Technologie und wie ArQmA auf der Blockchain bewegt werden.
-        Lies mehr darüber auf https://ArQmA.com/
-        <h2>Transaktionsliste</h2>
-        <p>Eine Liste deiner Transaktionen. In View Wallets werden nur die eingehenden Transaktionen angezeigt.</p>
-    ]]></string>
-
     <string name="help_tx_details"><![CDATA[
         <h1>Transaktionsdetails</h1>
         <h2>Ziel</h2>
-        Dies ist die öffentliche Adresse des Wallets, zu dem du ArQmA gesendet hast.
+        Dies ist die öffentliche Adresse des Wallets, zu dem du arqmaDroid gesendet hast.
         <h2>Zahlungs-ID</h2>
         Du kannst eine Zahlungs-ID benutzen um Zahlungen zu identifizieren. Dies ist optional und ist nicht öffentlich einsehbar.
 		Zum Beispiel kann ein Unternehmen damit Zahlungen und Verkäufe miteinander verbinden.
         <h2>TX ID</h2>
-        Dies ist deine Transaktions-ID die du benutzen kannst um verschleierte Transaktionen mit einem ArQmA
+        Dies ist deine Transaktions-ID die du benutzen kannst um verschleierte Transaktionen mit einem Arqma
         Blockchain-Explorer wie <a href="https://blocks.arqma.com/">https://blocks.arqma.com/</a> zu identifizieren.
         <h2>TX Schlüssel (Transaktionsschlüssel)</h2>
         Dies ist dein geheimer Transaktionsschlüssel. Bewahre ihn sicher auf da er Dritten deine Signatur in einem Ring offenbart
@@ -157,17 +141,43 @@
     <string name="help_send"><![CDATA[
         <h1>Senden</h1>
         <h2>Empfängeradresse</h2>
-        <p>Dies ist die öffentliche Adresse des Wallets, an die du ArQmA sendest. Du kannst sie aus der Zwischenablage kopieren,
+        <p>Dies ist die öffentliche Adresse des Wallets, an die du arqmaDroid sendest. Du kannst sie aus der Zwischenablage kopieren,
 	einen QR-Code scannen oder sie manuell eingeben. Vergewissere dich, dass es die richtige Adresse ist um
-        sicherzustellen die ArQmA nicht irrtümlich an eine falsche Adresse zu senden.</p>
+        sicherzustellen die arqmaDroid nicht irrtümlich an eine falsche Adresse zu senden.</p>
         <h2>Zahlungs-ID</h2>
         <p>Du kannst eine Zahlungs-ID benutzen um den Grund einer Transaktion zwischen zwei Parteien zu identifizieren. Dies ist optional
 	und nicht öffentlich einsehbar. Zum Beispiel kann ein Unternehmen damit Zahlungen und Verkäufe miteinander verbinden.<p>
-        <h2>Priorität</h2>
-        <p>Diese Einstellung bestimmt wie zügig deine Transaktion in einem Block auf der Blockchain verarbeitet wird.
-	Eine höhere Priorität bedeutet eine höhere Transaktionsgebühr, eine niedrige Priorität bedeutet eine
-	niedrigere Transaktionsgebühr. Bitte bedenke, dass eine Transaktion mit einer niedrigen Priorität unter Umständen
-	eine Weile benötigt bis sie auf der Blockchain verarbeitet wird. Die Standard-Priorität
-        ist \"Mittel\".</p>
+    ]]></string>
+
+    <string name="help_create_ledger"><![CDATA[
+        <h1>Wallet erstellen - Ledger</h1>
+        <p>Falls du dein Wallet mit einem Ledger Nano S wiederherstellen willst!</p>
+        <p>Dein geheimer Schüssel verlässt nie das Ledger-Gerät, also muss es immer eingesteckt sein,
+        wenn du dieses Wallet benutzt.</p>
+        <p>Gib einen eindeutigen Walletnamen und Passwort ein. Das Passwort schützt deine Walletdaten auf dem Gerät.
+        Benutze ein starkes Passwort - noch besser ist eine Passwortphrase.<p>
+        <p>Gib die Blocknummer der ersten Transaktion dieser Adresse in das Feld \"Restore Height\" ein.
+        Du kannst auch ein Datum im Format JJJJ-MM eingeben. Falls du nicht sicher bist, gib ein
+        ungefähres Datum oder Blockhöhe, <em>bevor</em> du diese Adresse zum ersten Mal benutzt hast, ein.<p>
+    ]]></string>
+
+    <string name="help_wallet"><![CDATA[
+        <h1>Das Wallet</h1>
+        <h2>Street Mode</h2>
+        <p>Street mode can be enabled/disabled in the menu or Arqma\'s icon on Top-Right. In this mode, your
+        balance is not shown on any screen so you can safely use your wallet on the street, a pub or
+        other public place. Previous transactions are also hidden. New transactions will be shown, so
+        you can see that you have sent/received sweet Moneroj!</p>
+        <h2>Scannen</h2>
+        Weil Arqma gerne Dinge geheim hält, wird nach jedem Öffnen einer Monerujo Wallet die Blockchain gescannt
+	um zu überprüfen ob neue arqmaDroid zu dieser Wallet gesendet wurden. Dies speichert ausschließlich Informationen
+	die zur Wallet auf diesem Gerät gehören. Manchmal kann dies etwas länger dauern, falls die letzte Synchronisierung
+        eine Weile her ist.
+        <h2>Das Saldo</h2>
+        <p><b>Hilfe! Mein Wallet Saldo ist verschwunden oder ist unbestätigt!</b><br/>
+        Keine Panik! Wenn du Gelder von deiner Wallet sendest wird ein Teil deines Saldos kurzzeitig als unbestätigt angezeigt.
+        Dies geschieht aufgrund der zugrunde liegenden Technologie und wie Monero auf der Blockchain bewegt werden.
+        <h2>Transaktionsliste</h2>
+        <p>Eine Liste deiner Transaktionen. In View Wallets werden nur die eingehenden Transaktionen angezeigt.</p>
     ]]></string>
 </resources>

@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:textAlignment="textEnd"
-                    tools:text="143.008000 LOKI" />
+                    tools:text="143.008000 ARQ" />
 
                 <TextView
                     android:id="@+id/tvTxFee"
@@ -106,7 +106,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="4dp"
             android:textAlignment="textStart"
-            tools:text="4AdkPJoxn7JCvAby9szgnt93MSEwdnxdhaASxbTBm6x5dCwmsDep2UYN4FhStDn5i11nsJbpU7oj59ahg8gXb1Mg3viqCuk" />
+            tools:text="ar46iCiw5uB7SjnYhL5EJLP1LpqGkZbCcWhWgdbLL1c4DicNuYi3ZeRJPi8FFmEhYnagbxRyaQKyTYBA95JqmPcr1XZytK9o3" />
 
         <LinearLayout
             android:layout_width="match_parent"

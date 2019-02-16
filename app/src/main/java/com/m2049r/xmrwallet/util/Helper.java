@@ -59,7 +59,6 @@ import com.m2049r.xmrwallet.model.NetworkType;
 import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.model.WalletManager;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeApi;
-import com.m2049r.xmrwallet.service.exchange.coinmarketcap.ExchangeApiImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,10 +76,16 @@ import okhttp3.HttpUrl;
 import timber.log.Timber;
 
 public class Helper {
-    static private final String WALLET_DIR = "arqma-wallet" + (BuildConfig.DEBUG ? "-debug" : "");
-    static private final String HOME_DIR = "arqma" + (BuildConfig.DEBUG ? "-debug" : "");
+    static private final String FLAVOR_SUFFIX =
+            (BuildConfig.FLAVOR.equals("prod") ? "" : "." + BuildConfig.FLAVOR)
+                    + (BuildConfig.DEBUG ? "-debug" : "");
 
-    static public int DISPLAY_DIGITS_INFO = 5;
+    static public final String CRYPTO = "ARQ";
+
+    static private final String WALLET_DIR = "arqmaDroid" + FLAVOR_SUFFIX;
+    static private final String HOME_DIR = "arqma" + FLAVOR_SUFFIX;
+
+    static public int DISPLAY_DIGITS_INFO = 9;
 
     static public File getWalletRoot(Context context) {
         return getStorage(context, WALLET_DIR);
@@ -203,16 +208,16 @@ public class Helper {
     }
 
     static public String getFormattedAmount(double amount, boolean isXmr) {
-        // at this point selection is ARQ in case of error
+        // at this point selection is XMR in case of error
         String displayB;
-        if (isXmr) { // ARQ
+        if (isXmr) { // XMR
             long xmr = Wallet.getAmountFromDouble(amount);
             if ((xmr > 0) || (amount == 0)) {
                 displayB = String.format(Locale.US, "%,.5f", amount);
             } else {
                 displayB = null;
             }
-        } else { // not ARQ
+        } else { // not XMR
             displayB = String.format(Locale.US, "%,.2f", amount);
         }
         return displayB;
@@ -248,7 +253,7 @@ public class Helper {
             urlConnection.setConnectTimeout(HTTP_TIMEOUT);
             urlConnection.setReadTimeout(HTTP_TIMEOUT);
             InputStreamReader in = new InputStreamReader(urlConnection.getInputStream());
-            StringBuilder sb = new StringBuilder();
+            StringBuffer sb = new StringBuffer();
             final int BUFFER_SIZE = 512;
             char[] buffer = new char[BUFFER_SIZE];
             int length = in.read(buffer, 0, BUFFER_SIZE);
@@ -327,7 +332,7 @@ public class Helper {
     // TODO make the log levels refer to the  WalletManagerFactory::LogLevel enum ?
     static public void initLogger(Context context, int level) {
         String home = getStorage(context, HOME_DIR).getAbsolutePath();
-        WalletManager.initLogger(home + "/arqma-wallet", "arqma-wallet.log");
+        WalletManager.initLogger(home + "/arqmaDroid", "arqmaDroid.log");
         if (level >= WalletManager.LOGLEVEL_SILENT)
             WalletManager.setLogLevel(level);
     }
@@ -339,33 +344,33 @@ public class Helper {
         String walletPath = new File(getWalletRoot(context), walletName + ".keys").getAbsolutePath();
 
         // try with entered password (which could be a legacy password or a CrAzYpass)
-        if (WalletManager.getInstance().verifyWalletPassword(walletPath, password, true)) {
+        if (WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, password)) {
             return password;
         }
 
         // maybe this is a malformed CrAzYpass?
         String possibleCrazyPass = CrazyPassEncoder.reformat(password);
         if (possibleCrazyPass != null) { // looks like a CrAzYpass
-            if (WalletManager.getInstance().verifyWalletPassword(walletPath, possibleCrazyPass, true)) {
+            if (WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, possibleCrazyPass)) {
                 return possibleCrazyPass;
             }
         }
 
         // generate & try with CrAzYpass
         String crazyPass = KeyStoreHelper.getCrazyPass(context, password);
-        if (WalletManager.getInstance().verifyWalletPassword(walletPath, crazyPass, true)) {
+        if (WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, crazyPass)) {
             return crazyPass;
         }
 
         // or maybe it is a broken CrAzYpass? (of which we have two variants)
         String brokenCrazyPass2 = KeyStoreHelper.getBrokenCrazyPass(context, password, 2);
         if ((brokenCrazyPass2 != null)
-                && WalletManager.getInstance().verifyWalletPassword(walletPath, brokenCrazyPass2, true)) {
+                && WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, brokenCrazyPass2)) {
             return brokenCrazyPass2;
         }
         String brokenCrazyPass1 = KeyStoreHelper.getBrokenCrazyPass(context, password, 1);
         if ((brokenCrazyPass1 != null)
-                && WalletManager.getInstance().verifyWalletPassword(walletPath, brokenCrazyPass1, true)) {
+                && WalletManager.getInstance().verifyWalletPasswordOnly(walletPath, brokenCrazyPass1)) {
             return brokenCrazyPass1;
         }
 
@@ -397,6 +402,7 @@ public class Helper {
         final CancellationSignal cancelSignal = new CancellationSignal();
 
         final AtomicBoolean incorrectSavedPass = new AtomicBoolean(false);
+
         class LoginWalletTask extends AsyncTask<Void, Void, Boolean> {
             private String pass;
             private boolean fingerprintUsed;
@@ -443,7 +449,6 @@ public class Helper {
                         etPassword.setError(context.getString(R.string.bad_password));
                     }
                 }
-
                 loginTask = null;
             }
         }
@@ -458,11 +463,13 @@ public class Helper {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
             }
         });
 
@@ -471,15 +478,17 @@ public class Helper {
                 .setCancelable(false)
                 .setPositiveButton(context.getString(R.string.label_ok), null)
                 .setNegativeButton(context.getString(R.string.label_cancel),
-                        (dialog, id) -> {
-                            Helper.hideKeyboardAlways((Activity) context);
-                            cancelSignal.cancel();
-                            if (loginTask != null) {
-                                loginTask.cancel(true);
-                                loginTask = null;
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Helper.hideKeyboardAlways((Activity) context);
+                                cancelSignal.cancel();
+                                if (loginTask != null) {
+                                    loginTask.cancel(true);
+                                    loginTask = null;
+                                }
+                                dialog.cancel();
+                                openDialog = null;
                             }
-                            dialog.cancel();
-                            openDialog = null;
                         });
         openDialog = alertDialogBuilder.create();
 
@@ -492,6 +501,12 @@ public class Helper {
                 public void onAuthenticationError(int errMsgId, CharSequence errString) {
                     tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icError, null, null, null);
                     tvOpenPrompt.setText(errString);
+                }
+
+                @Override
+                public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
+                    tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icError, null, null, null);
+                    tvOpenPrompt.setText(helpString);
                 }
 
                 @Override
@@ -516,34 +531,43 @@ public class Helper {
             };
         }
 
-        openDialog.setOnShowListener(dialog -> {
-            if (fingerprintAuthAllowed && fingerprintAuthCallback != null) {
-                tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icFingerprint, null, null, null);
-                tvOpenPrompt.setText(context.getText(R.string.prompt_fingerprint_auth));
-                tvOpenPrompt.setVisibility(View.VISIBLE);
-                FingerprintHelper.authenticate(context, cancelSignal, fingerprintAuthCallback);
-            }
-            Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(view -> {
-                String pass = etPassword.getEditText().getText().toString();
-                if (loginTask == null) {
-                    loginTask = new LoginWalletTask(pass, false);
-                    loginTask.execute();
+        openDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                if (fingerprintAuthAllowed && fingerprintAuthCallback != null) {
+                    tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icFingerprint, null, null, null);
+                    tvOpenPrompt.setText(context.getText(R.string.prompt_fingerprint_auth));
+                    tvOpenPrompt.setVisibility(View.VISIBLE);
+                    FingerprintHelper.authenticate(context, cancelSignal, fingerprintAuthCallback);
                 }
-            });
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String pass = etPassword.getEditText().getText().toString();
+                        if (loginTask == null) {
+                            loginTask = new LoginWalletTask(pass, false);
+                            loginTask.execute();
+                        }
+                    }
+                });
+            }
         });
 
         // accept keyboard "ok"
-        etPassword.getEditText().setOnEditorActionListener((v, actionId, event) -> {
-            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                String pass = etPassword.getEditText().getText().toString();
-                if (loginTask == null) {
-                    loginTask = new LoginWalletTask(pass, false);
-                    loginTask.execute();
+        etPassword.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
+                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    String pass = etPassword.getEditText().getText().toString();
+                    if (loginTask == null) {
+                        loginTask = new LoginWalletTask(pass, false);
+                        loginTask.execute();
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
-            return false;
         });
 
         Helper.showKeyboard(openDialog);
@@ -565,7 +589,6 @@ public class Helper {
     }
 
     static public ExchangeApi getExchangeApi() {
-        return new ExchangeApiImpl(OkHttpClientSingleton.getOkHttpClient());
-
+        return new com.m2049r.xmrwallet.service.exchange.coinmarketcap.ExchangeApiImpl(OkHttpClientSingleton.getOkHttpClient());
     }
 }

@@ -16,7 +16,6 @@
 
 package com.m2049r.xmrwallet.service.exchange.coinmarketcap;
 
-import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeApi;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeCallback;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeException;
@@ -74,7 +73,7 @@ public class ExchangeRateTest {
     public void queryExchangeRate_shouldBeGetMethod()
             throws InterruptedException, TimeoutException {
 
-        exchangeApi.queryExchangeRate(Wallet.ARQ_SYMBOL, "EUR", mockExchangeCallback);
+        exchangeApi.queryExchangeRate("XMR", "EUR", mockExchangeCallback);
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertEquals("GET", request.getMethod());
@@ -84,16 +83,16 @@ public class ExchangeRateTest {
     public void queryExchangeRate_shouldHavePairInUrl()
             throws InterruptedException, TimeoutException {
 
-        exchangeApi.queryExchangeRate(Wallet.ARQ_SYMBOL, "EUR", mockExchangeCallback);
+        exchangeApi.queryExchangeRate("XMR", "EUR", mockExchangeCallback);
 
         RecordedRequest request = mockWebServer.takeRequest();
-        assertEquals("/?convert=EUR", request.getPath());
+        assertEquals("/328/?convert=EUR", request.getPath());
     }
 
     @Test
     public void queryExchangeRate_wasSuccessfulShouldRespondWithRate()
             throws InterruptedException, JSONException, TimeoutException {
-        final String base = Wallet.ARQ_SYMBOL;
+        final String base = "XMR";
         final String quote = "EUR";
         final double rate = 1.56;
         MockResponse jsonMockResponse = new MockResponse().setBody(
@@ -121,7 +120,7 @@ public class ExchangeRateTest {
     @Test
     public void queryExchangeRate_wasSuccessfulShouldRespondWithRateUSD()
             throws InterruptedException, JSONException, TimeoutException {
-        final String base = Wallet.ARQ_SYMBOL;
+        final String base = "XMR";
         final String quote = "USD";
         final double rate = 1.56;
         MockResponse jsonMockResponse = new MockResponse().setBody(
@@ -151,7 +150,7 @@ public class ExchangeRateTest {
             throws InterruptedException, JSONException, TimeoutException {
         mockWebServer.enqueue(new MockResponse().setResponseCode(500));
 
-        exchangeApi.queryExchangeRate(Wallet.ARQ_SYMBOL, "USD", new ExchangeCallback() {
+        exchangeApi.queryExchangeRate("XMR", "USD", new ExchangeCallback() {
             @Override
             public void onSuccess(final ExchangeRate exchangeRate) {
                 waiter.fail();
@@ -176,7 +175,7 @@ public class ExchangeRateTest {
                 createMockExchangeRateErrorResponse());
         mockWebServer.enqueue(jsonMockResponse);
 
-        exchangeApi.queryExchangeRate(Wallet.ARQ_SYMBOL, "ABC", new ExchangeCallback() {
+        exchangeApi.queryExchangeRate("XMR", "ABC", new ExchangeCallback() {
             @Override
             public void onSuccess(final ExchangeRate exchangeRate) {
                 waiter.fail();
@@ -199,22 +198,22 @@ public class ExchangeRateTest {
     private String createMockExchangeRateResponse(final String base, final String quote, final double rate) {
         return "{\n" +
                 "    \"data\": {\n" +
-                "        \"id\": 2748, \n" +
-                "        \"name\": \"Arqma\", \n" +
+                "        \"id\": 328, \n" +
+                "        \"name\": \"Monero\", \n" +
                 "        \"symbol\": \"" + base + "\", \n" +
-                "        \"website_slug\": \"loki\", \n" +
-                "        \"rank\": 484, \n" +
-                "        \"circulating_supply\": 18679078.0, \n" +
-                "        \"total_supply\": 25585140.0, \n" +
+                "        \"website_slug\": \"monero\", \n" +
+                "        \"rank\": 12, \n" +
+                "        \"circulating_supply\": 16112286.0, \n" +
+                "        \"total_supply\": 16112286.0, \n" +
                 "        \"max_supply\": null, \n" +
                 "        \"quotes\": {\n" +
                 "            \"USD\": {\n" +
                 "                \"price\": " + rate + ", \n" +
-                "                \"volume_24h\": 57090.0, \n" +
-                "                \"market_cap\": 9182747.0, \n" +
-                "                \"percent_change_1h\": -2.34, \n" +
-                "                \"percent_change_24h\": 2.08, \n" +
-                "                \"percent_change_7d\": -31.08\n" +
+                "                \"volume_24h\": 35763700.0, \n" +
+                "                \"market_cap\": 2559791130.0, \n" +
+                "                \"percent_change_1h\": -0.16, \n" +
+                "                \"percent_change_24h\": -3.46, \n" +
+                "                \"percent_change_7d\": 1.49\n" +
                 "            }, \n" +
                 (!"USD".equals(quote) ? (
                         "            \"" + quote + "\": {\n" +
@@ -226,10 +225,10 @@ public class ExchangeRateTest {
                                 "                \"percent_change_7d\": 1.49\n" +
                                 "            }\n") : "") +
                 "        }, \n" +
-                "        \"last_updated\": 1528795188\n" +
+                "        \"last_updated\": 1528492746\n" +
                 "    }, \n" +
                 "    \"metadata\": {\n" +
-                "        \"timestamp\": 1528794926, \n" +
+                "        \"timestamp\": 1528492705, \n" +
                 "        \"error\": null\n" +
                 "    }\n" +
                 "}";

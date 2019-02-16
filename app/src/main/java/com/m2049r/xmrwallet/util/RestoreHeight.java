@@ -19,10 +19,12 @@ package com.m2049r.xmrwallet.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import timber.log.Timber;
 
 public class RestoreHeight {
     static private RestoreHeight Singleton = null;
@@ -41,69 +43,43 @@ public class RestoreHeight {
     private Map<String, Long> blockheight = new HashMap<>();
 
     RestoreHeight() {
-        blockheight.put("2018-06-01", 21165L);
+      blockheight.put("2018-07", 6000L);
+      blockheight.put("2018-08", 17000L);
+      blockheight.put("2018-09", 28000L);
+      blockheight.put("2018-10", 39000L);
+      blockheight.put("2018-11", 49000L);
+      blockheight.put("2018-12", 60000L);
+      blockheight.put("2019-02", 109000L);
     }
 
-    public long getHeight(String date) {
-        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
-        parser.setTimeZone(TimeZone.getTimeZone("UTC"));
-        parser.setLenient(false);
-        try {
-            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-            cal.set(Calendar.DST_OFFSET, 0);
-            cal.setTime(parser.parse(date));
-            cal.add(Calendar.DAY_OF_MONTH, -4); // give it some leeway
-            if (cal.get(Calendar.YEAR) < 2018) {
-                return 1;
-            }
-            if ((cal.get(Calendar.YEAR) == 2018) && (cal.get(Calendar.MONTH) <= 4)) {
-                // before June 2018
-                return 1;
-            }
+    long latestHeight = 110000L;
 
-            Calendar query = (Calendar) cal.clone();
+    public long getHeight(final Date date) {
+        Timber.d("Restore Height date %s", date);
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-            cal.set(Calendar.DAY_OF_MONTH, 1);
-            long prevTime = cal.getTimeInMillis();
-            String prevDate = formatter.format(prevTime);
-            // lookup blockheight at first of the month
-            Long prevBc = blockheight.get(prevDate);
-            if (prevBc == null) {
-                // if too recent, go back in time and find latest one we have
-                while (prevBc == null) {
-                    cal.add(Calendar.MONTH, -1);
-                    if (cal.get(Calendar.YEAR) < 2018) {
-                        throw new IllegalStateException("endless loop looking for blockheight");
-                    }
-                    prevTime = cal.getTimeInMillis();
-                    prevDate = formatter.format(prevTime);
-                    prevBc = blockheight.get(prevDate);
-                }
-            }
-            long height = prevBc;
-            // now we have a blockheight & a date ON or BEFORE the restore date requested
-            if (date.equals(prevDate)) return height;
-            // see if we have a blockheight after this date
-            cal.add(Calendar.MONTH, 1);
-            long nextTime = cal.getTimeInMillis();
-            String nextDate = formatter.format(nextTime);
-            Long nextBc = blockheight.get(nextDate);
-            if (nextBc != null) { // we have a range - interpolate the blockheight we are looking for
-                long diff = nextBc - prevBc;
-                long diffDays = TimeUnit.DAYS.convert(nextTime - prevTime, TimeUnit.MILLISECONDS);
-                long days = TimeUnit.DAYS.convert(query.getTimeInMillis() - prevTime,
-                        TimeUnit.MILLISECONDS);
-                height = Math.round(prevBc + diff * (1.0 * days / diffDays));
-            } else {
-                long days = TimeUnit.DAYS.convert(query.getTimeInMillis() - prevTime,
-                        TimeUnit.MILLISECONDS);
-                height = Math.round(prevBc + 1.0 * days * (24 * 60 / 2));
-            }
-            return height;
-        } catch (ParseException ex) {
-            throw new IllegalArgumentException(ex);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        Timber.d("Restore Height cal %s", cal);
+
+        if (cal.get(Calendar.YEAR) < 2018)
+            return 0;
+        if ((cal.get(Calendar.YEAR) == 2018) && ((cal.get(Calendar.MONTH) + 1) <= 9))
+            // before September 2014
+            return 0;
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
+
+        String queryDate = formatter.format(date);
+        Timber.d("String query date %s", queryDate);
+
+        long height = 0;
+        if (blockheight.get(queryDate) == null) {
+            height = latestHeight;
+        } else {
+            height = blockheight.get(queryDate);
         }
+
+        return height;
     }
+
 }

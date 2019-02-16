@@ -17,7 +17,7 @@
 - View wallet details (address, keys, etc.)
 - View transactions including details and copy to clipboard
 - Spend Arqma (handle with care on mainnet!)
-- Manually import existing wallet (by copying them to the Loki Wallet folder)
+- Manually import existing wallet (by copying them to the arqmaDroid folder)
 - Background updating (make sure you exit the wallet to stop updating to save some battery)
 - Access to daemon with username/password and nonstandard port
 - Only 5 decimal places shown in transactions (full amount in details - click on transaction)
@@ -37,7 +37,7 @@ functionality these models don't have. If this does not help, please report the 
 
 ## I cannot select and copy the mnemonic seed
 Copying anything to the clipboard on Android exposes it to any other App running. So this
-is a security measure to keep your seed safe(r). 
+is a security measure to keep your seed safe(r).
 
 ## My storage is getting full
 Newly generated wallets are stored in `.new` in the main wallet folder.
@@ -46,7 +46,7 @@ They are never erased (for now). You can delete this whole folder from time to t
 Also, the backup folder named "`backups`" (formerly `.backups`) is never automatically cleaned up.
 You may want to do housekeeping manually with a file browser.
 
-All wallet files (`stagenet` and `mainnet`) are stored in the main `arqma-wallet` folder.
+All wallet files (`stagenet` and `mainnet`) are stored in the main `arqmaDroid` folder.
 So be careful erasing stuff. One of the future releases will split the wallets and move `stagenet`
  wallets out of there.
 
@@ -55,7 +55,7 @@ No, but it looks fantastic. Just check it out.
 
 ## Can I use existing wallet files?
 
-If you want to use existing wallet files, you need to copy the wallet files from you current Loki client. These are:
+If you want to use existing wallet files, you need to copy the wallet files from you current Arqma client. These are:
 ```
 WalletName
 WalletName.address.txt
@@ -76,4 +76,11 @@ This depends on your installation - you could search for them in your home direc
 Keep calm and make a new wallet.
 
 ## Why does it make a 'arqma' folder?
-This is a new feature of Arqma Node Core to share certain key images with other Arqma forks.
+This is a new feature of Arqma core to share certain key images with other Arqma forks.
+
+## CrAzYpass is awesome - but I don't want it!
+Creating a file named `.nocrazypass` in the wallets folder will disable generation of crazypass for NEW passwords (new wallet or change password).
+The content of the file is not read and is irrelevant.
+Wallets with CrAzYpass will continue working normally. The currently set real wallet password can be checked in the "Show Secrets".
+
+**NB: This feature is for test purposed only - all your XMR will be stolen if you use it!**

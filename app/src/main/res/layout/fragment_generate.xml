@@ -50,7 +50,7 @@
                     android:layout_height="match_parent"
                     android:hint="@string/generate_password_hint"
                     android:imeOptions="actionNext"
-                    android:inputType="textVisiblePassword"
+                    android:inputType="textPassword"
                     android:textAlignment="textStart" />
 
             </android.support.design.widget.TextInputLayout>
@@ -101,7 +101,7 @@
             android:visibility="gone"
 
             app:counterEnabled="true"
-            app:counterMaxLength="95"
+            app:counterMaxLength="97"
             app:errorEnabled="true">
 
             <android.support.design.widget.TextInputEditText
