@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:hint="@string/generate_password_hint"
                 android:imeOptions="actionNext"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:textAlignment="textStart" />
         </android.support.design.widget.TextInputLayout>
 
@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:hint="@string/generate_password_hint"
                 android:imeOptions="actionDone"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:textAlignment="textStart" />
         </android.support.design.widget.TextInputLayout>
 
