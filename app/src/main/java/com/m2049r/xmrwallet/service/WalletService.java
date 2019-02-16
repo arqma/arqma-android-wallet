@@ -44,13 +44,15 @@ import com.m2049r.xmrwallet.model.WalletManager;
 import com.m2049r.xmrwallet.util.Helper;
 import com.m2049r.xmrwallet.util.LocaleHelper;
 
+import junit.framework.Assert;
+
 import timber.log.Timber;
 
 public class WalletService extends Service {
     public static boolean Running = false;
 
     final static int NOTIFICATION_ID = 2049;
-    final static String CHANNEL_ID = "m_service";
+    final static String CHANNEL_ID = "arqmaDroid_service";
 
     public static final String REQUEST_WALLET = "wallet";
     public static final String REQUEST = "request";
@@ -576,25 +578,29 @@ public class WalletService extends Service {
         Intent notificationIntent = new Intent(this, WalletActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? createNotificationChannel() : "";
-        Notification notification = new NotificationCompat.Builder(this, channelId)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannelIfNeeded();
+        }
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getString(R.string.service_description))
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_arqma_logo_b)
-                .setPriority(NotificationCompat.PRIORITY_MIN)
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(NOTIFICATION_ID, notification);
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private String createNotificationChannel() {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, getString(R.string.service_description),
+    private void createNotificationChannelIfNeeded() {
+        NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Assert.assertTrue(service != null);
+
+        if (service.getNotificationChannel(CHANNEL_ID) != null) {
+            return;
+        }
+        NotificationChannel chan = new NotificationChannel(CHANNEL_ID, getString(R.string.service_description),
                 NotificationManager.IMPORTANCE_LOW);
-        channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        notificationManager.createNotificationChannel(channel);
-        return CHANNEL_ID;
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+        service.createNotificationChannel(chan);
     }
 }

@@ -1212,7 +1212,7 @@ public class LoginActivity extends BaseActivity
 
     // USB Stuff - (Ledger)
 
-    private static final String ACTION_USB_PERMISSION = "com.m2049r.xmrwallet.USB_PERMISSION";
+    private static final String ACTION_USB_PERMISSION = "com.arqma.Droid.USB_PERMISSION";
 
     void attachLedger() {
         final UsbManager usbManager = getUsbManager();
