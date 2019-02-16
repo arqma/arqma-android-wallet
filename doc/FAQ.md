@@ -83,4 +83,4 @@ Creating a file named `.nocrazypass` in the wallets folder will disable generati
 The content of the file is not read and is irrelevant.
 Wallets with CrAzYpass will continue working normally. The currently set real wallet password can be checked in the "Show Secrets".
 
-**NB: This feature is for test purposed only - all your XMR will be stolen if you use it!**
+**NB: This feature is for test purposed only - all your ARQ will be stolen if you use it!**
