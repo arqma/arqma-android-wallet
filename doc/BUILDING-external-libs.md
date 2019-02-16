@@ -4,7 +4,8 @@ Builds Arqma libs for all Android architectures from `https://github.com/malbit/
 Build image from `external-libs/docker` directory:
 
 ```Shell
-docker build -t arqma-android-image .
+cd arqma/android-libs
+docker build -t arqma-android-image -f ../android-docker .
 ```
 
 Create container to copy libs:
