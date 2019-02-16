@@ -27,69 +27,77 @@ import java.util.Map;
 import timber.log.Timber;
 
 public class BarcodeData {
+
     public static final String XMR_SCHEME = "arqma:";
     public static final String XMR_PAYMENTID = "tx_payment_id";
     public static final String XMR_AMOUNT = "tx_amount";
-	public static final String XMR_DESCRIPTION = "tx_description";
-	
-	public static final String OA_XMR_ASSET = "arq";
+    public static final String XMR_DESCRIPTION = "tx_description";
 
-	public enum Asset {
-         ARQ
+    public static final String OA_XMR_ASSET = "arq";
+
+    public enum Security {
+        NORMAL,
+        OA_NO_DNSSEC,
+        OA_DNSSEC
     }
 
-	public Asset asset = null;
-    public String addressName = null;
-    public String address = null;
-    public String paymentId = null;
-    public String amount = null;
-	public String description = null;
-    public boolean isSecure = true;
+    final public String address;
+    final public String addressName;
+    final public String paymentId;
+    final public String amount;
+    final public String description;
+    final public Security security;
 
-    public BarcodeData(String uri) {
-        this.asset = asset;
+    public BarcodeData(String address) {
         this.address = address;
+        amount = null;
+        paymentId = null;
+        addressName = null;
+        description = null;
+        this.security = Security.NORMAL;
     }
- 
-    public BarcodeData(Asset asset, String address) {
-        this.asset = asset;
-        this.address = address;
-    }
- 
-    public BarcodeData(Asset asset, String address, String amount) {
-        this.asset = asset;
+
+    public BarcodeData(String address, String amount) {
         this.address = address;
         this.amount = amount;
+        paymentId = null;
+        addressName = null;
+        description = null;
+        this.security = Security.NORMAL;
     }
- 
-    public BarcodeData(Asset asset, String address, String paymentId, String amount) {
-        this.asset = asset;
+
+    public BarcodeData(String address, String paymentId, String amount) {
         this.address = address;
         this.paymentId = paymentId;
         this.amount = amount;
+        addressName = null;
+        description = null;
+        this.security = Security.NORMAL;
     }
- 
-    public BarcodeData(Asset asset, String address, String paymentId, String description, String amount) {
-        this.asset = asset;
+
+    public BarcodeData(String address, String paymentId, String description, String amount) {
         this.address = address;
         this.paymentId = paymentId;
         this.description = description;
-		this.amount = amount;
+        this.amount = amount;
+        addressName = null;
+        this.security = Security.NORMAL;
     }
-	
-	public void setAddressName(String name) {
-        addressName = name;
+
+    public BarcodeData(String address, String addressName, String paymentId, String description, String amount, Security sec) {
+        this.address = address;
+        this.addressName = addressName;
+        this.paymentId = paymentId;
+        this.description = description;
+        this.amount = amount;
+        this.security = sec;
     }
-     public void isSecure(boolean isSecure) {
-        this.isSecure = isSecure;
-    }
-	
-	public Uri getUri() {
+
+    public Uri getUri() {
         return Uri.parse(getUriString());
     }
-	
-	public String getUriString() {
-        if (asset != Asset.ARQ) throw new IllegalStateException("We can only do ARQ stuff!");
+
+    public String getUriString() {
         StringBuilder sb = new StringBuilder();
         sb.append(BarcodeData.XMR_SCHEME).append(address);
         boolean first = true;
@@ -103,31 +111,27 @@ public class BarcodeData {
             first = false;
             sb.append(BarcodeData.XMR_DESCRIPTION).append('=').append(Uri.encode(description));
         }
-		if ((amount != null) && !amount.isEmpty()) {
-			sb.append(first ? "?" : "&");
+        if ((amount != null) && !amount.isEmpty()) {
+            sb.append(first ? "?" : "&");
             sb.append(BarcodeData.XMR_AMOUNT).append('=').append(amount);
         }
-		return sb.toString();
+        return sb.toString();
     }
- 
+
     static public BarcodeData fromQrCode(String qrCode) {
-        // check for Arqma uri
+        // check for monero uri
         BarcodeData bcData = parseMoneroUri(qrCode);
-        // check for naked Arqma address / integrated address
+        // check for naked monero address / integrated address
         if (bcData == null) {
             bcData = parseMoneroNaked(qrCode);
-        }
-		// check for OpenAlias
-        if (bcData == null) {
-            bcData = parseOpenAlias(qrCode);
         }
         return bcData;
     }
 
     /**
-     * Parse and decode a Arqma scheme string. It is here because it needs to validate the data.
+     * Parse and decode a monero scheme string. It is here because it needs to validate the data.
      *
-     * @param uri String containing a Arqma URL
+     * @param uri String containing a monero URL
      * @return BarcodeData object or null if uri not valid
      */
 
@@ -141,7 +145,7 @@ public class BarcodeData {
         String noScheme = uri.substring(XMR_SCHEME.length());
         Uri monero = Uri.parse(noScheme);
         Map<String, String> parms = new HashMap<>();
-        String query = monero.getQuery();
+        String query = monero.getEncodedQuery();
         if (query != null) {
             String[] args = query.split("&");
             for (String arg : args) {
@@ -155,6 +159,8 @@ public class BarcodeData {
         }
         String address = monero.getPath();
         String paymentId = parms.get(XMR_PAYMENTID);
+        if ((paymentId != null) && paymentId.isEmpty()) paymentId = null;
+        String description = parms.get(XMR_DESCRIPTION);
         String amount = parms.get(XMR_AMOUNT);
         if (amount != null) {
             try {
@@ -173,7 +179,7 @@ public class BarcodeData {
             Timber.d("address invalid");
             return null;
         }
-        return new BarcodeData(Asset.ARQ, address, paymentId, amount);
+        return new BarcodeData(address, paymentId, description, amount);
     }
 
     static public BarcodeData parseMoneroNaked(String address) {
@@ -186,42 +192,41 @@ public class BarcodeData {
             return null;
         }
 
-        return new BarcodeData(Asset.ARQ, address);
+        return new BarcodeData(address);
     }
-	
-	static public BarcodeData parseOpenAlias(String oaString) {
+
+    static public BarcodeData parseOpenAlias(String oaString, boolean dnssec) {
         Timber.d("parseOpenAlias=%s", oaString);
         if (oaString == null) return null;
-		
+
         Map<String, String> oaAttrs = OpenAliasHelper.parse(oaString);
         if (oaAttrs == null) return null;
-        
-		String oaAsset = oaAttrs.get(OpenAliasHelper.OA1_ASSET);
+
+        String oaAsset = oaAttrs.get(OpenAliasHelper.OA1_ASSET);
         if (oaAsset == null) return null;
-         
-		String address = oaAttrs.get(OpenAliasHelper.OA1_ADDRESS);
+
+        String address = oaAttrs.get(OpenAliasHelper.OA1_ADDRESS);
         if (address == null) return null;
-        
-		Asset asset;
+
         if (OA_XMR_ASSET.equals(oaAsset)) {
             if (!Wallet.isAddressValid(address)) {
-                Timber.d("Arqma address invalid");
+                Timber.d("ARQ address invalid");
                 return null;
             }
-            asset = Asset.ARQ;
         } else {
             Timber.i("Unsupported OpenAlias asset %s", oaAsset);
             return null;
         }
-        
-		String paymentId = oaAttrs.get(OpenAliasHelper.OA1_PAYMENTID);
+
+        String paymentId = oaAttrs.get(OpenAliasHelper.OA1_PAYMENTID);
         String description = oaAttrs.get(OpenAliasHelper.OA1_DESCRIPTION);
         if (description == null) {
             description = oaAttrs.get(OpenAliasHelper.OA1_NAME);
         }
         String amount = oaAttrs.get(OpenAliasHelper.OA1_AMOUNT);
         String addressName = oaAttrs.get(OpenAliasHelper.OA1_NAME);
-         if (amount != null) {
+
+        if (amount != null) {
             try {
                 Double.parseDouble(amount);
             } catch (NumberFormatException ex) {
@@ -233,9 +238,8 @@ public class BarcodeData {
             Timber.d("paymentId invalid");
             return null;
         }
-         BarcodeData bc = new BarcodeData(asset, address, paymentId, description, amount);
-        bc.setAddressName(addressName);
-        return bc;
-    }
 
+        Security sec = dnssec ? BarcodeData.Security.OA_DNSSEC : BarcodeData.Security.OA_NO_DNSSEC;
+        return new BarcodeData(address, addressName, paymentId, description, amount, sec);
+    }
 }

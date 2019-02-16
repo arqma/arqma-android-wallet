@@ -65,7 +65,7 @@ public class OpenAliasHelper {
     }
 
     public interface OnResolvedListener {
-        void onResolved(Map<BarcodeData.Asset, BarcodeData> dataMap);
+        void onResolved(BarcodeData barcode);
 
         void onFailure();
     }
@@ -84,14 +84,14 @@ public class OpenAliasHelper {
         // http://data.iana.org/root-anchors/root-anchors.xml
         final String ROOT =
                 ". IN DS 19036 8 2 49AAC11D7B6F6446702E54A1607371607A1A41855200FD2CE1CDDE32F24E8FB5\n" +
-                ". IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D";
+                        ". IN DS 20326 8 2 E06D44B80B8F1D39A95C0B0D7C65D08458E880409BBC683457104237C7F8EC8D";
         final String[] DNSSEC_SERVERS = {
-                "1.1.1.1",    	// Cloudflare
-				"8.8.8.8",      // Google
-				"64.6.64.6",    // Verisign
-				"209.244.0.3",  // Level3
-				"8.26.56.26",   // Comodo
-				"77.88.8.8",	// Yandex
+                "1.1.1.1",    				// Cloudflare
+                "8.8.8.8",         		// Google
+                "64.6.64.6",      	  // Verisign
+                "209.244.0.3",        // Level3
+                "8.26.56.26",   		  // Comodo
+                "77.88.8.8",				  // Yandex
         };
 
         @Override
@@ -137,17 +137,14 @@ public class OpenAliasHelper {
         public void onPostExecute(Boolean success) {
             if (resolvedListener != null)
                 if (success) {
-                    Map<BarcodeData.Asset, BarcodeData> dataMap = new HashMap<>();
+                    BarcodeData result = null;
                     for (String txt : txts) {
-                        BarcodeData bc = BarcodeData.parseOpenAlias(txt);
+                        BarcodeData bc = BarcodeData.parseOpenAlias(txt, dnssec);
                         if (bc != null) {
-                            bc.isSecure(dnssec);
-                            if (!dataMap.containsKey(bc.asset)) {
-                                dataMap.put(bc.asset, bc);
-                            }
+                            result = bc;
                         }
                     }
-                    resolvedListener.onResolved(dataMap);
+                    resolvedListener.onResolved(result);
                 } else {
                     resolvedListener.onFailure();
                 }

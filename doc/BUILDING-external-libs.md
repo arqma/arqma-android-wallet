@@ -1,6 +1,6 @@
 # Building external libs in Docker
 
-Builds Arqma libs for all Android architectures from `https://github.com/arqma/arqma.git`, `release-v0.1.3.0` branch.
+Builds Arqma libs for all Android architectures from `https://github.com/malbit/arqma.git`, `android` branch.
 Build image from `external-libs/docker` directory:
 
 ```Shell
@@ -23,7 +23,7 @@ Based on https://forum.getmonero.org/5/support/87643/building-monero-v0-10-3-1-f
 
 Do not follow this blindly.
 
-These instructions are tailored to building ```wallep_api```.
+These instructions are tailored to building ```wallet_api```.
 
 These instructions build all supported architectures: ```'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'```.
 
@@ -65,6 +65,7 @@ git clone https://github.com/m2049r/android-openssl.git
 wget https://github.com/openssl/openssl/archive/OpenSSL_1_0_2l.tar.gz
 cd android-openssl
 tar xfz ../OpenSSL_1_0_2l.tar.gz
+PATH="${PATH}:/opt/android/tool/arm/bin/:/opt/android/tool/arm64/bin/:/opt/android/tool/x86/bin/:/opt/android/tool/x86_64/bin" \
 ANDROID_NDK_ROOT=/opt/android/ndk ./build-all-arch.sh
 ```
 
@@ -103,6 +104,17 @@ tar xfz boost_1_67_0.tar.gz
 cd boost_1_67_0
 ./bootstrap.sh
 ```
+Comment out ```using ::fgetpos;``` & ```using ::fsetpos;``` in ```cstdio```.
+```
+sed -ibackup "s|using ::fgetpos;|//using ::fgetpos;|" /opt/android/tool/arm/include/c++/4.9.x/cstdio
+sed -ibackup "s|using ::fsetpos;|//using ::fsetpos;|" /opt/android/tool/arm/include/c++/4.9.x/cstdio
+sed -ibackup "s|using ::fgetpos;|//using ::fgetpos;|" /opt/android/tool/arm64/include/c++/4.9.x/cstdio
+sed -ibackup "s|using ::fsetpos;|//using ::fsetpos;|" /opt/android/tool/arm64/include/c++/4.9.x/cstdio
+sed -ibackup "s|using ::fgetpos;|//using ::fgetpos;|" /opt/android/tool/x86/include/c++/4.9.x/cstdio
+sed -ibackup "s|using ::fsetpos;|//using ::fsetpos;|" /opt/android/tool/x86/include/c++/4.9.x/cstdio
+sed -ibackup "s|using ::fgetpos;|//using ::fgetpos;|" /opt/android/tool/x86_64/include/c++/4.9.x/cstdio
+sed -ibackup "s|using ::fsetpos;|//using ::fsetpos;|" /opt/android/tool/x86_64/include/c++/4.9.x/cstdio
+```
 
 Then build & install to ```/opt/android/build/boost``` with
 ```Shell
@@ -116,21 +128,21 @@ PATH=/opt/android/tool/x86_64/x86_64-linux-android/bin:/opt/android/tool/x86_64/
 ln -sf ../include /opt/android/build/boost/x86_64
 ```
 
-## And finally: Build Loki
+## And finally: Build Arqma
 ```Shell
 cd /opt/android
-git clone -b release-v0.1.3.0 --recursive https://github.com/arqma/arqma.git
+git clone -b android --recursive https://github.com/malbit/arqma.git
 cd /opt/android/arqma
 ./build-all-arch.sh
 ```
 
 # Bringing it all together
 - Copy all .a libraries into the appropriate `external-libs` folders.
-- Copy `/opt/android/arqma/src/wallet/api/wallet2_api.h` into `external-libs/arqma/include`
+- Copy `/opt/android/arqma/src/wallet/api/wallet2_api.h` into `external-libs/monero/include`
 
 If using default locations, this would mean:
 ```Shell
-cd <path-to-xmrwallet>/external-libs
+cd <path-to-arqmaDroid>/external-libs
 # remove old stuff
 find . -name "*.a" -or -name "*.h" -type f -delete
 ./collect.sh

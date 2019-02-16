@@ -33,7 +33,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginStart="48dp"
             android:layout_toStartOf="@+id/ibOptions"
-            tools:text="4AdkPJox...g3viqCuk" />
+            tools:text="ar46iCiw...XZytK9o3" />
 
         <ImageButton
             android:id="@+id/ibOptions"

@@ -8,7 +8,7 @@ public class CrazyPassEncoder {
     static final String BASE = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
     static final int PW_CHARS = 52;
 
-    // this takes a 32 byte buffer and converts it to 52 alphanumeric characters
+    // this takes a 32 byte buffer and converts it to 52 alphnumeric characters
     // separated by blanks every 4 characters = 13 groups of 4
     // always (padding by Xs if need be
     static public String encode(byte[] data) {

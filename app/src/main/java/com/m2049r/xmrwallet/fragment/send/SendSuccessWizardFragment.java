@@ -71,9 +71,12 @@ public class SendSuccessWizardFragment extends SendWizardFragment {
                 R.layout.fragment_send_success, container, false);
 
         bCopyTxId = (ImageButton) view.findViewById(R.id.bCopyTxId);
-        bCopyTxId.setOnClickListener(v -> {
-            Helper.clipBoardCopy(getActivity(), getString(R.string.label_send_txid), tvTxId.getText().toString());
-            Toast.makeText(getActivity(), getString(R.string.message_copy_txid), Toast.LENGTH_SHORT).show();
+        bCopyTxId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Helper.clipBoardCopy(getActivity(), getString(R.string.label_send_txid), tvTxId.getText().toString());
+                Toast.makeText(getActivity(), getString(R.string.message_copy_txid), Toast.LENGTH_SHORT).show();
+            }
         });
 
         tvTxId = (TextView) view.findViewById(R.id.tvTxId);
