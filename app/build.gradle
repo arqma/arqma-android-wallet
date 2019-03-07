@@ -7,7 +7,7 @@ android {
         applicationId "com.arqma.Droid"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 17
+        versionCode 18
         versionName "0.2.3 'arqmaDroid'"
 
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
