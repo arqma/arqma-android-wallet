@@ -380,7 +380,7 @@ public class LoginFragment extends Fragment implements WalletInfoAdapter.OnInter
     private static final String PREF_DAEMON_MAINNET = "daemon_mainnet";
 
     private static final String PREF_DAEMONLIST_MAINNET =
-            "eu.supportarqma.com;us.supportarqma.com;jp.supportarqma.com";
+            "node.supportarqma.com";
 
     private static final String PREF_DAEMONLIST_STAGENET =
             "";

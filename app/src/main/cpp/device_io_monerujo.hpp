@@ -53,7 +53,7 @@ int LedgerFind(char *buffer, size_t len);
  *
  * @return length of received data in response or -1 if error
  */
-int  LedgerExchange(unsigned char *command, unsigned int cmd_len, unsigned char *response, unsigned int max_resp_len);
+int LedgerExchange(unsigned char *command, unsigned int cmd_len, unsigned char *response, unsigned int max_resp_len);
 
 #ifdef __cplusplus
 }
