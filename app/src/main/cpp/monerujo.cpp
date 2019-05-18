@@ -27,11 +27,11 @@ extern "C"
 
 #include <android/log.h>
 #define LOG_TAG "WalletNDK"
-#define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG,__VA_ARGS__)
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG  , LOG_TAG,__VA_ARGS__)
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO   , LOG_TAG,__VA_ARGS__)
-#define LOGW(...) __android_log_print(ANDROID_LOG_WARN   , LOG_TAG,__VA_ARGS__)
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR  , LOG_TAG,__VA_ARGS__)
+#define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG  , LOG_TAG, __VA_ARGS__)
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO   , LOG_TAG, __VA_ARGS__)
+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN   , LOG_TAG, __VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR  , LOG_TAG, __VA_ARGS__)
 
 static JavaVM *cachedJVM;
 static jclass class_ArrayList;
@@ -1397,7 +1397,7 @@ Java_com_m2049r_xmrwallet_model_WalletManager_setLogLevel(JNIEnv *env, jclass cl
  *
  * @return length of received data in response or -1 if error
  */
-int  LedgerExchange(
+int LedgerExchange(
         unsigned char *command,
         unsigned int cmd_len,
         unsigned char *response,
@@ -1421,7 +1421,7 @@ int  LedgerExchange(
         return -1;
     }
     jsize len = jenv->GetArrayLength(dataRecv);
-    LOGD("LedgerExchange SCARD_S_SUCCESS %ld/%d", cmd_len, len);
+    LOGD("LedgerExchange SCARD_S_SUCCESS %u/%d", cmd_len, len);
     if (len <= max_resp_len) {
         jenv->GetByteArrayRegion(dataRecv, 0, len, (jbyte *) response);
         jenv->DeleteLocalRef(dataRecv);
