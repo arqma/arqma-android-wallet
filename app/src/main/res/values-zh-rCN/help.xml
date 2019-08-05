@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="help_create_new"><![CDATA[
+        <h1>Create Wallet - New</h1>
+        <p>If you need a new Monero Address!</p>
+        <p>Enter a unique wallet name and password.
+        The password is used for securing your wallet data on the device. Use a strong password -
+        even better use a passphrase.</p>
+        <h2>Note your Mnemonic Seed!</h2>
+        <p>On the following screen you will find your 25-word \"Mnemonic Seed\".
+        This is the only data needed to recover your wallet at a later point
+        and gain full access to your funds.
+        Keeping this secure and private is very important, as it gives <em>anyone</em>
+        full access to your funds!</p>
+        <p>If you lose your wallet password, you can still recover your wallet with the Mnemonic Seed.</p>
+        <p>There is no way to recover your Mnemonic Seed, if you lose it all your funds will be lost!
+        The Mnemonic Seed can also never be changed, and if it is stolen or otherwise compromised,
+        you will have to move your funds to new wallet (with a new Mnemonic Seed). Therefore, it is best
+        that you backup your Mnemonic Seed by writing it down and storing it in <em>multiple</em> safe
+        and secure places.</p>
+    ]]></string>
+
+    <string name="help_create_seed"><![CDATA[
+        <h1>Create Wallet - Seed</h1>
+        <p>If you already have a Arqma Address and want to recover the transactions from the blockchain!</p>
+        <p>Enter a unique wallet name and password. The password is used for securing your wallet data on the device.
+        Use a strong password - even better use a passphrase.</p>
+        <p>Enter your Seed in the field \"Mnemonic Seed\".<p>
+        <p>Enter the block number of the first transaction used for this address in the
+        field \"Restore Height\". You can also use a date in the format YYYY-MM. If you are not sure,
+        enter an approximate date/blockheight <em>before</em> you first used this wallet address.</p>
+    ]]></string>
+
+    <string name="help_create_ledger"><![CDATA[
+        <h1>Create Wallet - Ledger</h1>
+        <p>You want to recover your wallet from your Ledger Nano S device.</p>
+        <p>Your secret keys never leave the Ledger device, so you need it plugged in every
+        time you want to access your wallet.</p>
+        <p>Enter a unique wallet name and password. The password is used for securing your wallet data on the Android
+        device. Use a strong password - even better use a passphrase.</p>
+        <p>Enter the block number of the first transaction used for this address in the
+        field \"Restore Height\". You can also use a date in the format YYYY-MM. If you are not sure,
+        enter an approximate date/blockheight <em>before</em> you first used this wallet address.</p>
+    ]]></string>
+
+    <string name="help_create_keys"><![CDATA[
+        <h1>Create Wallet - Keys</h1>
+        <p>If you are recovering your wallet using your keys!</p>
+        <p>Enter a unique wallet name and password. The password is used for securing your wallet data on the device.
+        Use a strong password - even better use a passphrase.<p>
+        <p>Enter your Monero Address in the field \"Public Address\" and fill out \"View Key\" and  \"Spend Key\".</p>
+        <p>Enter the block number of the first transaction used for this address in the
+        field \"Restore Height\". You can also use a date in the format YYYY-MM. If you are not sure,
+        enter an approximate date/blockheight <em>before</em> you first used this wallet address.</p>
+    ]]></string>
+
+    <string name="help_create_view"><![CDATA[
+        <h1>Create Wallet - View</h1>
+        <p>If you just want to monitor incoming transactions to a wallet!</p>
+        <p>Enter a unique wallet name and password. The password is used for securing your wallet data on the device.
+        Use a strong password - even better use a passphrase.<p>
+        <p>Enter your Arqma Address in the field \"Public Address\" and fill out the \"View Key\".</p>
+        <p>Enter the block number of the first transaction used for this address in the
+        field \"Restore Height\". You can also use a date in the format YYYY-MM. If you are not sure,
+        enter an approximate date/blockheight <em>before</em> you first used this wallet address.</p>
+    ]]></string>
+
+    <string name="help_details"><![CDATA[
+        <h1>Wallet Details</h1>
+        <h2>Public address</h2>
+        Your public address is like your bank account number you can share this with anyone without
+        having to fear losing your Arqma. People will send Arqma to your wallet using this address.
+        <h2>Mnemonic Seed</h2>
+        This is the only data needed to recover your wallet at a later point and gain full access to
+        your funds. Keeping this private and secure is very important, as it gives <em>anyone</em> full
+        access to your Arqma! If you haven’t written this down somewhere safe please do!
+        <h2>Wallet Files Recovery Password</h2>
+        Make sure you write this password down. If you reset your device or uninstall the app, you
+        will need it to access your wallet again.<br/>
+        <h3>CrAzYpass</h3>
+        If the password displayed here is 52 alphanumeric characters in groups of 4 - congratulations!
+        Your wallet files are secured with a 256-bit key generated by your device&apos;s security
+        features based on the passphrase you chose (on creation or by changing it). This makes it
+        extremely difficult to hack!<br/>
+        This feature is mandatory for all newly created wallets.
+        <h3>Legacy Password</h3>
+        If you see your passphrase here, your wallet files are not as secure as when using
+        a CrAzYpass. To fix this, simply select \"Change Passphrase\" from the menu. After entering
+        a new passphrase (maybe even the same one as before) the app will generate a CrAzYpass for
+        you and secure your wallet files with it. Write it down!
+        <h3>CrAzYpass wallets</h3>
+        If you ever need to reinstall arqmaDroid (for example after resetting your phone or switching
+        to a new one) or you want to use your wallet files on a different device or PC, you have to
+        use this Recovery Password in order to access your wallet again.<br/>
+        By selecting \"Change Passphrase\" from the menu, you can choose another passphrase. Beware
+        that this will generate a new Recovery Password. Write it down!
+        <h2>View key</h2>
+        Your view key can be used to monitor incoming transactions to your wallet without giving
+        permission to spend the funds inside your wallet.
+        <h2>Spend key</h2>
+        Your spend key allows anyone to spend the Arqma associated with your wallet, so don’t tell
+        anyone this key, keep it safe like your Mnemonic Seed.
+    ]]></string>
+
+    <string name="help_list"><![CDATA[
+        <h1>Wallet List</h1>
+        <h2>Node</h2>
+        <p>arqmaDroid uses a Remote Node to communicate with the Arqma Network without having
+        to download and store a copy of the whole blockchain itself. You can find a list of popular
+        remote nodes or learn how to run your own remote node here https://arqma.com/<p>
+        <p>arqmaDroid comes with some Remote Nodes preset. It remembers the last five nodes used.</p>
+        <h2>Wallets</h2>
+        <p>Here you see your wallets. They are located in the <tt>arqmaDroid</tt> folder
+        in the internal storage of your device. You can use a file explorer app to see them.
+        You should make backups of this folder on a regular basis to off-device storage in
+        case your device explodes or gets stolen.</p>
+        <p>Select a wallet to open it or press the \"+\" to create a new one.
+        Or select one of the wallet operations:</p>
+        <h3>Details</h3>
+        <p>Show the wallet details, seed &amp; keys.</p>
+        <h3>Receive</h3>
+        <p>Make a QR code for receiving Arqma.</p>
+        <h3>Rename</h3>
+        <p>Rename the wallet. Backups are not renamed.</p>
+        <h3>Backup</h3>
+        <p>Make a copy of the wallet in the <tt>backups</tt> folder inside the <tt>arqmaDroid</tt>
+        overwriting previous copies there.</p>
+        <h3>Archive</h3>
+        <p>Make a backup and delete the wallet afterwards. The copy remains in the <tt>backups</tt>
+        folder. If you no longer need your backups you should delete them with a file explorer or
+        secure delete app.</p>
+    ]]></string>
+
+    <string name="help_tx_details"><![CDATA[
+        <h1>Transaction Details</h1>
+        <h2>Destination</h2>
+        This is the public address of the wallet you sent Arqma to
+        <h2>PaymentID</h2>
+        You can use a Payment ID to identify the reason you sent Arqma between two parties this is
+        fully optional and private. For example it can allow a Business to reconcile your transaction
+        with an item you bought.
+        <h2>TX ID</h2>
+        This is your Transaction ID you can use it to identify your obfuscated transaction on a Arqma
+        Blockchain explorer like <a href="https://blocks.arqma.com/">https://blocks.arqma.com/</a>
+        <h2>TX KEY (Transaction Key)</h2>
+        This is your transaction private key, keep this safe as revealing this to a third party
+        reveals which signature in a ring is yours, thereby making your transaction transparent.
+        <h2>Block</h2>
+        This was the block your transaction was included in.
+    ]]></string>
+
+    <string name="help_send"><![CDATA[
+        <h1>Send</h1>
+        <h2>Receiver’s address</h2>
+        <p>This is the public address of the wallet you are sending Arqma to, you can copy this from
+        your clipboard, scan a QR code or enter it manually. Make sure you triple check this to
+        ensure you aren’t sending coins to the wrong address.</p>
+        <h2>Payment ID</h2>
+        <p>You can use a Payment ID to identify the reason you sent Arqma between two parties. This
+        is fully optional and private. For example it can allow a business to reconcile your
+        transaction with an item you bought.<p>
+    ]]></string>
+
+    <string name="help_wallet"><![CDATA[
+        <h1>The Wallet</h1>
+        <h2>Street Mode</h2>
+        <p>Street mode can be enabled/disabled in the menu or Arqma\'s icon on Top-Right. In this mode, your
+        balance is not shown on any screen so you can safely use your wallet on the street, a pub or
+        other public place. Previous transactions are also hidden. New transactions will be shown, so
+        you can see that you have sent/received sweet Arqma!</p>
+        <h2>Scanning</h2>
+        Because Arqma likes to keep things private, every time you open a arqmaDroid wallet we have to
+        scan the blockchain to see if any new Arqma have been sent to your wallet, this only
+        stores information to your phone which belongs to your wallet. Sometimes it can take a while
+        because you haven’t synced in a long time.
+        <h2>The Balance</h2>
+        <p><b>Help! My wallet balance has disappeared or is unconfirmed!</b><br/>
+        Don’t panic! When you send funds from your wallet, some of your balance will temporarily show
+        as unconfirmed.
+        This happens as a result of how Arqma is exchanged on the blockchain and how change works.
+        <h2>Transaction List</h2>
+        <p>A list of the wallet transactions. In view wallets, only incoming transactions are shown.</p>
+    ]]></string>
+</resources>
