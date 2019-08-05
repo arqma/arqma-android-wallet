@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_close">Close</string>
+    <string name="about_whoami">I am ArqmaDroid</string>
+    <string name="about_version">Version %1$s (%2$d)</string>
+
+    <string name="credits_text"><![CDATA[
+        <b>Credits</b>
+        <br/>
+        Thanks to the Monerujo team. They made this wallet possible.
+        <br />
+        m2049r, baltsar777, anhdres, keejef,
+        rehrar, EarlOfEgo, crtlib, ErCiccione,
+        m@lbit, ArqTras et al.
+        <br/><br/>
+        <a href="https://arqma.com/">arqma.com</a>
+        ]]></string>
+
+    <string name="privacy_policy"><![CDATA[
+        <h1>Privacy Policy</h1>
+        <p>This page informs you of our policies regarding the collection,
+        use and disclosure of personal information we receive from users of our
+        app (ArqmaDroid).
+        </p>
+        <p>By using the app, you agree to the collection and use of information in
+        accordance with this policy.
+        </p>
+        <h2>Data Collected</h2>
+        <p>Personal data is any kind of data that could identify an individual.
+        </p>
+        <p>Arqma keys and public addresses are collected and processed by the app locally
+        for the purpose of processing transactions and transmitted into the Arq-Net
+        in encrypted form.
+        </p>
+        <p>Other personal data is not collected by the app.</p>
+        <p>If you use the exchange (optional) functionality, ArqmaDroid fetches the exchange
+        rate through the public API of coinmarketcap.com.
+        See their privacy policy at https://coinmarketcap.com/privacy for
+        details on how data in your requests is collected.</p>
+        <h2>App Permissions</h2>
+        <ul>
+        <li>INTERNET : Connect to the Arq-Net via a Arqma Daemon Node</li>
+        <li>READ_EXTERNAL_STORAGE : Read wallet files stored on the device</li>
+        <li>WRITE_EXTERNAL_STORAGE : Write wallet files stored on the device</li>
+        <li>WAKE_LOCK : Keep device awake while syncing</li>
+        <li>CAMERA : Scan QR Codes for receiving Arqma</li>
+        </ul>
+        <h2>Contact Us</h2>
+        <p>If you have any questions about our privacy policy,
+        or how your data is being collected and processed,
+        please e-mail support@arqma.com.
+        </p>
+        ]]></string>
+</resources>
