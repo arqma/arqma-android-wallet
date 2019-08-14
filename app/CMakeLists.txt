@@ -87,10 +87,6 @@ add_library(cryptonote_basic STATIC IMPORTED)
 set_target_properties(cryptonote_basic PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libcryptonote_basic.a)
 
-add_library(net STATIC IMPORTED)
-set_target_properties(net PROPERTIES IMPORTED_LOCATION
-    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libnet.a)
-
 add_library(mnemonics STATIC IMPORTED)
 set_target_properties(mnemonics PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libmnemonics.a)
@@ -147,6 +143,14 @@ add_library(version STATIC IMPORTED)
 set_target_properties(version PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libversion.a)
 
+add_library(net STATIC IMPORTED)
+set_target_properties(net PROPERTIES IMPORTED_LOCATION
+    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libnet.a)
+
+add_library(librpc_base STATIC IMPORTED)
+set_target_properties(librpc_base PROPERTIES IMPORTED_LOCATION
+    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librpc_base.a)
+
 #############
 # System
 #############
@@ -163,10 +167,11 @@ target_link_libraries(  monerujo
                         wallet
                         cryptonote_core
                         cryptonote_basic
-                        net
                         mnemonics
                         ringct
                         ringct_basic
+                        net
+                        librpc_base
                         common
                         cncrypto
                         blockchain_db
