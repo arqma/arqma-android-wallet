@@ -7,8 +7,8 @@ android {
         applicationId "com.arqma.Droid"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 21
-        versionName "v0.4 'Arq-Droid Cipher'"
+        versionCode 22
+        versionName "v0.5 'Arq-Droid Legion'"
 
 
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
