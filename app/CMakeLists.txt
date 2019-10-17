@@ -127,6 +127,10 @@ add_library(epee STATIC IMPORTED)
 set_target_properties(epee PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libepee.a)
 
+add_library(blocks STATIC IMPORTED)
+set_target_properties(blocks PROPERTIES IMPORTED_LOCATION
+    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libblocks.a)
+
 add_library(checkpoints STATIC IMPORTED)
 set_target_properties(checkpoints PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libcheckpoints.a)
@@ -151,15 +155,19 @@ add_library(librpc_base STATIC IMPORTED)
 set_target_properties(librpc_base PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librpc_base.a)
 
+add_library(librandomx STATIC IMPORTED)
+set_target_properties(librandomx PROPERTIES IMPORTED_LOCATION
+    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librandomx.a)
+
 #############
 # System
 #############
 
-find_library( log-lib log )
+find_library(log-lib log)
 
-include_directories( ${EXTERNAL_LIBS_DIR}/arqma/include )
+include_directories(${EXTERNAL_LIBS_DIR}/arqma/include)
 
-message(STATUS EXTERNAL_LIBS_DIR :  ${EXTERNAL_LIBS_DIR})
+message(STATUS EXTERNAL_LIBS_DIR : ${EXTERNAL_LIBS_DIR})
 
 target_link_libraries(  monerujo
 
@@ -174,11 +182,13 @@ target_link_libraries(  monerujo
                         librpc_base
                         common
                         cncrypto
+                        randomx
                         blockchain_db
                         lmdb
                         easylogging
                         unbound
                         epee
+                        blocks
                         checkpoints
                         device
                         multisig
