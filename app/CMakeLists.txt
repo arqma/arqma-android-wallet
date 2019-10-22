@@ -147,14 +147,18 @@ add_library(net STATIC IMPORTED)
 set_target_properties(net PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libnet.a)
 
-add_library(librpc_base STATIC IMPORTED)
-set_target_properties(librpc_base PROPERTIES IMPORTED_LOCATION
+add_library(rpc_base STATIC IMPORTED)
+set_target_properties(rpc_base PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librpc_base.a)
 
-add_library(librandomx STATIC IMPORTED)
-set_target_properties(librandomx PROPERTIES IMPORTED_LOCATION
+add_library(randomx STATIC IMPORTED)
+set_target_properties(randomx PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librandomx.a)
 
+add_library(rpc_sig STATIC IMPORTED)
+set_target_properties(rpc__sig PROPERTIES IMPORTED_LOCATION
+    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librpc_sig.a)
+    
 #############
 # System
 #############
@@ -175,7 +179,8 @@ target_link_libraries(  monerujo
                         ringct
                         ringct_basic
                         net
-                        librpc_base
+                        rpc_base
+                        rpc_sig
                         common
                         cncrypto
                         randomx
