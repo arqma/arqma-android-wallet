@@ -127,10 +127,6 @@ add_library(epee STATIC IMPORTED)
 set_target_properties(epee PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libepee.a)
 
-add_library(blocks STATIC IMPORTED)
-set_target_properties(blocks PROPERTIES IMPORTED_LOCATION
-    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libblocks.a)
-
 add_library(checkpoints STATIC IMPORTED)
 set_target_properties(checkpoints PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libcheckpoints.a)
@@ -188,7 +184,6 @@ target_link_libraries(  monerujo
                         easylogging
                         unbound
                         epee
-                        blocks
                         checkpoints
                         device
                         multisig
