@@ -156,7 +156,7 @@ set_target_properties(randomx PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librandomx.a)
 
 add_library(rpc_sig STATIC IMPORTED)
-set_target_properties(rpc__sig PROPERTIES IMPORTED_LOCATION
+set_target_properties(rpc_sig PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librpc_sig.a)
     
 #############
