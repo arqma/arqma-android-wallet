@@ -1,21 +1,22 @@
+// Copyright (c) 2018-2019, The Arqma Network
 // Copyright (c) 2014-2018, The Monero Project
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without modification, are
 // permitted provided that the following conditions are met:
-// 
+//
 // 1. Redistributions of source code must retain the above copyright notice, this list of
 //    conditions and the following disclaimer.
-// 
+//
 // 2. Redistributions in binary form must reproduce the above copyright notice, this list
 //    of conditions and the following disclaimer in the documentation and/or other
 //    materials provided with the distribution.
-// 
+//
 // 3. Neither the name of the copyright holder nor the names of its contributors may be
 //    used to endorse or promote products derived from this software without specific
 //    prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
@@ -25,7 +26,7 @@
 // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
 // STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-// 
+//
 // Parts of this file are originally copyright (c) 2012-2013 The Cryptonote developers
 
 #pragma once
@@ -37,6 +38,7 @@
 #include <set>
 #include <ctime>
 #include <iostream>
+#include <stdexcept>
 
 //  Public interface for libwallet library
 namespace Monero {
@@ -217,9 +219,9 @@ public:
     AddressBookRow(std::size_t _rowId, const std::string &_address, const std::string &_paymentId, const std::string &_description):
         m_rowId(_rowId),
         m_address(_address),
-        m_paymentId(_paymentId), 
+        m_paymentId(_paymentId),
         m_description(_description) {}
- 
+
 private:
     std::size_t m_rowId;
     std::string m_address;
@@ -227,14 +229,14 @@ private:
     std::string m_description;
 public:
     std::string extra;
-    std::string getAddress() const {return m_address;} 
-    std::string getDescription() const {return m_description;} 
-    std::string getPaymentId() const {return m_paymentId;} 
+    std::string getAddress() const {return m_address;}
+    std::string getDescription() const {return m_description;}
+    std::string getPaymentId() const {return m_paymentId;}
     std::size_t getRowId() const {return m_rowId;}
 };
 
 /**
- * @brief The AddressBook - interface for 
+ * @brief The AddressBook - interface for
 Book
  */
 struct AddressBook
@@ -247,9 +249,9 @@ struct AddressBook
     };
     virtual ~AddressBook() = 0;
     virtual std::vector<AddressBookRow*> getAll() const = 0;
-    virtual bool addRow(const std::string &dst_addr , const std::string &payment_id, const std::string &description) = 0;  
+    virtual bool addRow(const std::string &dst_addr , const std::string &payment_id, const std::string &description) = 0;
     virtual bool deleteRow(std::size_t rowId) = 0;
-    virtual void refresh() = 0;  
+    virtual void refresh() = 0;
     virtual std::string errorString() const = 0;
     virtual int errorCode() const = 0;
     virtual int lookupPaymentID(const std::string &payment_id) const = 0;
@@ -261,7 +263,7 @@ public:
         m_rowId(_rowId),
         m_address(_address),
         m_label(_label) {}
- 
+
 private:
     std::size_t m_rowId;
     std::string m_address;
@@ -324,6 +326,7 @@ struct MultisigState {
     uint32_t total;
 };
 
+struct Wallet;
 struct WalletListener
 {
     virtual ~WalletListener() = 0;
@@ -340,7 +343,7 @@ struct WalletListener
      * @param amount        - amount
      */
     virtual void moneyReceived(const std::string &txId, uint64_t amount) = 0;
-    
+
    /**
     * @brief unconfirmedMoneyReceived - called when payment arrived in tx pool
     * @param txId          - transaction id
@@ -364,6 +367,8 @@ struct WalletListener
      * @brief refreshed - called when wallet refreshed by background thread or explicitly refreshed by calling "refresh" synchronously
      */
     virtual void refreshed() = 0;
+
+    virtual void onSetWallet(Wallet * wallet) { (void)wallet; };
 };
 
 
@@ -411,7 +416,7 @@ struct Wallet
     //! returns current hard fork info
     virtual void hardForkInfo(uint8_t &version, uint64_t &earliest_height) const = 0;
     //! check if hard fork rules should be used
-    virtual bool useForkRules(uint8_t version, int64_t early_blocks) const = 0;  
+    virtual bool useForkRules(uint8_t version, int64_t early_blocks) const = 0;
     /*!
      * \brief integratedAddress - returns integrated address for current wallet address and given payment_id.
      *                            if passed "payment_id" param is an empty string or not-valid payment id string
@@ -419,10 +424,10 @@ struct Wallet
      *
      * \param payment_id        - 16 characters hexadecimal string or empty string if new random payment id needs to be
      *                            generated
-     * \return                  - 106 characters string representing integrated address
+     * \return                  - 109 characters string representing integrated address
      */
     virtual std::string integratedAddress(const std::string &payment_id) const = 0;
-    
+
    /*!
     * \brief secretViewKey     - returns secret view key
     * \return                  - secret view key
@@ -575,6 +580,13 @@ struct Wallet
     virtual uint64_t approximateBlockChainHeight() const = 0;
 
     /**
+	* @brief estimateBlockChainHeight - returns estimate blockchain height. More accurate than approximateBlockChainHeight,
+	*                                   uses daemon height and falls back to calculation from date/time
+	* @return
+	**/
+	virtual uint64_t estimateBlockChainHeight() const = 0;
+
+    /**
      * @brief daemonBlockChainHeight - returns daemon blockchain height
      * @return 0 - in case error communicating with the daemon.
      *             status() will return Status_Error and errorString() will return verbose error description
@@ -642,6 +654,17 @@ struct Wallet
      * @brief refreshAsync - refreshes wallet asynchronously.
      */
     virtual void refreshAsync() = 0;
+
+    /**
+     * @brief rescanBlockchain - rescans the wallet, updating transactions from daemon
+     * @return - true if refreshed successfully;
+     */
+    virtual bool rescanBlockchain() = 0;
+
+    /**
+     * @brief rescanBlockchainAsync - rescans wallet asynchronously, starting from genesys
+     */
+    virtual void rescanBlockchainAsync() = 0;
 
     /**
      * @brief setAutoRefreshInterval - setup interval for automatic refresh.
@@ -768,20 +791,20 @@ struct Wallet
      */
 
     virtual PendingTransaction * createSweepUnmixableTransaction() = 0;
-    
+
    /*!
     * \brief loadUnsignedTx  - creates transaction from unsigned tx file
     * \return                - UnsignedTransaction object. caller is responsible to check UnsignedTransaction::status()
     *                          after object returned
     */
     virtual UnsignedTransaction * loadUnsignedTx(const std::string &unsigned_filename) = 0;
-    
+
    /*!
     * \brief submitTransaction - submits transaction in signed tx file
     * \return                  - true on success
     */
     virtual bool submitTransaction(const std::string &fileName) = 0;
-    
+
 
     /*!
      * \brief disposeTransaction - destroys transaction object
@@ -795,7 +818,7 @@ struct Wallet
     * \return                  - true on success
     */
     virtual bool exportKeyImages(const std::string &filename) = 0;
-   
+
    /*!
     * \brief importKeyImages - imports key images from file
     * \param filename
@@ -879,13 +902,13 @@ struct Wallet
     virtual bool parse_uri(const std::string &uri, std::string &address, std::string &payment_id, uint64_t &amount, std::string &tx_description, std::string &recipient_name, std::vector<std::string> &unknown_parameters, std::string &error) = 0;
 
     virtual std::string getDefaultDataDir() const = 0;
-   
+
    /*
     * \brief rescanSpent - Rescan spent outputs - Can only be used with trusted daemon
     * \return true on success
     */
     virtual bool rescanSpent() = 0;
-    
+
     //! blackballs a set of outputs
     virtual bool blackballOutputs(const std::vector<std::string> &outputs, bool add) = 0;
 
@@ -915,7 +938,7 @@ struct Wallet
 
     //! Light wallet authenticate and login
     virtual bool lightWalletLogin(bool &isNewWallet) const = 0;
-    
+
     //! Initiates a light wallet import wallet request
     virtual bool lightWalletImportWalletRequest(std::string &payment_id, uint64_t &fee, bool &new_request, bool &request_fulfilled, std::string &payment_address, std::string &status) = 0;
 
@@ -961,7 +984,7 @@ struct WalletManager
      * \param  kdf_rounds     Number of rounds for key derivation function
      * \return                Wallet instance (Wallet::status() needs to be called to check if opened successfully)
      */
-    virtual Wallet * openWallet(const std::string &path, const std::string &password, NetworkType nettype, uint64_t kdf_rounds = 1) = 0;
+    virtual Wallet * openWallet(const std::string &path, const std::string &password, NetworkType nettype, uint64_t kdf_rounds = 1, WalletListener * listener = nullptr) = 0;
     Wallet * openWallet(const std::string &path, const std::string &password, bool testnet = false)     // deprecated
     {
         return openWallet(path, password, testnet ? TESTNET : MAINNET);
@@ -973,8 +996,8 @@ struct WalletManager
      * \param  password       Password of wallet file
      * \param  mnemonic       mnemonic (25 words electrum seed)
      * \param  nettype        Network type
-     * \param  restoreHeight  restore from start height
      * \param  kdf_rounds     Number of rounds for key derivation function
+     * \param  restoreHeight  restore from start height
      * \return                Wallet instance (Wallet::status() needs to be called to check if recovered successfully)
      */
     virtual Wallet * recoveryWallet(const std::string &path, const std::string &password, const std::string &mnemonic,
@@ -1046,16 +1069,16 @@ struct WalletManager
     * \param  spendKeyString spend key (optional)
     * \return                Wallet instance (Wallet::status() needs to be called to check if recovered successfully)
     */
-    virtual Wallet * createWalletFromKeys(const std::string &path, 
+    virtual Wallet * createWalletFromKeys(const std::string &path,
                                                     const std::string &language,
-                                                    NetworkType nettype, 
+                                                    NetworkType nettype,
                                                     uint64_t restoreHeight,
                                                     const std::string &addressString,
                                                     const std::string &viewKeyString,
                                                     const std::string &spendKeyString = "") = 0;
-    Wallet * createWalletFromKeys(const std::string &path, 
+    Wallet * createWalletFromKeys(const std::string &path,
                                   const std::string &language,
-                                  bool testnet, 
+                                  bool testnet,
                                   uint64_t restoreHeight,
                                   const std::string &addressString,
                                   const std::string &viewKeyString,
@@ -1081,7 +1104,8 @@ struct WalletManager
                                             const std::string &deviceName,
                                             uint64_t restoreHeight = 0,
                                             const std::string &subaddressLookahead = "",
-                                            uint64_t kdf_rounds = 1) = 0;
+                                            uint64_t kdf_rounds = 1,
+                                            WalletListener * listener = nullptr) = 0;
 
     /*!
      * \brief Closes wallet. In case operation succeeded, wallet object deleted. in case operation failed, wallet object not deleted
@@ -1106,7 +1130,6 @@ struct WalletManager
      * @param keys_file_name - location of keys file
      * @param password - password to verify
      * @param no_spend_key - verify only view keys?
-     * @param kdf_rounds - number of rounds for key derivation function
      * @return - true if password is correct
      *
      * @note
@@ -1171,7 +1194,7 @@ struct WalletManager
     virtual std::string resolveOpenAlias(const std::string &address, bool &dnssec_valid) const = 0;
 
     //! checks for an update and returns version, hash and url
-    static std::tuple<bool, std::string, std::string, std::string, std::string> checkUpdates(const std::string &software, std::string subdir);
+    static std::tuple<bool, std::string, std::string, std::string, std::string> checkUpdates(const std::string &software);
 };
 
 
@@ -1198,4 +1221,3 @@ struct WalletManagerFactory
 }
 
 namespace Bitmonero = Monero;
-

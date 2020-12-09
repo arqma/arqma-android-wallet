@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
     defaultConfig {
         applicationId "com.arqma.Droid"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 22
-        versionName "v0.5 'Arq-Droid Legion'"
-
+        versionCode 23
+        versionName "v0.6.1 'Arq-Droid Devil's Randomness"
 
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
+                version "3.19.1"
                 cppFlags "-std=c++11"
                 arguments '-DANDROID_STL=c++_shared'
             }

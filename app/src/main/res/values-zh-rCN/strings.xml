@@ -36,7 +36,6 @@
     <string name="info_crazypass_enabled">CrAzYpass已启用, 点选了解更多</string>
     <string name="info_ledger_enabled">已支持Ledger硬件钱包，点此了解更多</string>
 
-    <string name="info_paymentid_integrated">&#x2714; 支付ID已集成</string>
     <string name="info_prepare_tx">正在为您的交易做准备工作</string>
     <string name="label_send_settings_advanced">高级选项：</string>
     <string name="label_send_txid">交易ID</string>

@@ -1,19 +1,17 @@
 #!/bin/bash
+packages=(boost openssl arqma libsodium libzmq)
+archs=(arm arm64 x86 x86_64)
+#archs=(x86)
+
+docker container rm arqma-android > /dev/null 2>&1
 
 set -e
 
-build_dir=/opt/android/build
-if [ -z $1 ] ; then
-    echo "Collecting libs from ${build_dir} directory!"
-else
-    build_dir=`pwd`/tmp_build
-    rm -Rf $build_dir
-    docker cp $1:/opt/android/build $build_dir
-fi
+docker create --name arqma-android arqma-android-image
 
-orig_path=$PATH
-packages=(boost openssl arqma)
-archs=(arm arm64 x86 x86_64)
+build_dir=`pwd`/tmp_build
+rm -Rf $build_dir
+docker cp arqma-android:/opt/android/build $build_dir
 
 for arch in ${archs[@]}; do
     case ${arch} in
@@ -34,22 +32,23 @@ for arch in ${archs[@]}; do
             ;;
     esac
 
-	for package in ${packages[@]}; do
-		OUTPUT_DIR=`pwd`/$package/lib/$xarch
-		mkdir -p $OUTPUT_DIR
-		rm -f $OUTPUT_DIR/*.a
-		cp -a $build_dir/$package/$arch/lib/*.a $OUTPUT_DIR
+    for package in ${packages[@]}; do
+    INPUT_DIR=`pwd`/build/build/$package
+    OUTPUT_DIR=`pwd`/$package/lib/$xarch
+    mkdir -p $OUTPUT_DIR
+    rm -f $OUTPUT_DIR/*.a
+    cp -a $build_dir/$package/$arch/lib/*.a $OUTPUT_DIR
 
-		if [ $package = "arqma" ]; then
-            rm -rf $OUTPUT_DIR/../../include
-            cp -a $build_dir/$package/include $OUTPUT_DIR/../..
-		fi
+    if [ $package = "arqma" ]; then
+      rm -rf $OUTPUT_DIR/../../include
+      cp -a $build_dir/$package/include $OUTPUT_DIR/../..
+    fi
 
-	done
+    done
 done
 
-if [[ ! -z $1 ]] ; then
-    rm -rf $build_dir
-fi
+rm -rf $build_dir
+docker container rm arqma-android
 
 exit 0
+
