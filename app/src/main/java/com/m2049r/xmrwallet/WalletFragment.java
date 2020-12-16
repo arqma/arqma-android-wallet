@@ -20,9 +20,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,15 +41,18 @@ import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeApi;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeCallback;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeRate;
+import com.m2049r.xmrwallet.util.FilterHelper;
 import com.m2049r.xmrwallet.util.Helper;
 import com.m2049r.xmrwallet.widget.Toolbar;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
 
 public class WalletFragment extends Fragment
@@ -94,9 +94,8 @@ public class WalletFragment extends Fragment
         tvStreetView = view.findViewById(R.id.tvStreetView);
         llBalance = view.findViewById(R.id.llBalance);
         flExchange = view.findViewById(R.id.flExchange);
-        ((ProgressBar) view.findViewById(R.id.pbExchange)).getIndeterminateDrawable().
-                setColorFilter(getResources().getColor(R.color.trafficGray),
-                        android.graphics.PorterDuff.Mode.MULTIPLY);
+        FilterHelper.setColorFilter(((ProgressBar) view.findViewById(R.id.pbExchange)).getIndeterminateDrawable(), ContextCompat.getColor(getContext(),R.color.trafficGray),
+                FilterHelper.Mode.MULTIPLY);
 
         tvProgress = view.findViewById(R.id.tvProgress);
         pbProgress = view.findViewById(R.id.pbProgress);

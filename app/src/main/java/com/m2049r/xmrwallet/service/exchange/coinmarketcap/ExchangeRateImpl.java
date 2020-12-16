@@ -16,19 +16,16 @@
 
 package com.m2049r.xmrwallet.service.exchange.coinmarketcap;
 
-import android.support.annotation.NonNull;
-
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeException;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeRate;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
 
 class ExchangeRateImpl implements ExchangeRate {
 

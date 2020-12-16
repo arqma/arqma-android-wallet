@@ -36,8 +36,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CancellationSignal;
 import android.os.Environment;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.text.Editable;
@@ -53,9 +51,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.m2049r.xmrwallet.BuildConfig;
 import com.m2049r.xmrwallet.R;
-import com.m2049r.xmrwallet.model.NetworkType;
 import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.model.WalletManager;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeApi;
@@ -72,7 +70,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import okhttp3.HttpUrl;
+import androidx.core.content.ContextCompat;
 import timber.log.Timber;
 
 public class Helper {
@@ -97,7 +95,7 @@ public class Helper {
             Timber.e(msg);
             throw new IllegalStateException(msg);
         }
-        File dir = new File(Environment.getExternalStorageDirectory(), folderName);
+        File dir = new File(context.getExternalFilesDir(null), folderName);
         if (!dir.exists()) {
             Timber.i("Creating %s", dir.getAbsolutePath());
             dir.mkdirs(); // try to make it

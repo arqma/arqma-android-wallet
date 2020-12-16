@@ -31,7 +31,7 @@ import com.m2049r.xmrwallet.R;
 
 import timber.log.Timber;
 
-public class Toolbar extends android.support.v7.widget.Toolbar {
+public class Toolbar extends androidx.appcompat.widget.Toolbar {
     public interface OnButtonListener {
         void onButton(int type);
     }

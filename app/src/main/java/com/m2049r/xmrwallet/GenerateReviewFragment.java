@@ -21,11 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -43,6 +39,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.m2049r.xmrwallet.ledger.Ledger;
 import com.m2049r.xmrwallet.ledger.LedgerProgressDialog;
 import com.m2049r.xmrwallet.model.NetworkType;
@@ -54,6 +51,9 @@ import com.m2049r.xmrwallet.util.KeyStoreHelper;
 import com.m2049r.xmrwallet.util.MoneroThreadPoolExecutor;
 import com.m2049r.xmrwallet.widget.Toolbar;
 
+import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
+import androidx.fragment.app.Fragment;
 import timber.log.Timber;
 
 public class GenerateReviewFragment extends Fragment {
@@ -498,7 +498,7 @@ public class GenerateReviewFragment extends Fragment {
                     if (!swFingerprintAllowed.isChecked()) return;
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage(Html.fromHtml(getString(R.string.generate_fingerprint_warn)))
+                    builder.setMessage(HtmlCompat.fromHtml(getString(R.string.generate_fingerprint_warn), HtmlCompat.FROM_HTML_MODE_LEGACY))
                             .setCancelable(false)
                             .setPositiveButton(getString(R.string.label_ok), null)
                             .setNegativeButton(getString(R.string.label_cancel), new DialogInterface.OnClickListener() {

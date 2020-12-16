@@ -31,8 +31,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
 
 import com.m2049r.xmrwallet.R;
 import com.m2049r.xmrwallet.WalletActivity;
@@ -44,8 +42,10 @@ import com.m2049r.xmrwallet.model.WalletManager;
 import com.m2049r.xmrwallet.util.Helper;
 import com.m2049r.xmrwallet.util.LocaleHelper;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import timber.log.Timber;
 
 public class WalletService extends Service {

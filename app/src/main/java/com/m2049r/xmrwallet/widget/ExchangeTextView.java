@@ -25,13 +25,13 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.m2049r.xmrwallet.util.FilterHelper;
 import com.m2049r.xmrwallet.R;
 import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeApi;
@@ -41,6 +41,7 @@ import com.m2049r.xmrwallet.util.Helper;
 
 import java.util.Locale;
 
+import androidx.core.content.ContextCompat;
 import timber.log.Timber;
 
 public class ExchangeTextView extends LinearLayout
@@ -185,10 +186,7 @@ public class ExchangeTextView extends LinearLayout
         pbExchange = (ProgressBar) findViewById(R.id.pbExchange);
 
         // make progress circle gray
-        pbExchange.getIndeterminateDrawable().
-                setColorFilter(getResources().getColor(R.color.trafficGray),
-                        android.graphics.PorterDuff.Mode.MULTIPLY);
-
+        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.trafficGray),FilterHelper.Mode.MULTIPLY);
 
         sCurrencyA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

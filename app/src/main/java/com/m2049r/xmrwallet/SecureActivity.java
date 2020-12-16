@@ -18,14 +18,19 @@ package com.m2049r.xmrwallet;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import com.m2049r.xmrwallet.util.LocaleHelper;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import static android.view.WindowManager.LayoutParams;
 
+
+
 public abstract class SecureActivity extends AppCompatActivity {
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -105,7 +105,7 @@ public class BTChipTransportAndroidHID implements BTChipTransport {
         while (offset != command.length) {
             int blockSize = (command.length - offset > HID_BUFFER_SIZE ? HID_BUFFER_SIZE : command.length - offset);
             System.arraycopy(command, offset, transferBuffer, 0, blockSize);
-            requestOut.queue(ByteBuffer.wrap(transferBuffer), HID_BUFFER_SIZE);
+            requestOut.queue(ByteBuffer.wrap(transferBuffer));
             connection.requestWait();
             offset += blockSize;
         }
@@ -115,7 +115,7 @@ public class BTChipTransportAndroidHID implements BTChipTransport {
         requestIn.initialize(connection, in);
         while ((responseData = LedgerHelper.unwrapResponseAPDU(LEDGER_DEFAULT_CHANNEL, response.toByteArray(), HID_BUFFER_SIZE)) == null) {
             responseBuffer.clear();
-            requestIn.queue(responseBuffer, HID_BUFFER_SIZE);
+            requestIn.queue(responseBuffer);
             connection.requestWait();
             responseBuffer.rewind();
             responseBuffer.get(transferBuffer, 0, HID_BUFFER_SIZE);
