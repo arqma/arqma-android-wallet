@@ -35,7 +35,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,14 +44,12 @@ import com.m2049r.xmrwallet.ledger.LedgerProgressDialog;
 import com.m2049r.xmrwallet.model.NetworkType;
 import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.model.WalletManager;
-import com.m2049r.xmrwallet.util.FingerprintHelper;
 import com.m2049r.xmrwallet.util.Helper;
 import com.m2049r.xmrwallet.util.KeyStoreHelper;
 import com.m2049r.xmrwallet.util.MoneroThreadPoolExecutor;
 import com.m2049r.xmrwallet.widget.Toolbar;
 
 import androidx.annotation.Nullable;
-import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import timber.log.Timber;
 
@@ -487,33 +484,6 @@ public class GenerateReviewFragment extends Fragment {
         final TextInputLayout etPasswordB = (TextInputLayout) promptsView.findViewById(R.id.etWalletPasswordB);
         etPasswordB.setHint(getString(R.string.prompt_changepwB, walletName));
 
-        LinearLayout llFingerprintAuth = (LinearLayout) promptsView.findViewById(R.id.llFingerprintAuth);
-        final Switch swFingerprintAllowed = (Switch) llFingerprintAuth.getChildAt(0);
-        if (FingerprintHelper.isDeviceSupported(getActivity())) {
-            llFingerprintAuth.setVisibility(View.VISIBLE);
-
-            swFingerprintAllowed.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!swFingerprintAllowed.isChecked()) return;
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage(HtmlCompat.fromHtml(getString(R.string.generate_fingerprint_warn), HtmlCompat.FROM_HTML_MODE_LEGACY))
-                            .setCancelable(false)
-                            .setPositiveButton(getString(R.string.label_ok), null)
-                            .setNegativeButton(getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    swFingerprintAllowed.setChecked(false);
-                                }
-                            })
-                            .show();
-                }
-            });
-
-            swFingerprintAllowed.setChecked(FingerprintHelper.isFingerPassValid(getActivity(), walletName));
-        }
-
         etPasswordA.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -587,7 +557,7 @@ public class GenerateReviewFragment extends Fragment {
                         } else if (!newPasswordA.equals(newPasswordB)) {
                             etPasswordB.setError(getString(R.string.generate_bad_passwordB));
                         } else if (newPasswordA.equals(newPasswordB)) {
-                            new AsyncChangePassword().execute(newPasswordA, Boolean.toString(swFingerprintAllowed.isChecked()));
+                            new AsyncChangePassword().execute(newPasswordA);
                             Helper.hideKeyboardAlways(getActivity());
                             openDialog.dismiss();
                             openDialog = null;
@@ -610,7 +580,7 @@ public class GenerateReviewFragment extends Fragment {
                     } else if (!newPasswordA.equals(newPasswordB)) {
                         etPasswordB.setError(getString(R.string.generate_bad_passwordB));
                     } else if (newPasswordA.equals(newPasswordB)) {
-                        new AsyncChangePassword().execute(newPasswordA, Boolean.toString(swFingerprintAllowed.isChecked()));
+                        new AsyncChangePassword().execute(newPasswordA);
                         Helper.hideKeyboardAlways(getActivity());
                         openDialog.dismiss();
                         openDialog = null;

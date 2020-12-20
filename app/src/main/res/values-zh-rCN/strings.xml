@@ -80,10 +80,8 @@
     <string name="prompt_changepw">新密码%1$s</string>
     <string name="prompt_changepwB">重复新密码%1$s</string>
     <string name="prompt_password">密码%1$s</string>
-    <string name="prompt_fingerprint_auth">您也可以选择指纹登录。\n请触摸传感器。</string>
     <string name="prompt_send_password">确认密码</string>
     <string name="prompt_open_wallet">钱包打开中&#8230;</string>
-    <string name="bad_fingerprint">无法识别您的指纹，请重试。</string>
     <string name="bad_password">密码错误！</string>
     <string name="bad_saved_password">保存的密码无效。\n请手动输入密码。</string>
     <string name="bad_wallet">钱包不存在！</string>
@@ -118,16 +116,6 @@
     <string name="generate_title">创建新钱包</string>
     <string name="generate_name_hint">钱包名</string>
     <string name="generate_password_hint">钱包密码</string>
-    <string name="generate_fingerprint_hint">开通指纹登录钱包</string>
-    <string name="generate_fingerprint_warn"><![CDATA[
-                 <strong>指纹授权</strong>
-                 <p>启用指纹授权后，无需输入密码，也可查看钱包余额和收款。</p>
-                 <p>出于安全性的考量，若要查看钱包明细和汇款，arqmaDroid还是会要求您输入密码。</p>
-                 <strong>安全警告</strong>
-                 <p>最后arqmaDroid提醒您，任何取得您指纹的人，都能够进入您的账户。</p>
-                 <p>比如，他人可能趁您熟睡时，使用您的指纹登录您的账户。</p>
-                 <strong>您确定要开启此功能？</strong>
-    ]]></string>
     <string name="generate_bad_passwordB">密码不匹配</string>
     <string name="generate_empty_passwordB">密码请不要为空</string>
     <string name="generate_buttonGenerate">创建钱包！</string>

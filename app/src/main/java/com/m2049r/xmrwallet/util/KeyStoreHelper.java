@@ -165,6 +165,15 @@ public class KeyStoreHelper {
                 .remove(wallet).apply();
     }
 
+    public static boolean isPasswordInKeyStore(Context context, String wallet) {
+        try {
+            KeyStoreHelper.loadWalletUserPass(context, wallet);
+            return true;
+        } catch (KeyStoreHelper.BrokenPasswordStoreException ex) {
+            return false;
+        }
+    }
+
     /**
      * Creates a public and private key and stores it using the Android Key
      * Store, so that only this application will be able to access the keys.

@@ -79,7 +79,6 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
 
     public static final String REQUEST_ID = "id";
     public static final String REQUEST_PW = "pw";
-    public static final String REQUEST_FINGERPRINT_USED = "fingerprint";
     public static final String REQUEST_STREETMODE = "streetmode";
 
     private NavigationView accountsView;
@@ -87,7 +86,6 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
     private ActionBarDrawerToggle drawerToggle;
 
     private Toolbar toolbar;
-    private boolean needVerifyIdentity;
     private boolean requestStreetMode = false;
 
     private String password;
@@ -139,7 +137,6 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
 
     private void enableStreetMode(boolean enable) {
         if (enable) {
-            needVerifyIdentity = true;
             streetMode = getWallet().getDaemonBlockChainHeight();
         } else {
             streetMode = 0;
@@ -179,7 +176,6 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
         if (extras != null) {
             acquireWakeLock();
             String walletId = extras.getString(REQUEST_ID);
-            needVerifyIdentity = extras.getBoolean(REQUEST_FINGERPRINT_USED);
             // we can set the streetmode height AFTER opening the wallet
             requestStreetMode = extras.getBoolean(REQUEST_STREETMODE);
             password = extras.getString(REQUEST_PW);
@@ -290,9 +286,9 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
     }
 
     private void onDisableStreetMode() {
-        Helper.promptPassword(WalletActivity.this, getWallet().getName(), false, new Helper.PasswordAction() {
+        Helper.promptPassword(WalletActivity.this, getWallet().getName(), new Helper.PasswordAction() {
             @Override
-            public void action(String walletName, String password, boolean fingerprintUsed) {
+            public void action(String walletName, String password) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -849,17 +845,12 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
                         final Bundle extras = new Bundle();
                         extras.putString(GenerateReviewFragment.REQUEST_TYPE, GenerateReviewFragment.VIEW_TYPE_WALLET);
 
-                        if (needVerifyIdentity) {
-                            Helper.promptPassword(WalletActivity.this, getWallet().getName(), true, new Helper.PasswordAction() {
+                            Helper.promptPassword(WalletActivity.this, getWallet().getName(), new Helper.PasswordAction() {
                                 @Override
-                                public void action(String walletName, String password, boolean fingerprintUsed) {
+                                public void action(String walletName, String password) {
                                     replaceFragment(new GenerateReviewFragment(), null, extras);
-                                    needVerifyIdentity = false;
                                 }
                             });
-                        } else {
-                            replaceFragment(new GenerateReviewFragment(), null, extras);
-                        }
 
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -959,6 +950,7 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Timber.d("onRequestPermissionsResult()");
         switch (requestCode) {
             case Helper.PERMISSIONS_REQUEST_CAMERA:

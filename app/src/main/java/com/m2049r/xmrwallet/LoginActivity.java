@@ -190,9 +190,9 @@ public class LoginActivity extends BaseActivity
                     case DialogInterface.BUTTON_POSITIVE:
                         final File walletFile = Helper.getWalletFile(LoginActivity.this, walletName);
                         if (WalletManager.getInstance().walletExists(walletFile)) {
-                            Helper.promptPassword(LoginActivity.this, walletName, true, new Helper.PasswordAction() {
+                            Helper.promptPassword(LoginActivity.this, walletName, new Helper.PasswordAction() {
                                 @Override
-                                public void action(String walletName, String password, boolean fingerprintUsed) {
+                                public void action(String walletName, String password) {
                                     if (checkDevice(walletName, password))
                                         startDetails(walletFile, password, GenerateReviewFragment.VIEW_TYPE_DETAILS);
                                 }
@@ -223,9 +223,9 @@ public class LoginActivity extends BaseActivity
         if (checkServiceRunning()) return;
         final File walletFile = Helper.getWalletFile(this, walletName);
         if (WalletManager.getInstance().walletExists(walletFile)) {
-            Helper.promptPassword(LoginActivity.this, walletName, false, new Helper.PasswordAction() {
+            Helper.promptPassword(LoginActivity.this, walletName, new Helper.PasswordAction() {
                 @Override
-                public void action(String walletName, String password, boolean fingerprintUsed) {
+                public void action(String walletName, String password) {
                     if (checkDevice(walletName, password))
                         startReceive(walletFile, password);
                 }
@@ -580,13 +580,11 @@ public class LoginActivity extends BaseActivity
         }
     }
 
-    void startWallet(String walletName, String walletPassword,
-                     boolean fingerprintUsed, boolean streetmode) {
+    void startWallet(String walletName, String walletPassword, boolean streetmode) {
         Timber.d("startWallet()");
         Intent intent = new Intent(getApplicationContext(), WalletActivity.class);
         intent.putExtra(WalletActivity.REQUEST_ID, walletName);
         intent.putExtra(WalletActivity.REQUEST_PW, walletPassword);
-        intent.putExtra(WalletActivity.REQUEST_FINGERPRINT_USED, fingerprintUsed);
         intent.putExtra(WalletActivity.REQUEST_STREETMODE, streetmode);
         startActivity(intent);
     }
@@ -610,6 +608,7 @@ public class LoginActivity extends BaseActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Timber.d("onRequestPermissionsResult()");
         switch (requestCode) {
             case Helper.PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
@@ -1195,12 +1194,11 @@ public class LoginActivity extends BaseActivity
         File walletFile = Helper.getWalletFile(this, walletNode.getName());
         if (WalletManager.getInstance().walletExists(walletFile)) {
             WalletManager.getInstance().setDaemon(walletNode);
-            Helper.promptPassword(LoginActivity.this, walletNode.getName(), false,
-                    new Helper.PasswordAction() {
+            Helper.promptPassword(LoginActivity.this, walletNode.getName(),new Helper.PasswordAction() {
                         @Override
-                        public void action(String walletName, String password, boolean fingerprintUsed) {
+                        public void action(String walletName, String password) {
                             if (checkDevice(walletName, password))
-                                startWallet(walletName, password, fingerprintUsed, streetmode);
+                                startWallet(walletName, password, streetmode);
 
                         }
                     });
