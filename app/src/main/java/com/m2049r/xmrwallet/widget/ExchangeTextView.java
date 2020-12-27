@@ -186,7 +186,7 @@ public class ExchangeTextView extends LinearLayout
         pbExchange = (ProgressBar) findViewById(R.id.pbExchange);
 
         // make progress circle gray
-        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.trafficGray),FilterHelper.Mode.MULTIPLY);
+        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.grey),FilterHelper.Mode.MULTIPLY);
 
         sCurrencyA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -74,9 +74,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="0"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:drawableTop="@drawable/ic_settings_orange_24dp"
+                android:drawableTop="@drawable/ic_settings_primary_dark_24dp"
                 android:text="@string/send_generate_paymentid_hint"
-                android:textColor="@color/moneroGray"
+                android:textColor="@color/grey"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/ic_info_outline_gray_24dp"
+                    android:drawableStart="@drawable/ic_info_outline_grey_24dp"
                     android:text="@string/label_receive_info_gen_qr_code"
                     android:textAlignment="center"
                     android:textSize="16sp"

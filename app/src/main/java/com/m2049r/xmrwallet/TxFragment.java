@@ -237,9 +237,9 @@ public class TxFragment extends Fragment {
         } else if (info.isPending) {
             setTxColour(ContextCompat.getColor(getContext(), R.color.tx_pending));
         } else if (info.direction == TransactionInfo.Direction.Direction_In) {
-            setTxColour(ContextCompat.getColor(getContext(), R.color.tx_green));
+            setTxColour(ContextCompat.getColor(getContext(), R.color.tx_in));
         } else {
-            setTxColour(ContextCompat.getColor(getContext(), R.color.tx_red));
+            setTxColour(ContextCompat.getColor(getContext(), R.color.tx_out));
         }
         Set<String> destinations = new HashSet<>();
         StringBuffer sb = new StringBuffer();

@@ -48,7 +48,7 @@
                     android:layout_gravity="start|center_vertical"
                     android:layout_margin="8dp"
                     android:drawablePadding="8dp"
-                    android:drawableStart="@drawable/ic_check_gray_24dp"
+                    android:drawableStart="@drawable/ic_check_grey_24dp"
                     android:gravity="center"
                     android:text="@string/info_paymentid_intergrated"
                     android:textSize="18sp"
@@ -92,7 +92,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:background="?android:selectableItemBackground"
-                        android:drawableTop="@drawable/ic_settings_orange_24dp"
+                        android:drawableTop="@drawable/ic_settings_primary_dark_24dp"
                         android:text="@string/send_generate_paymentid_hint" />
                 </LinearLayout>
             </FrameLayout>
@@ -136,7 +136,7 @@
                     style="@style/MoneroText.Button"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
-                    android:background="@drawable/ic_scan"
+                    android:background="@drawable/ic_scan_secondary_24dp"
                     android:gravity="center"
                     android:text="@string/send_qr_hint"
                     android:textSize="20dp" />

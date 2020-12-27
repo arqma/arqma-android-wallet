@@ -82,7 +82,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             // the vector image does not work well for androis < Nougat
             toolbarImage.getLayoutParams().width = (int) getResources().getDimension(R.dimen.logo_width);
-            toolbarImage.setImageResource(R.drawable.ic_logo_horizontal_arqma);
+            toolbarImage.setImageResource(R.drawable.ic_text_128x64);
         }
 
         toolbarTitle = (TextView) findViewById(R.id.toolbarTitle);

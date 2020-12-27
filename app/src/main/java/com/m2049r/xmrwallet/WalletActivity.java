@@ -221,9 +221,9 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
         MenuItem streetmodeItem = menu.findItem(R.id.action_streetmode);
         if (streetmodeItem != null)
             if (isStreetMode()) {
-                streetmodeItem.setIcon(R.drawable.gunther_csi_24dp);
+                streetmodeItem.setIcon(R.drawable.ic_logo_secondary_light_32dp);
             } else {
-                streetmodeItem.setIcon(R.drawable.gunther_24dp);
+                streetmodeItem.setIcon(R.drawable.ic_logo_brand_32dp);
             }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -382,10 +382,10 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
                 toolbar.setBackgroundResource(R.drawable.backgound_toolbar_mainnet);
                 break;
             case NetworkType_Testnet:
-                toolbar.setBackgroundResource(R.color.colorPrimaryDark);
+                toolbar.setBackgroundResource(R.color.colorPriDark);
                 break;
             case NetworkType_Stagenet:
-                toolbar.setBackgroundResource(R.color.colorPrimaryDark);
+                toolbar.setBackgroundResource(R.color.colorPriDark);
                 break;
             default:
                 throw new IllegalStateException("Unsupported Network: " + WalletManager.getInstance().getNetworkType());

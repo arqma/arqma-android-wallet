@@ -51,12 +51,12 @@ public class Notice {
                             R.string.help_wallet,
                             1)
             );
-            notices.add(
+            /*notices.add(
                     new Notice(NOTICE_SHOW_LEDGER,
                             R.string.info_ledger_enabled,
                             R.string.help_create_ledger,
                             1)
-            );
+            );*/
         }
     }
 
@@ -89,7 +89,7 @@ public class Notice {
 
         final LinearLayout ll =
                 (LinearLayout) LayoutInflater.from(context)
-                        .inflate(R.layout.template_notice, parent, false);
+                        .inflate(R.layout.notice_template, parent, false);
 
         ((TextView) ll.findViewById(R.id.tvNotice)).setText(textResId);
 

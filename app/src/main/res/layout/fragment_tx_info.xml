@@ -101,7 +101,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/bTxNotes"
-                        android:backgroundTint="@color/moneroGray"
+                        android:backgroundTint="@color/grey"
                         android:hint="@string/tx_notes_hint"
                         android:inputType="textMultiLine" />
 

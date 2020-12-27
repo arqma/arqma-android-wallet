@@ -176,7 +176,7 @@ public class ExchangeView extends LinearLayout
         pbExchange = (ProgressBar) findViewById(R.id.pbExchange);
 
         // make progress circle gray
-        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.trafficGray),FilterHelper.Mode.MULTIPLY);
+        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.grey),FilterHelper.Mode.MULTIPLY);
 
         sCurrencyA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -202,7 +202,7 @@ public class ExchangeView extends LinearLayout
                 parentView.post(new Runnable() {
                     @Override
                     public void run() {
-                        ((TextView) parentView.getChildAt(0)).setTextColor(ContextCompat.getColor(getContext(), R.color.moneroGray));
+                        ((TextView) parentView.getChildAt(0)).setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
                     }
                 });
                 doExchange();

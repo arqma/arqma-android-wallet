@@ -231,7 +231,7 @@ public class ReceiveFragment extends Fragment {
     void enableSubaddressButton(boolean enable) {
         bSubaddress.setEnabled(enable);
         if (enable) {
-            bSubaddress.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_settings_orange_24dp, 0, 0);
+            bSubaddress.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_settings_primary_dark_24dp, 0, 0);
         } else {
             bSubaddress.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_settings_gray_24dp, 0, 0);
         }
@@ -455,7 +455,7 @@ public class ReceiveFragment extends Fragment {
 
     private Bitmap getMoneroLogo() {
         if (logo == null) {
-            logo = Helper.getBitmap(getContext(), R.drawable.ic_arqma_logo_b);
+            logo = Helper.getBitmap(getContext(), R.drawable.ic_logo_brand_32dp);
         }
         return logo;
     }

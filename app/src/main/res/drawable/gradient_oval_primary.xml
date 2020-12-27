@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
+    android:shape="oval">
     <gradient
         android:angle="45"
-        android:endColor="@color/moneroStreetA"
-        android:startColor="@color/moneroStreetB"
+        android:endColor="@color/colorPriDark"
+        android:startColor="@color/colorPriLight"
         android:type="linear" />
 </shape>

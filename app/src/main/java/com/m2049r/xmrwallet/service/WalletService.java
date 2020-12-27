@@ -584,7 +584,7 @@ public class WalletService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getString(R.string.service_description))
                 .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_arqma_logo_b)
+                .setSmallIcon(R.drawable.ic_logo_brand_32dp)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(NOTIFICATION_ID, notification);
