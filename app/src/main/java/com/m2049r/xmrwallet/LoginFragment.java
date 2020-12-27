@@ -129,7 +129,7 @@ public class LoginFragment extends Fragment implements WalletInfoAdapter.OnInter
         super.onResume();
         Timber.d("onResume()");
         activityCallback.setTitle(null);
-        activityCallback.setToolbarButton(Toolbar.BUTTON_CREDITS);
+        activityCallback.setToolbarButton(Toolbar.BUTTON_NONE);
         activityCallback.showNet();
     }
 

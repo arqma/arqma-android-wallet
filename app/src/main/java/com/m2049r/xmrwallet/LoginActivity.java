@@ -508,16 +508,13 @@ public class LoginActivity extends BaseActivity
     public void showNet() {
         switch (WalletManager.getInstance().getNetworkType()) {
             case NetworkType_Mainnet:
-                toolbar.setSubtitle(getString(R.string.connect_mainnet));
-                toolbar.setBackgroundResource(R.drawable.backgound_toolbar_mainnet);
+                toolbar.setNetworkSubTitleTextColor(getResources().getString(R.string.connect_mainnet));
                 break;
             case NetworkType_Testnet:
                 toolbar.setSubtitle(getString(R.string.connect_testnet));
-                toolbar.setBackgroundResource(R.color.colorPriDark);
                 break;
             case NetworkType_Stagenet:
-                toolbar.setSubtitle(getString(R.string.connect_stagenet));
-                toolbar.setBackgroundResource(R.color.colorPriDark);
+                toolbar.setNetworkSubTitleTextColor(getResources().getString(R.string.connect_stagenet));
                 break;
             default:
                 throw new IllegalStateException("NetworkType unknown: " + WalletManager.getInstance().getNetworkType());

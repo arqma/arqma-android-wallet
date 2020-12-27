@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.m2049r.xmrwallet.R;
 
+import androidx.core.content.ContextCompat;
 import timber.log.Timber;
 
 public class Toolbar extends androidx.appcompat.widget.Toolbar {
@@ -45,7 +46,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
     ImageView toolbarImage;
     TextView toolbarTitle;
     TextView toolbarSubtitle;
-    Button bCredits;
+    Button bToolbar;
 
     public Toolbar(Context context) {
         super(context);
@@ -87,8 +88,8 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
 
         toolbarTitle = (TextView) findViewById(R.id.toolbarTitle);
         toolbarSubtitle = (TextView) findViewById(R.id.toolbarSubtitle);
-        bCredits = (Button) findViewById(R.id.bCredits);
-        bCredits.setOnClickListener(new View.OnClickListener() {
+        bToolbar = (Button) findViewById(R.id.bToolbar);
+        bToolbar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (onButtonListener != null) {
                     onButtonListener.onButton(buttonType);
@@ -119,40 +120,40 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
     public final static int BUTTON_CREDITS = 3;
     public final static int BUTTON_CANCEL = 4;
 
-    int buttonType = BUTTON_CREDITS;
+    int buttonType = BUTTON_NONE;
 
     public void setButton(int type) {
         switch (type) {
             case BUTTON_BACK:
                 Timber.d("BUTTON_BACK");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back_white_24dp, 0, 0, 0);
-                bCredits.setText(null);
-                bCredits.setVisibility(View.VISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back_white_24dp, 0, 0, 0);
+                bToolbar.setText(null);
+                bToolbar.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_CLOSE:
                 Timber.d("BUTTON_CLOSE");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close_white_24dp, 0, 0, 0);
-                bCredits.setText(R.string.label_close);
-                bCredits.setVisibility(View.VISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close_white_24dp, 0, 0, 0);
+                bToolbar.setText(R.string.label_close);
+                bToolbar.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_CREDITS:
                 Timber.d("BUTTON_CREDITS");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_white_24dp, 0, 0, 0);
-                bCredits.setText(R.string.label_credits);
-                bCredits.setVisibility(View.VISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_white_24dp, 0, 0, 0);
+                bToolbar.setText(R.string.label_credits);
+                bToolbar.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_CANCEL:
                 Timber.d("BUTTON_CANCEL");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close_white_24dp, 0, 0, 0);
-                bCredits.setText(R.string.label_cancel);
-                bCredits.setVisibility(View.VISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close_white_24dp, 0, 0, 0);
+                bToolbar.setText(R.string.label_cancel);
+                bToolbar.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_NONE:
             default:
                 Timber.d("BUTTON_NONE");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                bCredits.setText(null);
-                bCredits.setVisibility(View.INVISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                bToolbar.setText(null);
+                bToolbar.setVisibility(View.INVISIBLE);
         }
         buttonType = type;
     }
@@ -163,6 +164,15 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
             toolbarSubtitle.setVisibility(View.VISIBLE);
         } else {
             toolbarSubtitle.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void setNetworkSubTitleTextColor(String subtitle) {
+        setSubtitle(subtitle);
+        if (subtitle.equals(getResources().getString(R.string.connect_mainnet))) {
+            toolbarSubtitle.setTextColor(ContextCompat.getColor(getContext(), R.color.colorBrandLight));
+        } else if (subtitle.equals(getResources().getString(R.string.connect_stagenet))) {
+            toolbarSubtitle.setTextColor(ContextCompat.getColor(getContext(), R.color.colorSecLight));
         }
     }
 }

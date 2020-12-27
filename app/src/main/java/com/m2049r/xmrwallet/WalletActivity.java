@@ -379,13 +379,13 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
     public void showNet() {
         switch (WalletManager.getInstance().getNetworkType()) {
             case NetworkType_Mainnet:
-                toolbar.setBackgroundResource(R.drawable.backgound_toolbar_mainnet);
+                toolbar.setNetworkSubTitleTextColor(getResources().getString(R.string.connect_mainnet));
                 break;
             case NetworkType_Testnet:
                 toolbar.setBackgroundResource(R.color.colorPriDark);
                 break;
             case NetworkType_Stagenet:
-                toolbar.setBackgroundResource(R.color.colorPriDark);
+                toolbar.setNetworkSubTitleTextColor(getResources().getString(R.string.connect_stagenet));
                 break;
             default:
                 throw new IllegalStateException("Unsupported Network: " + WalletManager.getInstance().getNetworkType());

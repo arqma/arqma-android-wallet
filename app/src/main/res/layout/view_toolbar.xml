@@ -3,12 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <Button
-        android:id="@+id/bCredits"
+        android:id="@+id/bToolbar"
         style="@style/ToolBarStyle.ActionButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_favorite_white_24dp"
-        android:text="@string/label_credits" />
+        android:layout_height="wrap_content" />
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
