@@ -138,7 +138,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
                 break;
             case BUTTON_CREDITS:
                 Timber.d("BUTTON_CREDITS");
-                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_white_24dp, 0, 0, 0);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_heart_white_24dp, 0, 0, 0);
                 bToolbar.setText(R.string.label_credits);
                 bToolbar.setVisibility(View.VISIBLE);
                 break;

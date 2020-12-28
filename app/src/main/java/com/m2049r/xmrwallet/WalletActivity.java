@@ -221,8 +221,10 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
         MenuItem streetmodeItem = menu.findItem(R.id.action_streetmode);
         if (streetmodeItem != null)
             if (isStreetMode()) {
+                toolbar.setBackgroundResource(R.drawable.backgound_toolbar_streetmode);
                 streetmodeItem.setIcon(R.drawable.ic_logo_secondary_light_32dp);
             } else {
+                toolbar.setBackgroundResource(R.drawable.backgound_toolbar_normalmode);
                 streetmodeItem.setIcon(R.drawable.ic_logo_brand_32dp);
             }
         return super.onPrepareOptionsMenu(menu);
@@ -274,6 +276,7 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
         if (isStreetMode()) {
             toolbar.setBackgroundResource(R.drawable.backgound_toolbar_streetmode);
         } else {
+            toolbar.setBackgroundResource(R.drawable.backgound_toolbar_normalmode);
             showNet();
         }
         invalidateOptionsMenu();
