@@ -1063,6 +1063,9 @@ public class LoginActivity extends BaseActivity
             case R.id.action_license_info:
                 AboutFragment.display(getSupportFragmentManager());
                 return true;
+            case R.id.action_credits:
+                CreditsFragment.display(getSupportFragmentManager());
+                return true;
             case R.id.action_help_list:
                 HelpFragment.display(getSupportFragmentManager(), R.string.help_list);
                 return true;
