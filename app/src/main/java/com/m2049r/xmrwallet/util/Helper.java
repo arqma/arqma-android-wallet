@@ -388,7 +388,7 @@ public class Helper {
         etPassword.setHint(context.getString(R.string.prompt_password, wallet));
 
         final TextView tvOpenPrompt = (TextView) promptsView.findViewById(R.id.tvOpenPrompt);
-        final Drawable icInfo = context.getDrawable(R.drawable.ic_info_green_36dp);
+        final Drawable icInfo = context.getDrawable(R.drawable.ic_info_primary_36dp);
 
         final CancellationSignal cancelSignal = new CancellationSignal();
 

@@ -79,6 +79,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        setContentInsetsAbsolute (0,0);
         toolbarImage = (ImageView) findViewById(R.id.toolbarImage);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             // the vector image does not work well for androis < Nougat
@@ -106,11 +107,11 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
     public void setTitle(String title) {
         toolbarTitle.setText(title);
         if (title != null) {
-            toolbarImage.setVisibility(View.INVISIBLE);
+            toolbarImage.setVisibility(View.GONE);
             toolbarTitle.setVisibility(View.VISIBLE);
         } else {
             toolbarImage.setVisibility(View.VISIBLE);
-            toolbarTitle.setVisibility(View.INVISIBLE);
+            toolbarTitle.setVisibility(View.GONE);
         }
     }
 
@@ -153,7 +154,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
                 Timber.d("BUTTON_NONE");
                 bToolbar.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 bToolbar.setText(null);
-                bToolbar.setVisibility(View.INVISIBLE);
+                bToolbar.setVisibility(View.GONE);
         }
         buttonType = type;
     }
@@ -163,7 +164,7 @@ public class Toolbar extends androidx.appcompat.widget.Toolbar {
         if (subtitle != null) {
             toolbarSubtitle.setVisibility(View.VISIBLE);
         } else {
-            toolbarSubtitle.setVisibility(View.INVISIBLE);
+            toolbarSubtitle.setVisibility(View.GONE);
         }
     }
 

@@ -13,7 +13,7 @@
     <color name="colorSecLight">#905293</color>
     <color name="colorSecDark">#34003a</color>
 
-    <color name="tx_in">@color/colorBrandDark</color>
+    <color name="tx_in">@color/colorPriDark</color>
     <color name="tx_out">@color/colorSecDark</color>
     <color name="tx_pending">@color/colorPriLight</color>
 

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
-    android:paddingTop="32dp">
+    android:paddingTop="@dimen/modal_padding_top">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -14,14 +14,15 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_height="64dp"
+            android:src="@drawable/ic_logo_brand_32dp" />
 
         <TextView
             style="@style/MoneroLabel.Caps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginTop="@dimen/modal_header_top"
             android:text="@string/about_whoami" />
 
         <TextView
