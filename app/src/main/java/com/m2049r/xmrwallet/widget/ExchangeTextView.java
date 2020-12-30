@@ -178,15 +178,15 @@ public class ExchangeTextView extends LinearLayout
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        tvAmountA = (TextView) findViewById(R.id.tvAmountA);
-        tvAmountB = (TextView) findViewById(R.id.tvAmountB);
-        sCurrencyA = (Spinner) findViewById(R.id.sCurrencyA);
-        sCurrencyB = (Spinner) findViewById(R.id.sCurrencyB);
-        evExchange = (ImageView) findViewById(R.id.evExchange);
-        pbExchange = (ProgressBar) findViewById(R.id.pbExchange);
+        tvAmountA = findViewById(R.id.tvAmountA);
+        tvAmountB = findViewById(R.id.tvAmountB);
+        sCurrencyA = findViewById(R.id.sCurrencyA);
+        sCurrencyB = findViewById(R.id.sCurrencyB);
+        evExchange = findViewById(R.id.evExchange);
+        pbExchange = findViewById(R.id.pbExchange);
 
-        // make progress circle gray
-        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.grey),FilterHelper.Mode.MULTIPLY);
+        // colorize progress circle
+        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.colorPri),FilterHelper.Mode.MULTIPLY);
 
         sCurrencyA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -260,23 +260,13 @@ public class ExchangeTextView extends LinearLayout
                     @Override
                     public void onSuccess(final ExchangeRate exchangeRate) {
                         if (isAttachedToWindow())
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    exchange(exchangeRate);
-                                }
-                            });
+                            new Handler(Looper.getMainLooper()).post(() -> exchange(exchangeRate));
                     }
 
                     @Override
                     public void onError(final Exception e) {
                         Timber.e(e.getLocalizedMessage());
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                exchangeFailed();
-                            }
-                        });
+                        new Handler(Looper.getMainLooper()).post(() -> exchangeFailed());
                     }
                 });
     }

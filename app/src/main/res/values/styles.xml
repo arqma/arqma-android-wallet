@@ -81,12 +81,17 @@
 
     <style name="MoneroText.Balance">
         <item name="android:textSize">32sp</item>
-        <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="MoneroText.Balance.Orange">
+    <style name="MoneroText.Balance.PriDark">
+        <item name="android:solidColor">@color/colorPriDark</item>
         <item name="android:textColor">@color/colorPriDark</item>
+    </style>
+
+    <style name="MoneroText.Balance.SecDark">
+        <item name="android:solidColor">@color/colorSecDark</item>
+        <item name="android:textColor">@color/colorSecDark</item>
     </style>
 
     <style name="MoneroText.Unconfirmed">
@@ -305,11 +310,15 @@
     </style>
 
     <style name="MoneroSpinnerItem" parent="android:Widget.TextView.SpinnerItem">
-        <item name="android:textAppearance">@style/MoneroTextAppearanceSpinnerItem</item>
+        <item name="android:textAppearance">@style/MoneroTextAppearanceSpinnerItemPriDark</item>
     </style>
 
-    <style name="MoneroTextAppearanceSpinnerItem" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+    <style name="MoneroTextAppearanceSpinnerItemPriDark" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
         <item name="android:textColor">@color/colorPriDark</item>
+    </style>
+
+    <style name="MoneroTextAppearanceSpinnerItemSecDark" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">@color/colorSecDark</item>
     </style>
 
     <style name="MoneroSpinnerItem.Balance">

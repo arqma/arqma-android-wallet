@@ -164,19 +164,19 @@ public class ExchangeView extends LinearLayout
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        etAmount = (TextInputLayout) findViewById(R.id.etAmount);
-        tvAmountB = (TextView) findViewById(R.id.tvAmountB);
-        sCurrencyA = (Spinner) findViewById(R.id.sCurrencyA);
+        etAmount = findViewById(R.id.etAmount);
+        tvAmountB = findViewById(R.id.tvAmountB);
+        sCurrencyA = findViewById(R.id.sCurrencyA);
         ArrayAdapter adapter = ArrayAdapter.createFromResource(getContext(), R.array.currency, R.layout.item_spinner);
         adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
         sCurrencyA.setAdapter(adapter);
-        sCurrencyB = (Spinner) findViewById(R.id.sCurrencyB);
+        sCurrencyB = findViewById(R.id.sCurrencyB);
         sCurrencyB.setAdapter(adapter);
-        evExchange = (ImageView) findViewById(R.id.evExchange);
-        pbExchange = (ProgressBar) findViewById(R.id.pbExchange);
+        evExchange = findViewById(R.id.evExchange);
+        pbExchange = findViewById(R.id.pbExchange);
 
-        // make progress circle gray
-        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.grey),FilterHelper.Mode.MULTIPLY);
+        // colorize progress circle
+        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.colorPri),FilterHelper.Mode.MULTIPLY);
 
         sCurrencyA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -199,11 +199,8 @@ public class ExchangeView extends LinearLayout
                 if (position != 0) { // if not XMR, select XMR on other
                     sCurrencyA.setSelection(0, true);
                 }
-                parentView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((TextView) parentView.getChildAt(0)).setTextColor(ContextCompat.getColor(getContext(), R.color.grey));
-                    }
+                parentView.post(() -> {
+                    ((TextView) parentView.getChildAt(0)).setTextColor(ContextCompat.getColor(getContext(), R.color.colorSec));
                 });
                 doExchange();
             }
@@ -214,24 +211,19 @@ public class ExchangeView extends LinearLayout
             }
         });
 
-        etAmount.getEditText().setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    doExchange();
-                }
+        etAmount.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                doExchange();
             }
         });
 
-        etAmount.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
-                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    doExchange();
-                    return true;
-                }
-                return false;
+        etAmount.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
+                    || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                doExchange();
+                return true;
             }
+            return false;
         });
 
 
@@ -325,23 +317,13 @@ public class ExchangeView extends LinearLayout
                     @Override
                     public void onSuccess(final ExchangeRate exchangeRate) {
                         if (isAttachedToWindow())
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    exchange(exchangeRate);
-                                }
-                            });
+                            new Handler(Looper.getMainLooper()).post(() -> exchange(exchangeRate));
                     }
 
                     @Override
                     public void onError(final Exception e) {
                         Timber.e(e.getLocalizedMessage());
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                exchangeFailed();
-                            }
-                        });
+                        new Handler(Looper.getMainLooper()).post(() -> exchangeFailed());
                     }
                 });
     }

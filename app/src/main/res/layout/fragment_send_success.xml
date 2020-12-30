@@ -39,7 +39,7 @@
 
                 <TextView
                     android:id="@+id/tvTxAmount"
-                    style="@style/MoneroText.Balance.Orange"
+                    style="@style/MoneroText.Balance.PriDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"

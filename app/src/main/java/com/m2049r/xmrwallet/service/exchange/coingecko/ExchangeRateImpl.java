@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.m2049r.xmrwallet.service.exchange.coinmarketcap;
+package com.m2049r.xmrwallet.service.exchange.coingecko;
 
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeException;
-import com.m2049r.xmrwallet.service.exchange.api.ExchangeRate;
+import com.m2049r.xmrwallet.service.exchange.api.BaseExchangeRate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,37 +27,23 @@ import java.util.NoSuchElementException;
 
 import androidx.annotation.NonNull;
 
-class ExchangeRateImpl implements ExchangeRate {
+class ExchangeRateImpl extends BaseExchangeRate {
 
-    private final String baseCurrency;
-    private final String quoteCurrency;
-    private final double rate;
 
     @Override
     public String getServiceName() {
-        return "coinmarketcap.com";
-    }
-
-    @Override
-    public String getBaseCurrency() {
-        return baseCurrency;
-    }
-
-    @Override
-    public String getQuoteCurrency() {
-        return quoteCurrency;
-    }
-
-    @Override
-    public double getRate() {
-        return rate;
+        return "coingecko.com";
     }
 
     ExchangeRateImpl(@NonNull final String baseCurrency, @NonNull final String quoteCurrency, double rate) {
-        super();
+        super(baseCurrency, quoteCurrency, rate);
+    }
+
+    ExchangeRateImpl(@NonNull final String baseCurrency, @NonNull final String quoteCurrency, double rate, final boolean inverse) {
+        double price = inverse ? (1d / rate) : rate;
         this.baseCurrency = baseCurrency;
         this.quoteCurrency = quoteCurrency;
-        this.rate = rate;
+        this.rate = price;
     }
 
     ExchangeRateImpl(final JSONObject jsonObject, final boolean swapAssets) throws JSONException, ExchangeException {

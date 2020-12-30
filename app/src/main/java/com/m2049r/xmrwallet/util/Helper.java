@@ -518,6 +518,6 @@ public class Helper {
     }
 
     static public ExchangeApi getExchangeApi() {
-        return new com.m2049r.xmrwallet.service.exchange.coinmarketcap.ExchangeApiImpl(OkHttpClientSingleton.getOkHttpClient());
+        return new com.m2049r.xmrwallet.service.exchange.coingecko.ExchangeApiImpl(OkHttpClientSingleton.getOkHttpClient());
     }
 }

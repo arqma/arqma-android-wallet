@@ -7,7 +7,7 @@ android {
         applicationId "com.arqma.Droid"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 23
+        versionCode 30
         versionName "v0.6.1 'Arq-Droid Devil's Randomness"
 
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

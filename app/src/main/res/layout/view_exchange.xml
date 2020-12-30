@@ -21,6 +21,7 @@
 
         <com.m2049r.xmrwallet.widget.CTextInputLayout
             android:id="@+id/etAmount"
+            style="@style/MoneroText.Balance.PriDark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -28,11 +29,10 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                style="@style/MoneroEdit"
+                style="@style/MoneroText.Balance.PriDark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:hint="@string/receive_amount_hint"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 tools:text="87.00000" />
@@ -48,7 +48,6 @@
 
         <Spinner
             android:id="@+id/sCurrencyB"
-            style="@style/MoneroSpinnerGray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -59,7 +58,7 @@
 
         <TextView
             android:id="@+id/tvAmountB"
-            style="@style/MoneroText"
+            style="@style/MoneroText.Balance.SecDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
@@ -82,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_statsup_24dp" />
+                android:src="@drawable/ic_statsup_primary_24dp" />
 
             <ProgressBar
                 android:id="@+id/pbExchange"

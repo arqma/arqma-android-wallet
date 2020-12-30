@@ -94,7 +94,7 @@ public class WalletFragment extends Fragment
         tvStreetView = view.findViewById(R.id.tvStreetView);
         llBalance = view.findViewById(R.id.llBalance);
         flExchange = view.findViewById(R.id.flExchange);
-        FilterHelper.setColorFilter(((ProgressBar) view.findViewById(R.id.pbExchange)).getIndeterminateDrawable(), ContextCompat.getColor(getContext(),R.color.grey),
+        FilterHelper.setColorFilter(((ProgressBar) view.findViewById(R.id.pbExchange)).getIndeterminateDrawable(), ContextCompat.getColor(getContext(),R.color.colorPri),
                 FilterHelper.Mode.MULTIPLY);
 
         tvProgress = view.findViewById(R.id.tvProgress);

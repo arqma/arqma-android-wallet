@@ -20,7 +20,7 @@
 
         <TextView
             android:id="@+id/tvAmountA"
-            style="@style/MoneroText.Balance.Orange"
+            style="@style/MoneroText.Balance.PriDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
@@ -51,7 +51,7 @@
 
         <TextView
             android:id="@+id/tvAmountB"
-            style="@style/MoneroText"
+            style="@style/MoneroText.Balance.SecDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_statsup_24dp" />
+                android:src="@drawable/ic_statsup_primary_24dp" />
 
             <ProgressBar
                 android:id="@+id/pbExchange"
