@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/data_top"
-                android:background="@drawable/backgound_seed"
+                android:background="@drawable/background_seed"
                 android:textAlignment="center"
                 tools:text="tucks slackens vehicle doctor oaks aloof balding knife rays wise haggled cuisine navy ladder suitcase dusted last thorn pixels karate ticket nibs violin zapped slackens" />
         </LinearLayout>

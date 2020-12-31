@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="@drawable/backgound_toolbar_normalmode"
+    android:background="@drawable/toolbar_background_normalmode"
     android:orientation="vertical"
     android:padding="16dp">
 

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgound_all"
+    android:background="@drawable/background_all"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -11,7 +11,7 @@
         style="@style/ToolBarStyle.Event"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/backgound_toolbar_normalmode"
+        android:background="@drawable/toolbar_background_normalmode"
         android:minHeight="?attr/actionBarSize" />
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

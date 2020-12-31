@@ -30,9 +30,6 @@
         <item name="colorPrimaryDark">@color/colorPriDark</item>
         <item name="colorPrimary">@color/greyDark</item>
         <item name="colorAccent">@color/colorPriLight</item>
-
-        <item name="android:spinnerItemStyle">@style/MoneroSpinnerItem</item>
-        <item name="android:spinnerStyle">@style/MoneroSpinner</item>
     </style>
 
     <style name="MoneroLabel" parent="@android:style/TextAppearance.DeviceDefault.Medium">
@@ -84,13 +81,17 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="MoneroText.Balance.PriDark">
-        <item name="android:solidColor">@color/colorPriDark</item>
-        <item name="android:textColor">@color/colorPriDark</item>
+    <style name="MoneroText.Receive">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="MoneroText.Balance.SecDark">
-        <item name="android:solidColor">@color/colorSecDark</item>
+
+    <style name="MoneroText.Receive.PriDark">
+       <item name="android:textColor">@color/colorPriDark</item>
+    </style>
+
+    <style name="MoneroText.Receive.SecDark">
         <item name="android:textColor">@color/colorSecDark</item>
     </style>
 
@@ -222,9 +223,9 @@
     </style>
 
 
-    <style name="MoneroText.Success">
+    <style name="MoneroText.SuccessPrimary">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/grey</item>
+        <item name="android:textColor">@color/colorPri</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -305,37 +306,44 @@
         <item name="android:dividerHeight">0dp</item>
     </style>
 
-    <style name="MoneroSpinner" parent="@style/Widget.AppCompat.Spinner">
-        <item name="android:background">@drawable/backgound_spinner_primary_dark</item>
+    <style name="SpinnerPrimaryDark" parent="@style/Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/spinner_background_primary_dark</item>
     </style>
 
-    <style name="MoneroSpinnerItem" parent="android:Widget.TextView.SpinnerItem">
-        <item name="android:textAppearance">@style/MoneroTextAppearanceSpinnerItemPriDark</item>
+    <style name="SpinnerSecondaryDark" parent="@style/Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/spinner_background_secondary_dark</item>
     </style>
 
-    <style name="MoneroTextAppearanceSpinnerItemPriDark" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+    <style name="SpinnerItemBalancePrimaryDark" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textAppearance">@style/SpinnerItemBalanceTextAppearancePrimaryDark</item>
+    </style>
+
+    <style name="SpinnerItemBalanceTextAppearancePrimaryDark" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
         <item name="android:textColor">@color/colorPriDark</item>
-    </style>
-
-    <style name="MoneroTextAppearanceSpinnerItemSecDark" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
-        <item name="android:textColor">@color/colorSecDark</item>
-    </style>
-
-    <style name="MoneroSpinnerItem.Balance">
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
 
-    <style name="MoneroTextAppearanceSpinnerItemGray" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
-        <item name="android:textColor">@color/grey</item>
+    <style name="SpinnerItemReceiveTextAppearance" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="MoneroSpinnerGray" parent="@style/Widget.AppCompat.Spinner">
-        <item name="android:background">@drawable/backgound_spinner_gray</item>
+    <style name="SpinnerItemReceiveTextAppearancePrimaryDark" parent="SpinnerItemReceiveTextAppearance">
+        <item name="android:textColor">@color/colorPriDark</item>
     </style>
 
-    <style name="MoneroSpinnerItemGray" parent="android:Widget.TextView.SpinnerItem">
-        <item name="android:textAppearance">@style/MoneroTextAppearanceSpinnerItemGray</item>
+    <style name="SpinnerItemReceiveTextAppearanceSecondaryDark" parent="SpinnerItemReceiveTextAppearance">
+        <item name="android:textColor">@color/colorSecDark</item>
     </style>
+
+    <style name="SpinnerItemReceivePrimaryDark" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textAppearance">@style/SpinnerItemReceiveTextAppearancePrimaryDark</item>
+    </style>
+
+    <style name="SpinnerItemReceiveSecondaryDark" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textAppearance">@style/SpinnerItemReceiveTextAppearanceSecondaryDark</item>
+    </style>
+
 </resources>

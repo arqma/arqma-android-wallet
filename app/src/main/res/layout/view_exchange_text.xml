@@ -11,16 +11,18 @@
 
         <Spinner
             android:id="@+id/sCurrencyA"
+            style="@style/SpinnerPrimaryDark"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:entries="@array/currency"
             android:gravity="center"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            tools:listitem="@layout/spinner_item_receive_primary_dark" />
 
         <TextView
             android:id="@+id/tvAmountA"
-            style="@style/MoneroText.Balance.PriDark"
+            style="@style/MoneroText.Receive.PriDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
@@ -42,16 +44,18 @@
 
         <Spinner
             android:id="@+id/sCurrencyB"
+            style="@style/SpinnerSecondaryDark"
             android:layout_width="56sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:entries="@array/currency"
             android:gravity="center"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            tools:listitem="@layout/spinner_item_receive_secondary_dark" />
 
         <TextView
             android:id="@+id/tvAmountB"
-            style="@style/MoneroText.Balance.SecDark"
+            style="@style/MoneroText.Receive.SecDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"

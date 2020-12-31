@@ -166,12 +166,18 @@ public class ExchangeView extends LinearLayout
         super.onFinishInflate();
         etAmount = findViewById(R.id.etAmount);
         tvAmountB = findViewById(R.id.tvAmountB);
+
+        ArrayAdapter adapterA = ArrayAdapter.createFromResource(getContext(), R.array.currency, R.layout.spinner_item_receive_primary_dark);
+
+        adapterA.setDropDownViewResource(R.layout.spinner_item_dropdown_item);
         sCurrencyA = findViewById(R.id.sCurrencyA);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(getContext(), R.array.currency, R.layout.item_spinner);
-        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
-        sCurrencyA.setAdapter(adapter);
+        sCurrencyA.setAdapter(adapterA);
+
+        ArrayAdapter adapterB = ArrayAdapter.createFromResource(getContext(), R.array.currency, R.layout.spinner_item_receive_secondary_dark);
+        adapterB.setDropDownViewResource(R.layout.spinner_item_dropdown_item);
         sCurrencyB = findViewById(R.id.sCurrencyB);
-        sCurrencyB.setAdapter(adapter);
+        sCurrencyB.setAdapter(adapterB);
+
         evExchange = findViewById(R.id.evExchange);
         pbExchange = findViewById(R.id.pbExchange);
 
@@ -199,9 +205,6 @@ public class ExchangeView extends LinearLayout
                 if (position != 0) { // if not XMR, select XMR on other
                     sCurrencyA.setSelection(0, true);
                 }
-                parentView.post(() -> {
-                    ((TextView) parentView.getChildAt(0)).setTextColor(ContextCompat.getColor(getContext(), R.color.colorSec));
-                });
                 doExchange();
             }
 
