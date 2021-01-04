@@ -2,12 +2,13 @@ package com.m2049r.xmrwallet.widget;
 
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.m2049r.xmrwallet.R;
+
+import androidx.annotation.Nullable;
 
 public class NumberPadView extends LinearLayout
         implements View.OnClickListener, View.OnLongClickListener {

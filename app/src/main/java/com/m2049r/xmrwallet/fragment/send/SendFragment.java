@@ -20,11 +20,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.InputType;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -34,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.m2049r.xmrwallet.OnBackPressedListener;
 import com.m2049r.xmrwallet.OnUriScannedListener;
@@ -52,6 +46,12 @@ import com.m2049r.xmrwallet.widget.Toolbar;
 
 import java.lang.ref.WeakReference;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import timber.log.Timber;
 
 public class SendFragment extends Fragment
@@ -116,8 +116,10 @@ public class SendFragment extends Fragment
         dotBar = (DotBar) view.findViewById(R.id.dotBar);
         bPrev = (Button) view.findViewById(R.id.bPrev);
         bNext = (Button) view.findViewById(R.id.bNext);
-        arrowPrev = getResources().getDrawable(R.drawable.ic_navigate_prev_white_24dp);
-        arrowNext = getResources().getDrawable(R.drawable.ic_navigate_next_white_24dp);
+        // arrowPrev = getResources().getDrawable(R.drawable.ic_navigate_prev_white_24dp);
+        // arrowNext = getResources().getDrawable(R.drawable.ic_navigate_next_white_24dp);
+        arrowPrev = ContextCompat.getDrawable(getContext(), R.drawable.ic_navigate_prev_white_24dp);
+        arrowNext = ContextCompat.getDrawable(getContext(), R.drawable.ic_navigate_next_white_24dp);
 
         ViewGroup llNotice = (ViewGroup) view.findViewById(R.id.llNotice);
         Notice.showAll(llNotice, ".*_send");
@@ -265,7 +267,7 @@ public class SendFragment extends Fragment
         return false;
     }
 
-    public class SpendPagerAdapter extends FragmentStatePagerAdapter {
+    public class SpendPagerAdapter extends FragmentPagerAdapter {
         private static final int POS_ADDRESS = 0;
         private static final int POS_AMOUNT = 1;
         private static final int POS_CONFIRM = 2;
@@ -275,7 +277,7 @@ public class SendFragment extends Fragment
         SparseArray<WeakReference<SendWizardFragment>> myFragments = new SparseArray<>();
 
         public SpendPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         public void addSuccess() {

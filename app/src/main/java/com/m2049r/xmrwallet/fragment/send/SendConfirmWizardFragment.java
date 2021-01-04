@@ -19,8 +19,6 @@ package com.m2049r.xmrwallet.fragment.send;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -31,6 +29,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.m2049r.xmrwallet.R;
 import com.m2049r.xmrwallet.data.TxData;
 import com.m2049r.xmrwallet.model.PendingTransaction;
@@ -38,6 +37,7 @@ import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.util.Helper;
 import com.m2049r.xmrwallet.util.UserNotes;
 
+import androidx.appcompat.app.AlertDialog;
 import timber.log.Timber;
 
 public class SendConfirmWizardFragment extends SendWizardFragment implements SendConfirm {

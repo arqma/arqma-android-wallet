@@ -1,7 +1,5 @@
 package com.m2049r.xmrwallet.util;
 
-import com.m2049r.xmrwallet.model.WalletManager;
-
 import java.math.BigInteger;
 
 public class CrazyPassEncoder {

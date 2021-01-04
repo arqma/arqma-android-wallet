@@ -10,13 +10,13 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etWalletPasswordA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 style="@style/MoneroEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -24,16 +24,16 @@
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:textAlignment="textStart" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etWalletPasswordB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/section_top"
             app:errorEnabled="true">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 style="@style/MoneroEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -41,27 +41,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:textAlignment="textStart" />
-        </android.support.design.widget.TextInputLayout>
-
-        <LinearLayout
-            android:id="@+id/llFingerprintAuth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="@string/generate_fingerprint_hint"
-                android:textSize="18sp" />
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

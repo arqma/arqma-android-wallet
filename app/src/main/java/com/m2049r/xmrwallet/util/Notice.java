@@ -18,8 +18,6 @@ package com.m2049r.xmrwallet.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +30,9 @@ import com.m2049r.xmrwallet.dialog.HelpFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 public class Notice {
     private static final String PREFS_NAME = "notice";
@@ -50,12 +51,12 @@ public class Notice {
                             R.string.help_wallet,
                             1)
             );
-            notices.add(
+            /*notices.add(
                     new Notice(NOTICE_SHOW_LEDGER,
                             R.string.info_ledger_enabled,
                             R.string.help_create_ledger,
                             1)
-            );
+            );*/
         }
     }
 
@@ -88,7 +89,7 @@ public class Notice {
 
         final LinearLayout ll =
                 (LinearLayout) LayoutInflater.from(context)
-                        .inflate(R.layout.template_notice, parent, false);
+                        .inflate(R.layout.notice_template, parent, false);
 
         ((TextView) ll.findViewById(R.id.tvNotice)).setText(textResId);
 

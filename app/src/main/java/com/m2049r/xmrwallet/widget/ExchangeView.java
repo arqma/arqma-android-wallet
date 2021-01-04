@@ -21,7 +21,6 @@ package com.m2049r.xmrwallet.widget;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -37,6 +36,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
+import com.m2049r.xmrwallet.util.FilterHelper;
 import com.m2049r.xmrwallet.R;
 import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeApi;
@@ -46,6 +47,7 @@ import com.m2049r.xmrwallet.util.Helper;
 
 import java.util.Locale;
 
+import androidx.core.content.ContextCompat;
 import timber.log.Timber;
 
 // TODO combine this with ExchangeTextView
@@ -162,22 +164,25 @@ public class ExchangeView extends LinearLayout
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        etAmount = (TextInputLayout) findViewById(R.id.etAmount);
-        tvAmountB = (TextView) findViewById(R.id.tvAmountB);
-        sCurrencyA = (Spinner) findViewById(R.id.sCurrencyA);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(getContext(), R.array.currency, R.layout.item_spinner);
-        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown_item);
-        sCurrencyA.setAdapter(adapter);
-        sCurrencyB = (Spinner) findViewById(R.id.sCurrencyB);
-        sCurrencyB.setAdapter(adapter);
-        evExchange = (ImageView) findViewById(R.id.evExchange);
-        pbExchange = (ProgressBar) findViewById(R.id.pbExchange);
+        etAmount = findViewById(R.id.etAmount);
+        tvAmountB = findViewById(R.id.tvAmountB);
 
-        // make progress circle gray
-        pbExchange.getIndeterminateDrawable().
-                setColorFilter(getResources().getColor(R.color.trafficGray),
-                        android.graphics.PorterDuff.Mode.MULTIPLY);
+        ArrayAdapter adapterA = ArrayAdapter.createFromResource(getContext(), R.array.currency, R.layout.spinner_item_receive_primary_dark);
 
+        adapterA.setDropDownViewResource(R.layout.spinner_item_dropdown_item);
+        sCurrencyA = findViewById(R.id.sCurrencyA);
+        sCurrencyA.setAdapter(adapterA);
+
+        ArrayAdapter adapterB = ArrayAdapter.createFromResource(getContext(), R.array.currency, R.layout.spinner_item_receive_secondary_dark);
+        adapterB.setDropDownViewResource(R.layout.spinner_item_dropdown_item);
+        sCurrencyB = findViewById(R.id.sCurrencyB);
+        sCurrencyB.setAdapter(adapterB);
+
+        evExchange = findViewById(R.id.evExchange);
+        pbExchange = findViewById(R.id.pbExchange);
+
+        // colorize progress circle
+        FilterHelper.setColorFilter(pbExchange.getIndeterminateDrawable(),ContextCompat.getColor(getContext(),R.color.colorPri),FilterHelper.Mode.MULTIPLY);
 
         sCurrencyA.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -200,12 +205,6 @@ public class ExchangeView extends LinearLayout
                 if (position != 0) { // if not XMR, select XMR on other
                     sCurrencyA.setSelection(0, true);
                 }
-                parentView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((TextView) parentView.getChildAt(0)).setTextColor(getResources().getColor(R.color.moneroGray));
-                    }
-                });
                 doExchange();
             }
 
@@ -215,24 +214,19 @@ public class ExchangeView extends LinearLayout
             }
         });
 
-        etAmount.getEditText().setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    doExchange();
-                }
+        etAmount.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                doExchange();
             }
         });
 
-        etAmount.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
-                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    doExchange();
-                    return true;
-                }
-                return false;
+        etAmount.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
+                    || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                doExchange();
+                return true;
             }
+            return false;
         });
 
 
@@ -326,23 +320,13 @@ public class ExchangeView extends LinearLayout
                     @Override
                     public void onSuccess(final ExchangeRate exchangeRate) {
                         if (isAttachedToWindow())
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    exchange(exchangeRate);
-                                }
-                            });
+                            new Handler(Looper.getMainLooper()).post(() -> exchange(exchangeRate));
                     }
 
                     @Override
                     public void onError(final Exception e) {
                         Timber.e(e.getLocalizedMessage());
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                exchangeFailed();
-                            }
-                        });
+                        new Handler(Looper.getMainLooper()).post(() -> exchangeFailed());
                     }
                 });
     }

@@ -6,11 +6,14 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:4.0.0'
     }
 }
 
 allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
     repositories {
         jcenter()
         maven {
@@ -26,9 +29,4 @@ task clean(type: Delete) {
 
 ext {
     apkName = 'arqmaDroid'
-    okHttpVersion = '3.9.0'
-    junitVersion = '4.12'
-    mockitoVersion = '1.10.19'
-    timberVersion = '4.7.1'
-    supportVersion = '28.0.0'
 }

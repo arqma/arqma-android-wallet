@@ -74,9 +74,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="0"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:drawableTop="@drawable/ic_settings_orange_24dp"
+                android:drawableTop="@drawable/ic_settings_primary_dark_24dp"
                 android:text="@string/send_generate_paymentid_hint"
-                android:textColor="@color/moneroGray"
+                android:textColor="@color/grey"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -89,7 +89,7 @@
             android:layout_marginTop="16dp"
             android:orientation="vertical" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etNotes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -103,13 +103,13 @@
                 android:inputType="textMultiLine"
                 android:textAlignment="textStart" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_above="@id/tvNfc"
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/ic_info_outline_gray_24dp"
+                    android:drawableStart="@drawable/ic_info_outline_grey_24dp"
                     android:text="@string/label_receive_info_gen_qr_code"
                     android:textAlignment="center"
                     android:textSize="16sp"
@@ -142,7 +142,7 @@
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:background="#00000000" />
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/tvNfc"

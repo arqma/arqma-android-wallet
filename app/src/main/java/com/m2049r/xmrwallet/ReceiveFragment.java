@@ -23,8 +23,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.nfc.NfcManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -41,6 +39,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -59,6 +58,7 @@ import com.m2049r.xmrwallet.widget.Toolbar;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.fragment.app.Fragment;
 import timber.log.Timber;
 
 public class ReceiveFragment extends Fragment {
@@ -92,43 +92,32 @@ public class ReceiveFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_receive, container, false);
 
-        pbProgress = (ProgressBar) view.findViewById(R.id.pbProgress);
-        tvAddressLabel = (TextView) view.findViewById(R.id.tvAddressLabel);
-        tvAddress = (TextView) view.findViewById(R.id.tvAddress);
-        etNotes = (TextInputLayout) view.findViewById(R.id.etNotes);
-        evAmount = (ExchangeView) view.findViewById(R.id.evAmount);
-        qrCode = (ImageView) view.findViewById(R.id.qrCode);
-        tvQrCode = (TextView) view.findViewById(R.id.tvQrCode);
-        qrCodeFull = (ImageView) view.findViewById(R.id.qrCodeFull);
-        etDummy = (EditText) view.findViewById(R.id.etDummy);
-        bCopyAddress = (ImageButton) view.findViewById(R.id.bCopyAddress);
-        bSubaddress = (Button) view.findViewById(R.id.bSubaddress);
+        pbProgress = view.findViewById(R.id.pbProgress);
+        tvAddressLabel = view.findViewById(R.id.tvAddressLabel);
+        tvAddress = view.findViewById(R.id.tvAddress);
+        etNotes = view.findViewById(R.id.etNotes);
+        evAmount = view.findViewById(R.id.evAmount);
+        qrCode = view.findViewById(R.id.qrCode);
+        tvQrCode = view.findViewById(R.id.tvQrCode);
+        qrCodeFull = view.findViewById(R.id.qrCodeFull);
+        etDummy = view.findViewById(R.id.etDummy);
+        bCopyAddress = view.findViewById(R.id.bCopyAddress);
+        bSubaddress = view.findViewById(R.id.bSubaddress);
 
         etDummy.setRawInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
-        bCopyAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                copyAddress();
-            }
-        });
+        bCopyAddress.setOnClickListener(v -> copyAddress());
         enableCopyAddress(false);
 
-        evAmount.setOnNewAmountListener(new ExchangeView.OnNewAmountListener() {
-            @Override
-            public void onNewAmount(String xmr) {
-                Timber.d("new amount = %s", xmr);
-                generateQr();
-            }
+        evAmount.setOnNewAmountListener(xmr -> {
+            Timber.d("new amount = %s", xmr);
+            generateQr();
         });
 
-        evAmount.setOnFailedExchangeListener(new ExchangeView.OnFailedExchangeListener() {
-            @Override
-            public void onFailedExchange() {
-                if (isAdded()) {
-                    clearQR();
-                    Toast.makeText(getActivity(), getString(R.string.message_exchange_failed), Toast.LENGTH_LONG).show();
-                }
+        evAmount.setOnFailedExchangeListener(() -> {
+            if (isAdded()) {
+                clearQR();
+                Toast.makeText(getActivity(), getString(R.string.message_exchange_failed), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -178,26 +167,20 @@ public class ReceiveFragment extends Fragment {
             }
         });
 
-        qrCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Helper.hideKeyboard(getActivity());
-                etDummy.requestFocus();
-                if (qrValid) {
-                    qrCodeFull.setImageBitmap(((BitmapDrawable) qrCode.getDrawable()).getBitmap());
-                    qrCodeFull.setVisibility(View.VISIBLE);
-                } else {
-                    evAmount.doExchange();
-                }
+        qrCode.setOnClickListener(v -> {
+            Helper.hideKeyboard(getActivity());
+            etDummy.requestFocus();
+            if (qrValid) {
+                qrCodeFull.setImageBitmap(((BitmapDrawable) qrCode.getDrawable()).getBitmap());
+                qrCodeFull.setVisibility(View.VISIBLE);
+            } else {
+                evAmount.doExchange();
             }
         });
 
-        qrCodeFull.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                qrCodeFull.setImageBitmap(null);
-                qrCodeFull.setVisibility(View.GONE);
-            }
+        qrCodeFull.setOnClickListener(v -> {
+            qrCodeFull.setImageBitmap(null);
+            qrCodeFull.setVisibility(View.GONE);
         });
 
         showProgress();
@@ -231,7 +214,7 @@ public class ReceiveFragment extends Fragment {
     void enableSubaddressButton(boolean enable) {
         bSubaddress.setEnabled(enable);
         if (enable) {
-            bSubaddress.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_settings_orange_24dp, 0, 0);
+            bSubaddress.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_settings_primary_dark_24dp, 0, 0);
         } else {
             bSubaddress.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_settings_gray_24dp, 0, 0);
         }
@@ -455,7 +438,7 @@ public class ReceiveFragment extends Fragment {
 
     private Bitmap getMoneroLogo() {
         if (logo == null) {
-            logo = Helper.getBitmap(getContext(), R.drawable.ic_arqma_logo_b);
+            logo = Helper.getBitmap(getContext(), R.drawable.ic_logo_brand_32dp);
         }
         return logo;
     }

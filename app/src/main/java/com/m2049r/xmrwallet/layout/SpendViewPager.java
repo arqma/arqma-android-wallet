@@ -17,11 +17,12 @@
 package com.m2049r.xmrwallet.layout;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.m2049r.xmrwallet.fragment.send.SendFragment;
+
+import androidx.viewpager.widget.ViewPager;
 
 public class SpendViewPager extends ViewPager {
 

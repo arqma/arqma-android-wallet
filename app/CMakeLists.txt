@@ -28,6 +28,13 @@ set_target_properties(ssl PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/openssl/lib/${ANDROID_ABI}/libssl.a)
 
 ############
+# ZMQ
+############
+add_library(libzmq STATIC IMPORTED)
+set_target_properties(libzmq PROPERTIES IMPORTED_LOCATION
+    ${EXTERNAL_LIBS_DIR}/libzmq/lib/${ANDROID_ABI}/libzmq.a)
+
+############
 # Boost
 ############
 
@@ -126,6 +133,10 @@ set_target_properties(unbound PROPERTIES IMPORTED_LOCATION
 add_library(epee STATIC IMPORTED)
 set_target_properties(epee PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libepee.a)
+                                                                    
+
+                                   
+                                                         
 
 add_library(checkpoints STATIC IMPORTED)
 set_target_properties(checkpoints PROPERTIES IMPORTED_LOCATION
@@ -135,6 +146,10 @@ add_library(device STATIC IMPORTED)
 set_target_properties(device PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libdevice.a)
 
+
+                                    
+                                                          
+                                                                
 add_library(multisig STATIC IMPORTED)
 set_target_properties(multisig PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libmultisig.a)
@@ -147,9 +162,19 @@ add_library(net STATIC IMPORTED)
 set_target_properties(net PROPERTIES IMPORTED_LOCATION
     ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/libnet.a)
 
-add_library(librpc_base STATIC IMPORTED)
-set_target_properties(librpc_base PROPERTIES IMPORTED_LOCATION
-    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librpc_base.a)
+
+    
+add_library(randomx STATIC IMPORTED)
+set_target_properties(randomx PROPERTIES IMPORTED_LOCATION
+        ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librandomx.a)
+             
+#add_library(librpc_base STATIC IMPORTED)
+#set_target_properties(librpc_base PROPERTIES IMPORTED_LOCATION
+#    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librpc_base.a)
+
+add_library(rpc_sig STATIC IMPORTED)
+set_target_properties(rpc_sig PROPERTIES IMPORTED_LOCATION
+    ${EXTERNAL_LIBS_DIR}/arqma/lib/${ANDROID_ABI}/librpc_sig.a)
 
 #############
 # System
@@ -171,7 +196,7 @@ target_link_libraries(  monerujo
                         ringct
                         ringct_basic
                         net
-                        librpc_base
+                        libzmq
                         common
                         cncrypto
                         blockchain_db
@@ -179,11 +204,16 @@ target_link_libraries(  monerujo
                         easylogging
                         unbound
                         epee
+
                         checkpoints
                         device
+                                        
                         multisig
                         version
-
+                        randomx
+                                    
+                        rpc_sig
+                        
                         boost_chrono
                         boost_date_time
                         boost_filesystem

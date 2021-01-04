@@ -31,13 +31,9 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
-import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.CancellationSignal;
 import android.os.Environment;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.text.Editable;
@@ -53,9 +49,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.m2049r.xmrwallet.BuildConfig;
 import com.m2049r.xmrwallet.R;
-import com.m2049r.xmrwallet.model.NetworkType;
 import com.m2049r.xmrwallet.model.Wallet;
 import com.m2049r.xmrwallet.model.WalletManager;
 import com.m2049r.xmrwallet.service.exchange.api.ExchangeApi;
@@ -72,7 +68,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import okhttp3.HttpUrl;
+import androidx.core.content.ContextCompat;
 import timber.log.Timber;
 
 public class Helper {
@@ -97,7 +93,7 @@ public class Helper {
             Timber.e(msg);
             throw new IllegalStateException(msg);
         }
-        File dir = new File(Environment.getExternalStorageDirectory(), folderName);
+        File dir = new File(context.getExternalFilesDir(null), folderName);
         if (!dir.exists()) {
             Timber.i("Creating %s", dir.getAbsolutePath());
             dir.mkdirs(); // try to make it
@@ -380,7 +376,7 @@ public class Helper {
     static AlertDialog openDialog = null; // for preventing opening of multiple dialogs
     static AsyncTask<Void, Void, Boolean> loginTask = null;
 
-    static public void promptPassword(final Context context, final String wallet, boolean fingerprintDisabled, final PasswordAction action) {
+    static public void promptPassword(final Context context, final String wallet, final PasswordAction action) {
         if (openDialog != null) return; // we are already asking for password
         LayoutInflater li = LayoutInflater.from(context);
         final View promptsView = li.inflate(R.layout.prompt_password, null);
@@ -392,24 +388,17 @@ public class Helper {
         etPassword.setHint(context.getString(R.string.prompt_password, wallet));
 
         final TextView tvOpenPrompt = (TextView) promptsView.findViewById(R.id.tvOpenPrompt);
-        final Drawable icFingerprint = context.getDrawable(R.drawable.ic_fingerprint);
-        final Drawable icError = context.getDrawable(R.drawable.ic_error_red_36dp);
-        final Drawable icInfo = context.getDrawable(R.drawable.ic_info_green_36dp);
+        final Drawable icInfo = context.getDrawable(R.drawable.ic_info_primary_36dp);
 
-        final boolean fingerprintAuthCheck = FingerprintHelper.isFingerPassValid(context, wallet);
-
-        final boolean fingerprintAuthAllowed = !fingerprintDisabled && fingerprintAuthCheck;
         final CancellationSignal cancelSignal = new CancellationSignal();
 
         final AtomicBoolean incorrectSavedPass = new AtomicBoolean(false);
 
         class LoginWalletTask extends AsyncTask<Void, Void, Boolean> {
             private String pass;
-            private boolean fingerprintUsed;
 
-            LoginWalletTask(String pass, boolean fingerprintUsed) {
+            LoginWalletTask(String pass) {
                 this.pass = pass;
-                this.fingerprintUsed = fingerprintUsed;
             }
 
             @Override
@@ -421,7 +410,7 @@ public class Helper {
 
             @Override
             protected Boolean doInBackground(Void... unused) {
-                return processPasswordEntry(context, wallet, pass, fingerprintUsed, action);
+                return processPasswordEntry(context, wallet, pass, action);
             }
 
             @Override
@@ -432,23 +421,8 @@ public class Helper {
                     openDialog.dismiss();
                     openDialog = null;
                 } else {
-                    if (fingerprintUsed) {
-                        incorrectSavedPass.set(true);
-                        tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icError, null, null, null);
-                        tvOpenPrompt.setText(context.getText(R.string.bad_saved_password));
-                    } else {
-                        if (!fingerprintAuthAllowed) {
-                            tvOpenPrompt.setVisibility(View.GONE);
-                        } else if (incorrectSavedPass.get()) {
-                            tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icError, null, null, null);
-                            tvOpenPrompt.setText(context.getText(R.string.bad_password));
-                        } else {
-                            tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icFingerprint, null, null, null);
-                            tvOpenPrompt.setText(context.getText(R.string.prompt_fingerprint_auth));
-                        }
                         etPassword.setError(context.getString(R.string.bad_password));
                     }
-                }
                 loginTask = null;
             }
         }
@@ -492,61 +466,16 @@ public class Helper {
                         });
         openDialog = alertDialogBuilder.create();
 
-        final FingerprintManager.AuthenticationCallback fingerprintAuthCallback;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            fingerprintAuthCallback = null;
-        } else {
-            fingerprintAuthCallback = new FingerprintManager.AuthenticationCallback() {
-                @Override
-                public void onAuthenticationError(int errMsgId, CharSequence errString) {
-                    tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icError, null, null, null);
-                    tvOpenPrompt.setText(errString);
-                }
-
-                @Override
-                public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
-                    tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icError, null, null, null);
-                    tvOpenPrompt.setText(helpString);
-                }
-
-                @Override
-                public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-                    try {
-                        String userPass = KeyStoreHelper.loadWalletUserPass(context, wallet);
-                        if (loginTask == null) {
-                            loginTask = new LoginWalletTask(userPass, true);
-                            loginTask.execute();
-                        }
-                    } catch (KeyStoreHelper.BrokenPasswordStoreException ex) {
-                        etPassword.setError(context.getString(R.string.bad_password));
-                        // TODO: better error message here - what would it be?
-                    }
-                }
-
-                @Override
-                public void onAuthenticationFailed() {
-                    tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icError, null, null, null);
-                    tvOpenPrompt.setText(context.getString(R.string.bad_fingerprint));
-                }
-            };
-        }
-
         openDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                if (fingerprintAuthAllowed && fingerprintAuthCallback != null) {
-                    tvOpenPrompt.setCompoundDrawablesRelativeWithIntrinsicBounds(icFingerprint, null, null, null);
-                    tvOpenPrompt.setText(context.getText(R.string.prompt_fingerprint_auth));
-                    tvOpenPrompt.setVisibility(View.VISIBLE);
-                    FingerprintHelper.authenticate(context, cancelSignal, fingerprintAuthCallback);
-                }
                 Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String pass = etPassword.getEditText().getText().toString();
                         if (loginTask == null) {
-                            loginTask = new LoginWalletTask(pass, false);
+                            loginTask = new LoginWalletTask(pass);
                             loginTask.execute();
                         }
                     }
@@ -561,7 +490,7 @@ public class Helper {
                         || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     String pass = etPassword.getEditText().getText().toString();
                     if (loginTask == null) {
-                        loginTask = new LoginWalletTask(pass, false);
+                        loginTask = new LoginWalletTask(pass);
                         loginTask.execute();
                     }
                     return true;
@@ -575,13 +504,13 @@ public class Helper {
     }
 
     public interface PasswordAction {
-        void action(String walletName, String password, boolean fingerprintUsed);
+        void action(String walletName, String password);
     }
 
-    static private boolean processPasswordEntry(Context context, String walletName, String pass, boolean fingerprintUsed, PasswordAction action) {
+    static private boolean processPasswordEntry(Context context, String walletName, String pass, PasswordAction action) {
         String walletPassword = Helper.getWalletPassword(context, walletName, pass);
         if (walletPassword != null) {
-            action.action(walletName, walletPassword, fingerprintUsed);
+            action.action(walletName, walletPassword);
             return true;
         } else {
             return false;
@@ -589,6 +518,6 @@ public class Helper {
     }
 
     static public ExchangeApi getExchangeApi() {
-        return new com.m2049r.xmrwallet.service.exchange.coinmarketcap.ExchangeApiImpl(OkHttpClientSingleton.getOkHttpClient());
+        return new com.m2049r.xmrwallet.service.exchange.coingecko.ExchangeApiImpl(OkHttpClientSingleton.getOkHttpClient());
     }
 }

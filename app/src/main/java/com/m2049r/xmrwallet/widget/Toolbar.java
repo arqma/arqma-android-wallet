@@ -29,9 +29,10 @@ import android.widget.TextView;
 
 import com.m2049r.xmrwallet.R;
 
+import androidx.core.content.ContextCompat;
 import timber.log.Timber;
 
-public class Toolbar extends android.support.v7.widget.Toolbar {
+public class Toolbar extends androidx.appcompat.widget.Toolbar {
     public interface OnButtonListener {
         void onButton(int type);
     }
@@ -45,7 +46,7 @@ public class Toolbar extends android.support.v7.widget.Toolbar {
     ImageView toolbarImage;
     TextView toolbarTitle;
     TextView toolbarSubtitle;
-    Button bCredits;
+    Button bToolbar;
 
     public Toolbar(Context context) {
         super(context);
@@ -78,17 +79,18 @@ public class Toolbar extends android.support.v7.widget.Toolbar {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        setContentInsetsAbsolute (0,0);
         toolbarImage = (ImageView) findViewById(R.id.toolbarImage);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             // the vector image does not work well for androis < Nougat
             toolbarImage.getLayoutParams().width = (int) getResources().getDimension(R.dimen.logo_width);
-            toolbarImage.setImageResource(R.drawable.ic_logo_horizontal_arqma);
+            toolbarImage.setImageResource(R.drawable.ic_text_128x64);
         }
 
         toolbarTitle = (TextView) findViewById(R.id.toolbarTitle);
         toolbarSubtitle = (TextView) findViewById(R.id.toolbarSubtitle);
-        bCredits = (Button) findViewById(R.id.bCredits);
-        bCredits.setOnClickListener(new View.OnClickListener() {
+        bToolbar = (Button) findViewById(R.id.bToolbar);
+        bToolbar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (onButtonListener != null) {
                     onButtonListener.onButton(buttonType);
@@ -105,11 +107,11 @@ public class Toolbar extends android.support.v7.widget.Toolbar {
     public void setTitle(String title) {
         toolbarTitle.setText(title);
         if (title != null) {
-            toolbarImage.setVisibility(View.INVISIBLE);
+            toolbarImage.setVisibility(View.GONE);
             toolbarTitle.setVisibility(View.VISIBLE);
         } else {
             toolbarImage.setVisibility(View.VISIBLE);
-            toolbarTitle.setVisibility(View.INVISIBLE);
+            toolbarTitle.setVisibility(View.GONE);
         }
     }
 
@@ -119,40 +121,40 @@ public class Toolbar extends android.support.v7.widget.Toolbar {
     public final static int BUTTON_CREDITS = 3;
     public final static int BUTTON_CANCEL = 4;
 
-    int buttonType = BUTTON_CREDITS;
+    int buttonType = BUTTON_NONE;
 
     public void setButton(int type) {
         switch (type) {
             case BUTTON_BACK:
                 Timber.d("BUTTON_BACK");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back_white_24dp, 0, 0, 0);
-                bCredits.setText(null);
-                bCredits.setVisibility(View.VISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back_white_24dp, 0, 0, 0);
+                bToolbar.setText(null);
+                bToolbar.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_CLOSE:
                 Timber.d("BUTTON_CLOSE");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close_white_24dp, 0, 0, 0);
-                bCredits.setText(R.string.label_close);
-                bCredits.setVisibility(View.VISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close_white_24dp, 0, 0, 0);
+                bToolbar.setText(R.string.label_close);
+                bToolbar.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_CREDITS:
                 Timber.d("BUTTON_CREDITS");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_white_24dp, 0, 0, 0);
-                bCredits.setText(R.string.label_credits);
-                bCredits.setVisibility(View.VISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_heart_white_24dp, 0, 0, 0);
+                bToolbar.setText(R.string.label_credits);
+                bToolbar.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_CANCEL:
                 Timber.d("BUTTON_CANCEL");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close_white_24dp, 0, 0, 0);
-                bCredits.setText(R.string.label_cancel);
-                bCredits.setVisibility(View.VISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_close_white_24dp, 0, 0, 0);
+                bToolbar.setText(R.string.label_cancel);
+                bToolbar.setVisibility(View.VISIBLE);
                 break;
             case BUTTON_NONE:
             default:
                 Timber.d("BUTTON_NONE");
-                bCredits.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                bCredits.setText(null);
-                bCredits.setVisibility(View.INVISIBLE);
+                bToolbar.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                bToolbar.setText(null);
+                bToolbar.setVisibility(View.GONE);
         }
         buttonType = type;
     }
@@ -162,7 +164,16 @@ public class Toolbar extends android.support.v7.widget.Toolbar {
         if (subtitle != null) {
             toolbarSubtitle.setVisibility(View.VISIBLE);
         } else {
-            toolbarSubtitle.setVisibility(View.INVISIBLE);
+            toolbarSubtitle.setVisibility(View.GONE);
+        }
+    }
+
+    public void setNetworkSubTitleTextColor(String subtitle) {
+        setSubtitle(subtitle);
+        if (subtitle.equals(getResources().getString(R.string.connect_mainnet))) {
+            toolbarSubtitle.setTextColor(ContextCompat.getColor(getContext(), R.color.colorBrandLight));
+        } else if (subtitle.equals(getResources().getString(R.string.connect_stagenet))) {
+            toolbarSubtitle.setTextColor(ContextCompat.getColor(getContext(), R.color.colorSecLight));
         }
     }
 }

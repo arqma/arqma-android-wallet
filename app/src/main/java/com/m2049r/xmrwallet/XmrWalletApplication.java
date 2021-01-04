@@ -25,6 +25,8 @@ import com.m2049r.xmrwallet.util.LocaleHelper;
 
 import timber.log.Timber;
 
+import static androidx.core.os.ConfigurationCompat.getLocales;
+
 public class XmrWalletApplication extends Application {
     @Override
     public void onCreate() {
@@ -43,7 +45,7 @@ public class XmrWalletApplication extends Application {
     @Override
     public void onConfigurationChanged(Configuration configuration) {
         super.onConfigurationChanged(configuration);
-        LocaleHelper.updateSystemDefaultLocale(configuration.locale);
+        LocaleHelper.updateSystemDefaultLocale(getLocales(configuration).get(0));
         LocaleHelper.setLocale(XmrWalletApplication.this, LocaleHelper.getLocale(XmrWalletApplication.this));
     }
 }

@@ -12,27 +12,29 @@
 
         <Spinner
             android:id="@+id/sCurrencyA"
+            style="@style/SpinnerPrimaryDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:entries="@array/currency"
             android:gravity="center"
-            android:minWidth="56dp" />
+            android:minWidth="56dp"
+            tools:listitem="@layout/spinner_item_receive_primary_dark" />
 
         <com.m2049r.xmrwallet.widget.CTextInputLayout
             android:id="@+id/etAmount"
+            style="@style/MoneroText.Receive.PriDark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             app:counterEnabled="false"
             app:errorEnabled="true">
 
-            <android.support.design.widget.TextInputEditText
-                style="@style/MoneroEdit"
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/MoneroText.Receive.PriDark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:hint="@string/receive_amount_hint"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 tools:text="87.00000" />
@@ -48,18 +50,19 @@
 
         <Spinner
             android:id="@+id/sCurrencyB"
-            style="@style/MoneroSpinnerGray"
+            style="@style/SpinnerSecondaryDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:entries="@array/currency"
             android:gravity="center"
             android:minWidth="56dp"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            tools:listitem="@layout/spinner_item_receive_secondary_dark" />
 
         <TextView
             android:id="@+id/tvAmountB"
-            style="@style/MoneroText"
+            style="@style/MoneroText.Receive.SecDark"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
@@ -82,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_statsup" />
+                android:src="@drawable/ic_statsup_primary_24dp" />
 
             <ProgressBar
                 android:id="@+id/pbExchange"

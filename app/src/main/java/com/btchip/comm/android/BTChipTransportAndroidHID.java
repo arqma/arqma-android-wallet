@@ -27,6 +27,7 @@ import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.hardware.usb.UsbRequest;
+import android.os.Build;
 
 import com.btchip.BTChipException;
 import com.btchip.comm.BTChipTransport;
@@ -105,7 +106,11 @@ public class BTChipTransportAndroidHID implements BTChipTransport {
         while (offset != command.length) {
             int blockSize = (command.length - offset > HID_BUFFER_SIZE ? HID_BUFFER_SIZE : command.length - offset);
             System.arraycopy(command, offset, transferBuffer, 0, blockSize);
-            requestOut.queue(ByteBuffer.wrap(transferBuffer), HID_BUFFER_SIZE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                requestOut.queue(ByteBuffer.wrap(transferBuffer));
+            } else {
+                requestOut.queue(ByteBuffer.wrap(transferBuffer), HID_BUFFER_SIZE);
+            }
             connection.requestWait();
             offset += blockSize;
         }
@@ -115,7 +120,11 @@ public class BTChipTransportAndroidHID implements BTChipTransport {
         requestIn.initialize(connection, in);
         while ((responseData = LedgerHelper.unwrapResponseAPDU(LEDGER_DEFAULT_CHANNEL, response.toByteArray(), HID_BUFFER_SIZE)) == null) {
             responseBuffer.clear();
-            requestIn.queue(responseBuffer, HID_BUFFER_SIZE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                requestIn.queue(responseBuffer);
+            } else {
+                requestIn.queue(responseBuffer, HID_BUFFER_SIZE);
+            }
             connection.requestWait();
             responseBuffer.rewind();
             responseBuffer.get(transferBuffer, 0, HID_BUFFER_SIZE);

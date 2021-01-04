@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="tx_green">@color/take</color>
-    <color name="tx_red">@color/give</color>
-    <color name="tx_pending">@color/moneroFab</color>
-    <color name="tx_failed">@color/moneroBlack</color>
 
-    <color name="gradientDark">#0e0653</color>
-    <color name="gradientLight">#3936ef</color>
+    <color name="colorBrand">#9B9139</color>
+    <color name="colorBrandLight">#cec167</color>
+    <color name="colorBrandDark">#6a6406</color>
 
-    <color name="trafficGray">#9B9B9B</color>
+    <color name="colorPri">#31346c</color>
+    <color name="colorPriLight">#5f5d9b</color>
+    <color name="colorPriDark">#000f40</color>
 
-    <color name="take">#0400ff</color>
-    <color name="give">#243563</color>
+    <color name="colorSec">#612665</color>
+    <color name="colorSecLight">#905293</color>
+    <color name="colorSecDark">#34003a</color>
 
-    <color name="moneroWhite">#ffffff</color>
-    <color name="moneroBlack">#000000</color>
-    <color name="moneroBlue">#1F4E97</color>
-    <color name="moneroGray">#FD9B9B9B</color>
+    <color name="tx_in">@color/colorPriDark</color>
+    <color name="tx_out">@color/colorSecDark</color>
+    <color name="tx_pending">@color/colorPriLight</color>
 
-    <color name="moneroStreetA">#D81F0759</color>
-    <color name="moneroStreetB">#D819001E</color>
+    <color name="tx_failed">@color/black</color>
 
-    <color name="dotGray">#FF4A4A4A</color>
-
-    <color name="moneroFab">#61000000</color>
-    <color name="moneroText">#FF616161</color>
-
-
-    <color name="colorPrimaryDark">#030341</color>
-    <!--color name="colorAccent">#009ADA</color-->
-    <color name="colorAccent">@color/gradientLight</color>
-
+    <color name="black">#000000</color>
+    <color name="grey">#9B9B9B</color>
+    <color name="greyDark">#616161</color>
     <color name="white">#ffffff</color>
+
 </resources>

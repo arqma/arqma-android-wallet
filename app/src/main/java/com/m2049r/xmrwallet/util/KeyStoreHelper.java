@@ -21,10 +21,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
-import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import java.io.IOException;
@@ -53,7 +51,11 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.security.auth.x500.X500Principal;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import timber.log.Timber;
+
+// import android.security.KeyPairGeneratorSpec;
 
 public class KeyStoreHelper {
 
@@ -163,6 +165,15 @@ public class KeyStoreHelper {
                 .remove(wallet).apply();
     }
 
+    public static boolean isPasswordInKeyStore(Context context, String wallet) {
+        try {
+            KeyStoreHelper.loadWalletUserPass(context, wallet);
+            return true;
+        } catch (KeyStoreHelper.BrokenPasswordStoreException ex) {
+            return false;
+        }
+    }
+
     /**
      * Creates a public and private key and stores it using the Android Key
      * Store, so that only this application will be able to access the keys.
@@ -206,7 +217,7 @@ public class KeyStoreHelper {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private static void createKeysJBMR2(Context context, String alias) throws NoSuchProviderException,
             NoSuchAlgorithmException, InvalidAlgorithmParameterException {
 
@@ -214,11 +225,10 @@ public class KeyStoreHelper {
         Calendar end = new GregorianCalendar();
         end.add(Calendar.YEAR, 300);
 
-        KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context)
-                .setAlias(alias)
-                .setSubject(new X500Principal("CN=" + alias))
-                .setSerialNumber(BigInteger.valueOf(Math.abs(alias.hashCode())))
-                .setStartDate(start.getTime()).setEndDate(end.getTime())
+        KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(alias, KeyProperties.PURPOSE_SIGN)
+                .setCertificateSubject(new X500Principal("CN=" + alias))
+                .setCertificateSerialNumber(BigInteger.valueOf(Math.abs(alias.hashCode())))
+                .setKeyValidityStart(start.getTime()).setKeyValidityEnd(end.getTime())
                 .build();
         // defaults to 2048 bit modulus
         KeyPairGenerator kpGenerator = KeyPairGenerator.getInstance(

@@ -3,13 +3,13 @@ package com.m2049r.xmrwallet.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.preference.PreferenceManager;
 
 import com.m2049r.xmrwallet.R;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Locale;
+
+import androidx.preference.PreferenceManager;
 
 public class LocaleHelper {
     private static final String PREFERRED_LOCALE_KEY = "preferred_locale";
@@ -17,6 +17,7 @@ public class LocaleHelper {
 
     public static ArrayList<Locale> getAvailableLocales(Context context) {
         ArrayList<Locale> locales = new ArrayList<>();
+        // R.string.available_locales gets generated in build.gradle by enumerating values-* folders
         String[] availableLocales = context.getString(R.string.available_locales).split(",");
 
         for (String localeName : availableLocales) {

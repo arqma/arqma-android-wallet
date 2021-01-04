@@ -17,12 +17,9 @@
 package com.m2049r.xmrwallet.layout;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.m2049r.xmrwallet.R;
@@ -38,6 +35,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
 
 public class TransactionInfoAdapter extends RecyclerView.Adapter<TransactionInfoAdapter.ViewHolder> {
@@ -60,8 +59,8 @@ public class TransactionInfoAdapter extends RecyclerView.Adapter<TransactionInfo
 
     public TransactionInfoAdapter(Context context, OnInteractionListener listener) {
         this.context = context;
-        inboundColour = ContextCompat.getColor(context, R.color.tx_green);
-        outboundColour = ContextCompat.getColor(context, R.color.tx_red);
+        inboundColour = ContextCompat.getColor(context, R.color.tx_in);
+        outboundColour = ContextCompat.getColor(context, R.color.tx_out);
         pendingColour = ContextCompat.getColor(context, R.color.tx_pending);
         failedColour = ContextCompat.getColor(context, R.color.tx_failed);
         infoItems = new ArrayList<>();

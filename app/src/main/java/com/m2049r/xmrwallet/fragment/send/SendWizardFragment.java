@@ -16,9 +16,9 @@
 
 package com.m2049r.xmrwallet.fragment.send;
 
-import android.support.v4.app.Fragment;
-
 import com.m2049r.xmrwallet.layout.SpendViewPager;
+
+import androidx.fragment.app.Fragment;
 
 abstract public class SendWizardFragment extends Fragment
         implements SpendViewPager.OnValidateFieldsListener {

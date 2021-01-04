@@ -20,11 +20,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -35,9 +30,13 @@ import com.m2049r.xmrwallet.R;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import androidx.core.text.HtmlCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import timber.log.Timber;
 
 public class AboutFragment extends DialogFragment {
@@ -60,7 +59,7 @@ public class AboutFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_about, null);
-        ((TextView) view.findViewById(R.id.tvHelp)).setText(Html.fromHtml(getLicencesHtml()));
+        ((TextView) view.findViewById(R.id.tvHelp)).setText(HtmlCompat.fromHtml(getLicencesHtml(), HtmlCompat.FROM_HTML_MODE_LEGACY));
         ((TextView) view.findViewById(R.id.tvVersion)).setText(getString(R.string.about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

@@ -27,14 +27,6 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +37,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.m2049r.xmrwallet.data.BarcodeData;
 import com.m2049r.xmrwallet.data.TxData;
 import com.m2049r.xmrwallet.dialog.CreditsFragment;
@@ -65,6 +58,13 @@ import com.m2049r.xmrwallet.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import timber.log.Timber;
 
 public class WalletActivity extends BaseActivity implements WalletFragment.Listener,
@@ -79,7 +79,6 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
 
     public static final String REQUEST_ID = "id";
     public static final String REQUEST_PW = "pw";
-    public static final String REQUEST_FINGERPRINT_USED = "fingerprint";
     public static final String REQUEST_STREETMODE = "streetmode";
 
     private NavigationView accountsView;
@@ -87,7 +86,6 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
     private ActionBarDrawerToggle drawerToggle;
 
     private Toolbar toolbar;
-    private boolean needVerifyIdentity;
     private boolean requestStreetMode = false;
 
     private String password;
@@ -139,7 +137,6 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
 
     private void enableStreetMode(boolean enable) {
         if (enable) {
-            needVerifyIdentity = true;
             streetMode = getWallet().getDaemonBlockChainHeight();
         } else {
             streetMode = 0;
@@ -179,7 +176,6 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
         if (extras != null) {
             acquireWakeLock();
             String walletId = extras.getString(REQUEST_ID);
-            needVerifyIdentity = extras.getBoolean(REQUEST_FINGERPRINT_USED);
             // we can set the streetmode height AFTER opening the wallet
             requestStreetMode = extras.getBoolean(REQUEST_STREETMODE);
             password = extras.getString(REQUEST_PW);
@@ -225,9 +221,11 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
         MenuItem streetmodeItem = menu.findItem(R.id.action_streetmode);
         if (streetmodeItem != null)
             if (isStreetMode()) {
-                streetmodeItem.setIcon(R.drawable.gunther_csi_24dp);
+                toolbar.setBackgroundResource(R.drawable.toolbar_background_streetmode);
+                streetmodeItem.setIcon(R.drawable.ic_logo_secondary_light_32dp);
             } else {
-                streetmodeItem.setIcon(R.drawable.gunther_24dp);
+                toolbar.setBackgroundResource(R.drawable.toolbar_background_normalmode);
+                streetmodeItem.setIcon(R.drawable.ic_logo_brand_32dp);
             }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -276,8 +274,9 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
 
     private void updateStreetMode() {
         if (isStreetMode()) {
-            toolbar.setBackgroundResource(R.drawable.backgound_toolbar_streetmode);
+            toolbar.setBackgroundResource(R.drawable.toolbar_background_streetmode);
         } else {
+            toolbar.setBackgroundResource(R.drawable.toolbar_background_normalmode);
             showNet();
         }
         invalidateOptionsMenu();
@@ -290,9 +289,9 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
     }
 
     private void onDisableStreetMode() {
-        Helper.promptPassword(WalletActivity.this, getWallet().getName(), false, new Helper.PasswordAction() {
+        Helper.promptPassword(WalletActivity.this, getWallet().getName(), new Helper.PasswordAction() {
             @Override
-            public void action(String walletName, String password, boolean fingerprintUsed) {
+            public void action(String walletName, String password) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -354,6 +353,7 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
                     case Toolbar.BUTTON_CREDITS:
                         Toast.makeText(WalletActivity.this, getString(R.string.label_credits), Toast.LENGTH_SHORT).show();
                     case Toolbar.BUTTON_NONE:
+
                     default:
                         Timber.e("Button " + type + "pressed - how can this be?");
                 }
@@ -383,13 +383,13 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
     public void showNet() {
         switch (WalletManager.getInstance().getNetworkType()) {
             case NetworkType_Mainnet:
-                toolbar.setBackgroundResource(R.drawable.backgound_toolbar_mainnet);
+                toolbar.setNetworkSubTitleTextColor(getResources().getString(R.string.connect_mainnet));
                 break;
             case NetworkType_Testnet:
-                toolbar.setBackgroundResource(R.color.colorPrimaryDark);
+                toolbar.setBackgroundResource(R.color.colorPriDark);
                 break;
             case NetworkType_Stagenet:
-                toolbar.setBackgroundResource(R.color.colorPrimaryDark);
+                toolbar.setNetworkSubTitleTextColor(getResources().getString(R.string.connect_stagenet));
                 break;
             default:
                 throw new IllegalStateException("Unsupported Network: " + WalletManager.getInstance().getNetworkType());
@@ -849,17 +849,12 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
                         final Bundle extras = new Bundle();
                         extras.putString(GenerateReviewFragment.REQUEST_TYPE, GenerateReviewFragment.VIEW_TYPE_WALLET);
 
-                        if (needVerifyIdentity) {
-                            Helper.promptPassword(WalletActivity.this, getWallet().getName(), true, new Helper.PasswordAction() {
+                            Helper.promptPassword(WalletActivity.this, getWallet().getName(), new Helper.PasswordAction() {
                                 @Override
-                                public void action(String walletName, String password, boolean fingerprintUsed) {
+                                public void action(String walletName, String password) {
                                     replaceFragment(new GenerateReviewFragment(), null, extras);
-                                    needVerifyIdentity = false;
                                 }
                             });
-                        } else {
-                            replaceFragment(new GenerateReviewFragment(), null, extras);
-                        }
 
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -959,6 +954,7 @@ public class WalletActivity extends BaseActivity implements WalletFragment.Liste
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Timber.d("onRequestPermissionsResult()");
         switch (requestCode) {
             case Helper.PERMISSIONS_REQUEST_CAMERA:

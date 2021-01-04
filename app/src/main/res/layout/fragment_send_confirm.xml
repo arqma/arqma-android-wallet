@@ -13,6 +13,7 @@
             style="@style/MoneroText.Confirm.Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
             android:text="@string/label_send_address"
             android:textAlignment="textStart" />
 
@@ -21,7 +22,9 @@
             style="@style/MoneroText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
             android:textAlignment="textStart"
             tools:text="ar46iCiw5uB7SjnYhL5EJLP1LpqGkZbCcWhWgdbLL1c4DicNuYi3ZeRJPi8FFmEhYnagbxRyaQKyTYBA95JqmPcr1XZytK9o3" />
@@ -30,12 +33,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/MoneroText.Confirm.Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
                 android:text="@string/label_send_payment_id"
                 android:textAlignment="textStart" />
 
@@ -53,12 +58,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/MoneroText.Confirm.Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
                 android:text="@string/label_send_notes"
                 android:textAlignment="textStart" />
 
@@ -112,6 +119,7 @@
                     style="@style/MoneroLabel.Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
                     android:layout_weight="1"
                     android:text="@string/send_amount_label"
                     android:textAlignment="textStart" />
@@ -137,6 +145,7 @@
                     style="@style/MoneroLabel.Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
                     android:layout_weight="1"
                     android:text="@string/send_fee_label"
                     android:textAlignment="textStart" />
@@ -162,6 +171,7 @@
                     style="@style/MoneroLabel.Caps.Black"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
                     android:layout_weight="1"
                     android:text="@string/send_total_label"
                     android:textAlignment="textStart" />

@@ -30,10 +30,6 @@ import android.hardware.usb.UsbManager;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -74,6 +70,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import timber.log.Timber;
 
 public class LoginActivity extends BaseActivity
@@ -190,9 +190,9 @@ public class LoginActivity extends BaseActivity
                     case DialogInterface.BUTTON_POSITIVE:
                         final File walletFile = Helper.getWalletFile(LoginActivity.this, walletName);
                         if (WalletManager.getInstance().walletExists(walletFile)) {
-                            Helper.promptPassword(LoginActivity.this, walletName, true, new Helper.PasswordAction() {
+                            Helper.promptPassword(LoginActivity.this, walletName, new Helper.PasswordAction() {
                                 @Override
-                                public void action(String walletName, String password, boolean fingerprintUsed) {
+                                public void action(String walletName, String password) {
                                     if (checkDevice(walletName, password))
                                         startDetails(walletFile, password, GenerateReviewFragment.VIEW_TYPE_DETAILS);
                                 }
@@ -223,9 +223,9 @@ public class LoginActivity extends BaseActivity
         if (checkServiceRunning()) return;
         final File walletFile = Helper.getWalletFile(this, walletName);
         if (WalletManager.getInstance().walletExists(walletFile)) {
-            Helper.promptPassword(LoginActivity.this, walletName, false, new Helper.PasswordAction() {
+            Helper.promptPassword(LoginActivity.this, walletName, new Helper.PasswordAction() {
                 @Override
-                public void action(String walletName, String password, boolean fingerprintUsed) {
+                public void action(String walletName, String password) {
                     if (checkDevice(walletName, password))
                         startReceive(walletFile, password);
                 }
@@ -508,16 +508,13 @@ public class LoginActivity extends BaseActivity
     public void showNet() {
         switch (WalletManager.getInstance().getNetworkType()) {
             case NetworkType_Mainnet:
-                toolbar.setSubtitle(getString(R.string.connect_mainnet));
-                toolbar.setBackgroundResource(R.drawable.backgound_toolbar_mainnet);
+                toolbar.setNetworkSubTitleTextColor(getResources().getString(R.string.connect_mainnet));
                 break;
             case NetworkType_Testnet:
                 toolbar.setSubtitle(getString(R.string.connect_testnet));
-                toolbar.setBackgroundResource(R.color.colorPrimaryDark);
                 break;
             case NetworkType_Stagenet:
-                toolbar.setSubtitle(getString(R.string.connect_stagenet));
-                toolbar.setBackgroundResource(R.color.colorPrimaryDark);
+                toolbar.setNetworkSubTitleTextColor(getResources().getString(R.string.connect_stagenet));
                 break;
             default:
                 throw new IllegalStateException("NetworkType unknown: " + WalletManager.getInstance().getNetworkType());
@@ -580,13 +577,11 @@ public class LoginActivity extends BaseActivity
         }
     }
 
-    void startWallet(String walletName, String walletPassword,
-                     boolean fingerprintUsed, boolean streetmode) {
+    void startWallet(String walletName, String walletPassword, boolean streetmode) {
         Timber.d("startWallet()");
         Intent intent = new Intent(getApplicationContext(), WalletActivity.class);
         intent.putExtra(WalletActivity.REQUEST_ID, walletName);
         intent.putExtra(WalletActivity.REQUEST_PW, walletPassword);
-        intent.putExtra(WalletActivity.REQUEST_FINGERPRINT_USED, fingerprintUsed);
         intent.putExtra(WalletActivity.REQUEST_STREETMODE, streetmode);
         startActivity(intent);
     }
@@ -610,6 +605,7 @@ public class LoginActivity extends BaseActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Timber.d("onRequestPermissionsResult()");
         switch (requestCode) {
             case Helper.PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
@@ -1067,6 +1063,9 @@ public class LoginActivity extends BaseActivity
             case R.id.action_license_info:
                 AboutFragment.display(getSupportFragmentManager());
                 return true;
+            case R.id.action_credits:
+                CreditsFragment.display(getSupportFragmentManager());
+                return true;
             case R.id.action_help_list:
                 HelpFragment.display(getSupportFragmentManager(), R.string.help_list);
                 return true;
@@ -1195,12 +1194,11 @@ public class LoginActivity extends BaseActivity
         File walletFile = Helper.getWalletFile(this, walletNode.getName());
         if (WalletManager.getInstance().walletExists(walletFile)) {
             WalletManager.getInstance().setDaemon(walletNode);
-            Helper.promptPassword(LoginActivity.this, walletNode.getName(), false,
-                    new Helper.PasswordAction() {
+            Helper.promptPassword(LoginActivity.this, walletNode.getName(),new Helper.PasswordAction() {
                         @Override
-                        public void action(String walletName, String password, boolean fingerprintUsed) {
+                        public void action(String walletName, String password) {
                             if (checkDevice(walletName, password))
-                                startWallet(walletName, password, fingerprintUsed, streetmode);
+                                startWallet(walletName, password, streetmode);
 
                         }
                     });
